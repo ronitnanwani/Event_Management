@@ -1,5 +1,4 @@
 # Event_Management
-# Your Application Name
 
 ## Introduction
 
@@ -10,11 +9,15 @@ Brief introduction or description of your application.
 To run this application, you need to set up a virtual environment and install dependencies. Follow these steps:
 
 1. Clone the repository:
-git clone <repository-url>
+```
+git clone https://github.com/ronitnanwani/Event_Management.git
+```
 
 
 2. Navigate to the project directory:
+```
 cd <project-directory>
+```
 
 
 3. Create a virtual environment (optional but recommended):
@@ -38,8 +41,9 @@ pip install -r requirements.txt
 ## Usage
 
 To run the application, execute the following command:
-
+```
 python app.py
+```
 
 
 The application will start running, and you can access it in your web browser at `http://localhost:5000/`.
