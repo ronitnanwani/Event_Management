@@ -16,8 +16,6 @@ except Exception as err:
     print(f"Error: {err}")
  
 
-
-
 @app.route('/create_participant', methods=['POST'])
 def create_participant():
         info=request.json
@@ -34,184 +32,203 @@ def create_participant():
             return jsonify({"error": error}), 500
             
 
-def create_acc_student(info):
-    try:
-        roll_no = info.get('roll_no')
-        dept = info.get('dept')
-        name = info.get('name')
-        phone_number = info.get('phone_number')
-        email = info.get('email')
-        password = info.get('password')
-
-        query = """
-            INSERT INTO student (roll_no, dept, name, phone_number, email, password)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """
-
-        cursor.execute(query, (roll_no, dept, name, phone_number, email, password))
-        connection.commit()
-        print("Student data inserted successfully.")
-
-    except Exception as err:
-        connection.rollback()
-        print(f"Error while inserting student data: {err}")
-
-def create_acc_organiser(info):
-    try:
-        o_id = info.get('o_id')
-        email = info.get('email')
-        password = info.get('password')
-        name = info.get('name')
-        phone_number = info.get('phone_number')
-
-        query = """
-            INSERT INTO organiser (o_id, email, password, name, phone_number)
-            VALUES (%s, %s, %s, %s, %s)
-        """
-
-        cursor.execute(query, (o_id, email, password, name, phone_number))
-        
-        connection.commit()
-        print("Organiser data inserted successfully.")
-
-    except Exception as err:
-        connection.rollback()
-        print(f"Error while inserting organiser data: {err}")
-
-def create_event(info):
+@app.route('/create_student', methods=['POST'])
+def create_student():
+    info=request.json
+    roll_no = info.get('roll_no')
+    dept = info.get('dept')
+    name = info.get('name')
+    phone_number = info.get('phone_number')
+    email = info.get('email')
+    password = info.get('password')
     
-    try:
-        e_id = info.get('e_id')
-        date_and_time = info.get('date_and_time')
-        name = info.get('name')
-        description = info.get('description')
-        first = info.get('first')
-        second = info.get('second')
-        third = info.get('third')
-        venue = info.get('venue')
-
-        query = """
-            INSERT INTO event (e_id, date_and_time, name, description, first, second, third, venue)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """
-        cursor.execute(query, (e_id, date_and_time, name, description, first, second, third, venue))
-        
-    except Exception as err:
-        connection.rollback()
-        print(f"Error while inserting event data: {err}")
-        
-
-def create_event_volunteer(info):
-    try:
-        e_id = info.get('e_id')
-        roll_no = info.get('roll_no')
-        
-        query = """
-            INSERT INTO event_has_volunteer (e_id, roll_no)
-            VALUES (%s, %s)
-        """
-        cursor.execute(query, (e_id, roll_no))
-        connection.commit()
-        
-    except:
-        connection.rollback()
-        print(f"Error while inserting volunteer data: {err}")
-        
-@app.route('/create_accommodation', methods=['POST'])
-def create_accomodation():
-    try:
-        info=request.json
-        acc_id = info.get('acc_id')
-        price = info.get('price')
-        days = info.get('days')
-        name = info.get('name')
-        num_of_participants = info.get('num_of_participants')
-
-        query = """
-            INSERT INTO accommodation (acc_id, price, days, name, num_of_participants)
-            VALUES (%s, %s, %s, %s, %s)
-        """
-
-        cursor.execute(query, (acc_id, price, days, name, num_of_participants))
-        
-        connection.commit()
-        return jsonify({'message': 'Accommodation entry created successfully.'})
+    success, error = insert_student(roll_no,dept,name,phone_number,email,password)
     
-    except Exception as err:
-        connection.rollback()
-        return jsonify({'error': str(err)})  
+    if success:
+        return jsonify({"message": "Student added successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
+
+
+@app.route('/create_organiser', methods=['POST'])
+def create_organiser():
+    info = request.json
+    email = info.get('email')
+    password = info.get('password')
+    name = info.get('name')
+    phone_number = info.get('phone_number')
+    
+    success, error = insert_organiser(email,password,name,phone_number)
+
+    if success:
+        return jsonify({"message": "Organiser added successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
+
+# def create_event(info):
+    
+#     try:
+#         e_id = info.get('e_id')
+#         date_and_time = info.get('date_and_time')
+#         name = info.get('name')
+#         description = info.get('description')
+#         first = info.get('first')
+#         second = info.get('second')
+#         third = info.get('third')
+#         venue = info.get('venue')
+
+#         query = """
+#             INSERT INTO event (e_id, date_and_time, name, description, first, second, third, venue)
+#             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+#         """
+#         cursor.execute(query, (e_id, date_and_time, name, description, first, second, third, venue))
+        
+#     except Exception as err:
+#         connection.rollback()
+#         print(f"Error while inserting event data: {err}")
+        
+
+# @app.route('/create_event_volunteer', methods=['POST'])
+# def create_event_volunteer(info):
+#     try:
+#         e_id = info.get('e_id')
+#         roll_no = info.get('roll_no')
+        
+#         query = """
+#             INSERT INTO event_has_volunteer (e_id, roll_no)
+#             VALUES (%s, %s)
+#         """
+#         cursor.execute(query, (e_id, roll_no))
+#         connection.commit()
+        
+#     except:
+#         connection.rollback()
+#         print(f"Error while inserting volunteer data: {err}")
+        
+# @app.route('/create_accommodation', methods=['POST'])
+# def create_accomodation():
+#     try:
+#         info=request.json
+#         acc_id = info.get('acc_id')
+#         price = info.get('price')
+#         days = info.get('days')
+#         name = info.get('name')
+#         num_of_participants = info.get('num_of_participants')
+
+#         query = """
+#             INSERT INTO accommodation (acc_id, price, days, name, num_of_participants)
+#             VALUES (%s, %s, %s, %s, %s)
+#         """
+
+#         cursor.execute(query, (acc_id, price, days, name, num_of_participants))
+        
+#         connection.commit()
+#         return jsonify({'message': 'Accommodation entry created successfully.'})
+    
+#     except Exception as err:
+#         connection.rollback()
+#         return jsonify({'error': str(err)})  
     
       
-def create_food(info):
-    try:
-        food_id=info.get('food_id')
-        food_type=info.get('food_type')
-        days=info.get('days')
-        description=info.get('description')
-        num_of_participants=info.get('num_of_participants')   
-        query = """
-            INSERT INTO food (food_id, type, days, description, num_of_participants)
-            VALUES (%s, %s, %s, %s, %s)
-        """
-        cursor.execute(query, (food_id, food_type, days, description, num_of_participants))
-        connection.commit()
-        print("Food data inserted successfully.")
+# def create_food(info):
+#     try:
+#         food_id=info.get('food_id')
+#         food_type=info.get('food_type')
+#         days=info.get('days')
+#         description=info.get('description')
+#         num_of_participants=info.get('num_of_participants')   
+#         query = """
+#             INSERT INTO food (food_id, type, days, description, num_of_participants)
+#             VALUES (%s, %s, %s, %s, %s)
+#         """
+#         cursor.execute(query, (food_id, food_type, days, description, num_of_participants))
+#         connection.commit()
+#         print("Food data inserted successfully.")
 
-    except Exception as err:
-        connection.rollback()
-        print(f"Error while inserting food data: {err}")
+#     except Exception as err:
+#         connection.rollback()
+#         print(f"Error while inserting food data: {err}")
 
 
 
-def create_task_for_volunteer():
+# def create_task_for_volunteer():
     
-    pass
+#     pass
 
 
 
-@app.route('/fetch_accommodation_plans', methods=['GET'])
-def fetch_accomodation_plans():
-    try:
-        cursor.execute("SELECT * FROM accommodation")
-        accommodation_data = cursor.fetchall()
+# @app.route('/fetch_accommodation_plans', methods=['GET'])
+# def fetch_accomodation_plans():
+#     try:
+#         cursor.execute("SELECT * FROM accommodation")
+#         accommodation_data = cursor.fetchall()
 
-        accommodation_list = []
-        for row in accommodation_data:
-            accommodation_dict = {
-                'acc_id': row[0],
-                'price': row[1],
-                'days': row[2],
-                'name': row[3],
-            }
-            accommodation_list.append(accommodation_dict)
+#         accommodation_list = []
+#         for row in accommodation_data:
+#             accommodation_dict = {
+#                 'acc_id': row[0],
+#                 'price': row[1],
+#                 'days': row[2],
+#                 'name': row[3],
+#             }
+#             accommodation_list.append(accommodation_dict)
             
-        return jsonify({'message':accommodation_list})
+#         return jsonify({'message':accommodation_list})
 
-    except Exception as err:
-        return jsonify({'error': str(err)})
+#     except Exception as err:
+#         return jsonify({'error': str(err)})
     
 
-@app.route('/fetch_food_plans', methods=['GET'])
-def fetch_food_plans():
-    try:
-        cursor.execute("SELECT * FROM food")
-        food_data = cursor.fetchall()
+# @app.route('/fetch_food_plans', methods=['GET'])
+# def fetch_food_plans():
+#     try:
+#         cursor.execute("SELECT * FROM food")
+#         food_data = cursor.fetchall()
 
-        food_list = []
-        for row in food_data:
-            food_dict = {
-                'acc_id': row[0],
-                'price': row[1],
-                'days': row[2],
-                'name': row[3],
-            }
-            food_list.append(food_dict)
+#         food_list = []
+#         for row in food_data:
+#             food_dict = {
+#                 'acc_id': row[0],
+#                 'price': row[1],
+#                 'days': row[2],
+#                 'name': row[3],
+#             }
+#             food_list.append(food_dict)
             
-        return jsonify({'message':food_list})
+#         return jsonify({'message':food_list})
 
-    except Exception as err:
-        return jsonify({'error': str(err)})
+#     except Exception as err:
+#         return jsonify({'error': str(err)})
+
+
     
+@app.route('/fetch_events',methods=['GET'])
+def fetch_events():
+    success, rows = fetch_all_events()
+    
+    if success:
+        
+        if len(rows)==0:
+            return jsonify({"message": "No events Available"}), 201
+        
+        event_list = []
+        for event in rows:
+            event_dict = {
+                'e_id': event[0],
+                'date_and_time': str(event[1]),
+                'name': event[2],
+                'description': event[3],
+                'first': event[4],
+                'second': event[5],
+                'third': event[6],
+                'venue': event[7]
+            }
+            event_list.append(event_dict)
+        return jsonify({"message": event_list}), 201
+    else:
+        return jsonify({"error": rows}), 500
+    
+
 
 @app.route('/event_volunteers/<int:e_id>', methods=['GET'])
 def fetch_volunteers_of_event(e_id):
