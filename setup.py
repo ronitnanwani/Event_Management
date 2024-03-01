@@ -36,7 +36,7 @@ def main():
                     type varchar(10),
                     days int,
                     description text,
-                    num_of_participant int,
+                    num_of_participants int,
                     CONSTRAINT type_check CHECK (type IN ('Veg', 'NonVeg'))
                 );
             """
