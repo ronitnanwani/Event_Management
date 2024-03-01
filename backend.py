@@ -9,7 +9,8 @@ try:
         user = "postgres",
         password = "pass@1234",
         host = "localhost",
-        database = "event_management"
+        database = "event_management",
+        port = "5435"
     )
     cursor = connection.cursor()
 except Exception as err:
@@ -78,27 +79,20 @@ def create_acc_organiser(info):
         connection.rollback()
         print(f"Error while inserting organiser data: {err}")
 
-def create_event(info):
-    
-    try:
-        e_id = info.get('e_id')
-        date_and_time = info.get('date_and_time')
-        name = info.get('name')
-        description = info.get('description')
-        first = info.get('first')
-        second = info.get('second')
-        third = info.get('third')
-        venue = info.get('venue')
+@app.route('/create_event', methods=['POST'])
+def create_event():
+    info=request.json
+    date_and_time = info.get('date_and_time')
+    name = info.get('name')
+    description = info.get('description')
+    venue = info.get('venue')
 
-        query = """
-            INSERT INTO event (e_id, date_and_time, name, description, first, second, third, venue)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """
-        cursor.execute(query, (e_id, date_and_time, name, description, first, second, third, venue))
-        
-    except Exception as err:
-        connection.rollback()
-        print(f"Error while inserting event data: {err}")
+    success, error = insert_event(date_and_time, name, description, venue)
+    # success = True
+    if success:
+        return jsonify({"message": "Event added successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
         
 
 def create_event_volunteer(info):

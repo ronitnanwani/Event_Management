@@ -12,3 +12,17 @@ def insert_participant(name, college_name, phone_number, email, password):
     except Exception as e:
         connection.rollback()
         return False, str(e)
+    
+
+def insert_event(date_time,name,description,venue):
+    try:
+        cursor.execute("SELECT COALESCE(MAX(e_id), 0) + 1 FROM event")
+        e_id = cursor.fetchone()[0]
+
+        cursor.execute("INSERT INTO event (e_id, date_and_time, name, description, first, second, third, venue) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    (e_id, date_time, name, description, None, None, None, venue))
+        connection.commit()
+        return True, None
+    except Exception as e:
+        connection.rollback()
+        return False, str(e)
