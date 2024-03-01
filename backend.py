@@ -413,10 +413,10 @@ def choose_food():
 
 def create_trigger1():
     try:
-        cursor.execute("DROP TRIGGER IF EXISTS update_num_of_participants_trigger ON participant")
+        cursor.execute("DROP TRIGGER IF EXISTS update_num_of_participants_trigger_accomodation ON participant")
 
         trigger_function = """
-            CREATE OR REPLACE FUNCTION update_num_of_participants()
+            CREATE OR REPLACE FUNCTION update_num_of_participants_accomodation()
             RETURNS TRIGGER AS
             $$
             BEGIN
@@ -449,10 +449,61 @@ def create_trigger1():
         cursor.execute(trigger_function)
 
         trigger = """
-            CREATE TRIGGER update_num_of_participants_trigger
+            CREATE TRIGGER update_num_of_participants_trigger_accomodation
             AFTER UPDATE OF acc_id ON participant
             FOR EACH ROW
-            EXECUTE FUNCTION update_num_of_participants();
+            EXECUTE FUNCTION update_num_of_participants_accomodation();
+        """
+        cursor.execute(trigger)
+
+        connection.commit()
+        print("Trigger created successfully")
+
+    except Exception as e:
+        print("Error creating trigger:", e)
+
+def create_trigger2():
+    try:
+        cursor.execute("DROP TRIGGER IF EXISTS update_num_of_participants_trigger_food ON participant")
+
+        trigger_function = """
+            CREATE OR REPLACE FUNCTION update_num_of_participants_food()
+            RETURNS TRIGGER AS
+            $$
+            BEGIN
+                IF TG_OP = 'UPDATE' THEN
+                    IF OLD.food_id IS NOT NULL AND NEW.food_id IS NOT NULL AND OLD.food_id <> NEW.food_id THEN
+                        UPDATE food
+                        SET num_of_participants = num_of_participants - 1
+                        WHERE food_id = OLD.food_id;
+
+                        UPDATE food
+                        SET num_of_participants = num_of_participants + 1
+                        WHERE food_id = NEW.food_id;
+                        
+                    ELSIF OLD.food_id IS NULL AND NEW.food_id IS NOT NULL THEN
+                        UPDATE food
+                        SET num_of_participants = num_of_participants + 1
+                        WHERE food_id = NEW.food_id;
+
+                    ELSIF OLD.food_id IS NOT NULL AND NEW.food_id IS NULL THEN
+                        UPDATE food
+                        SET num_of_participants = num_of_participants - 1
+                        WHERE food_id = OLD.food_id;
+                    END IF;   
+                END IF;
+                RETURN NEW;
+            END;
+            $$
+            LANGUAGE plpgsql;
+        """
+        cursor.execute(trigger_function)
+
+        trigger = """
+            CREATE TRIGGER update_num_of_participants_trigger_food
+            AFTER UPDATE OF food_id ON participant
+            FOR EACH ROW
+            EXECUTE FUNCTION update_num_of_participants_food();
         """
         cursor.execute(trigger)
 
@@ -464,6 +515,8 @@ def create_trigger1():
 
 # Updates num_of_participants whenever acc_id for any participant is changed
 create_trigger1()
+# Updates num_of_participants whenever food_id for any participant is changed
+create_trigger2()
 
 
 if __name__ == '__main__':
