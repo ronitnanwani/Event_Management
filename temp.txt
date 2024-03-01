@@ -1,0 +1,91 @@
+http://127.0.0.1:5000/create_participant
+{
+  "name":"Ronit",
+  "college_name":"IIT Kharagpur",
+  "phone_number":8605069812,
+  "email":"ronit.nanwani@gmail.com",
+  "password":"1234"
+}
+
+
+http://127.0.0.1:5000/create_accomodation
+{
+  "price":10000,
+  "days":7,
+  "name":"Super Deluxe Accomodation"
+}
+
+http://127.0.0.1:5000/create_food
+{
+  "food_type":"NonVeg",
+  "days":5,
+  "description":"Mess jaisa khana"
+}
+
+http://127.0.0.1:5000/create_student
+{
+  "roll_no":84679,
+  "dept":"CSE",
+  "name":"Sanchit",
+  "phone_number":8955141834,
+  "email":"sanchit.yewale@gmail.com",
+  "password":"129434"
+}
+
+http://127.0.0.1:5000/create_event_volunteer
+{
+  "e_id":2,
+  "roll_no":84679
+}
+
+http://127.0.0.1:5000/create_organiser
+{
+  "email":"om.sadhwani@gmail.com",
+  "password":"13434",
+  "name":"Om",
+  "phone_number":7259241334
+}
+
+
+
+http://127.0.0.1:5000/create_event/2
+{
+  "date_and_time":"2021-01-01 11:30:00",
+  "name":"Dance",
+  "description":"This is a dance event",
+  "venue":"TSG"
+}
+
+
+http://127.0.0.1:5000/register_for_event
+{
+  "e_id":5,
+  "id":84679,
+  "type":"Student"
+}
+
+
+http://127.0.0.1:5000/choose_accomodation
+{
+  "p_id":1,
+  "acc_id":1
+}
+
+
+http://127.0.0.1:5000/choose_food
+{
+  "p_id":1,
+  "food_id":2
+}
+
+
+http://127.0.0.1:5000/fetch_events
+http://127.0.0.1:5000/fetch_accomodation_plans
+http://127.0.0.1:5000/fetch_accomodation_plans_org
+http://127.0.0.1:5000/fetch_food_plans_org
+http://127.0.0.1:5000/fetch_food_plans
+http://127.0.0.1:5000/event_volunteers/1
+http://127.0.0.1:5000/organiser_events/1
+http://127.0.0.1:5000/volunteered_events/84679
+http://127.0.0.1:5000/registered_events/Participant/2
+http://127.0.0.1:5000/registered_events/Student/84679
