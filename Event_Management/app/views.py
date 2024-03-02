@@ -24,8 +24,20 @@ def getEvents():
 def addEvent():
     if request.method == 'POST':
         
+        info = request.form
+        name = info.get('name')
+        date = info.get('date')
+        time = info.get('time')
+        description = info.get('description')
+        tags = info.get('tags')
+        venue = info.get('venue')
+        prize = info.get('prize')
+        type = info.get('type')
+
+        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","))
         # Check if the username already exists
-        return redirect(url_for('app_views.dashboardAdmin'))
+        if success:
+            return redirect(url_for('app_views.dashboardAdmin'))
     return render_template('addEvent.html', name='events')
 
 @app_views.route('/event/<int:id>')
