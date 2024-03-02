@@ -283,7 +283,7 @@ def fetch_task_of_volunter(connection,cursor,roll_no):
         connection.rollback()
         return False, str(e)
     
-def check_duplicate_username(connection,cursor,email):
+def check_duplicate_username_participant(connection,cursor,email):
     try:
         query = """
             SELECT EXISTS (
