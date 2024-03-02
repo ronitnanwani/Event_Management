@@ -444,4 +444,22 @@
     </div>
 </div>
 </div>
+<script>
+    $(document).ready(function(){
+  $("#register_event").click(function(){
+    
+    var pid={% user.roll_no is defined %}{{user.roll_no}}{% else %}{{user.pid}}{% endif %};
+    var type={% user.roll_no is defined %}Student{% else %}Participant{% endif %}
+    
+    $.post("/register_for_event", {id: pid, e_id: {{event.id}},type:type}, function(response){
+      console.log("POST request successful");
+      console.log(response); // Response from the server
+    })
+    .fail(function(xhr, status, error) {
+      console.error("POST request failed");
+      console.error(error); // Error message
+    });
+  });
+});
+</script>
 {% endblock %}

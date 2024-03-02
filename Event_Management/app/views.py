@@ -1,5 +1,5 @@
 from . import *
-from .__init__ import connection,cursor
+# from .__init__ import connection,cursor
 from flask import jsonify
 from Event_Management.database import *
 
@@ -20,18 +20,25 @@ def getEvents():
         
         ]
     return render_template('events.html', name='events',events=events)
-@app_views.route('/add-event')
+@app_views.route('/add-event', methods=['GET','POST'])
 def addEvent():
-    events=[
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
+    if request.method == 'POST':
         
-        ]
-    return render_template('addEvent.html', name='events',events=events)
+        info = request.form
+        name = info.get('name')
+        date = info.get('date')
+        time = info.get('time')
+        description = info.get('description')
+        tags = info.get('tags')
+        venue = info.get('venue')
+        prize = info.get('prize')
+        type = info.get('type')
+
+        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","))
+        # Check if the username already exists
+        if success:
+            return redirect(url_for('app_views.dashboardAdmin'))
+    return render_template('addEvent.html', name='events')
 
 @app_views.route('/event/<int:id>')
 def eventDetails(id):
@@ -108,7 +115,8 @@ def loginParticipant():
         password = request.form['password']
         
         # Check if the username and password match
-        if True:
+        success, row = check_participant_login(connection,cursor,username,password)
+        if success:
             # Authentication successful, redirect to a protected page
             return redirect(url_for('app_views.dashboardParticipant'))
         else:
@@ -122,7 +130,9 @@ def loginStudent():
         password = request.form['password']
         
         # Check if the username and password match
-        if True:
+
+        success, row = check_student_login(connection,cursor,username,password)
+        if success:
             # Authentication successful, redirect to a protected page
             return redirect(url_for('app_views.dashboardStudent'))
         else:
@@ -134,9 +144,13 @@ def loginOrganiser():
     if request.method == 'POST':
         username = request.form['email']
         password = request.form['password']
+
+        print(request.form)
+
+        success, row = check_organiser_login(connection,cursor,username,password)
         
         # Check if the username and password match
-        if True:
+        if success:
             # Authentication successful, redirect to a protected page
             return redirect(url_for('app_views.dashboardOrganiser'))
         else:
@@ -159,8 +173,10 @@ def registerOrganiser():
         email = info.get('email')
         password = info.get('password')
         name = info.get('name')
-        phone_number = info.get('phone_number')
-        success, error = insert_organiser(connection,cursor,email,password,name,phone_number)
+        # TODO : Add phone number to the form
+        phone_number = 9876543210
+        can_create = 0
+        success, error = insert_organiser(connection,cursor,email,password,name,phone_number,can_create)
 
         if success:
         # Registration successful, redirect to login page
@@ -183,12 +199,14 @@ def registerStudent():
             return render_template('signup.html', error='User already exists')
         
         # If username doesn't exist, add the user to the database
+
+        print(request.form)
         info = request.form
-        roll_no = info.get('roll_no')
-        dept = info.get('dept')
         name = info.get('name')
-        phone_number = info.get('phone_number')
         email = info.get('email')
+        dept = info.get('department')
+        roll_no = info.get('rollno')
+        phone_number = info.get('phone')
         password = info.get('password')
 
         success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
