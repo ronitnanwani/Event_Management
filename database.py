@@ -254,3 +254,30 @@ def update_event_details(connection,cursor,e_id,venue,date_time):
     except Exception as e:
         connection.rollback()
         return False, str(e)
+    
+def insert_task(connection,cursor,roll_no,description):
+    try:
+        cursor.execute("""
+            INSERT INTO tasks (roll_no, task_description)
+            VALUES (%s, %s)
+        """,(roll_no,description))
+        connection.commit()
+        return True, None
+    except Exception as e:
+        connection.rollback()
+        return False, str(e)
+    
+
+def fetch_task_of_volunter(connection,cursor,roll_no):
+    try:
+        cursor.execute("""
+            SELECT task_description
+            FROM tasks
+            WHERE roll_no = %s
+        """,(roll_no,))
+        rows=cursor.fetchall()
+        return True,rows
+    
+    except Exception as e:
+        connection.rollback()
+        return False, str(e)
