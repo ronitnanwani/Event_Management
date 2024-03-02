@@ -617,6 +617,75 @@ def create_trigger4():
         print("Error creating trigger:", e)
 
 
+def create_trigger5():
+    try:
+        cursor.execute("DROP TRIGGER IF EXISTS update_food_trigger ON food")
+
+        trigger_function = """
+            CREATE OR REPLACE FUNCTION update_food()
+            RETURNS TRIGGER AS
+            $$
+            BEGIN
+                IF TG_OP = 'UPDATE' THEN
+                    INSERT INTO notifications (time_t, description)
+                    VALUES (current_timestamp, 'Food plan ' || NEW.food_type || ' has been updated. New price: ' || NEW.price);
+                END IF;
+                RETURN NEW;
+            END;
+            $$
+            LANGUAGE plpgsql;
+        """
+        cursor.execute(trigger_function)
+
+        trigger = """
+            CREATE TRIGGER update_food_trigger
+            AFTER UPDATE OF price ON food
+            FOR EACH ROW
+            EXECUTE FUNCTION update_food();
+        """
+        cursor.execute(trigger)
+
+        connection.commit()
+        print("Trigger created successfully")
+
+    except Exception as e:
+        print("Error creating trigger:", e)
+
+def create_trigger6():
+    try:
+        cursor.execute("DROP TRIGGER IF EXISTS update_accomodation_trigger ON accomodation")
+
+        trigger_function = """
+            CREATE OR REPLACE FUNCTION update_accomodation()
+            RETURNS TRIGGER AS
+            $$
+            BEGIN
+                IF TG_OP = 'UPDATE' THEN
+                    INSERT INTO notifications (time_t, description)
+                    VALUES (current_timestamp, 'Accomodation plan ' || NEW.name || ' has been updated. New price: ' || NEW.price);
+                END IF;
+                RETURN NEW;
+            END;
+            $$
+            LANGUAGE plpgsql;
+        """
+        cursor.execute(trigger_function)
+
+        trigger = """
+            CREATE TRIGGER update_accomodation_trigger
+            AFTER UPDATE OF price ON accomodation
+            FOR EACH ROW
+            EXECUTE FUNCTION update_accomodation();
+        """
+        cursor.execute(trigger)
+
+        connection.commit()
+        print("Trigger created successfully")
+
+    except Exception as e:
+        print("Error creating trigger:", e)
+
+
 
 # Updates num_of_participants whenever acc_id for any participant is changed
 create_trigger1()
@@ -626,6 +695,10 @@ create_trigger2()
 create_trigger3()
 # Add the row to notifications table whenever venue or date_and_time is updated in event table
 create_trigger4()
+# Add the row to notifications table whenever there is a food price change
+create_trigger5()
+# Add the row to notifications table whenever there is a accomodation price change
+create_trigger6()
 
 
 if __name__ == '__main__':

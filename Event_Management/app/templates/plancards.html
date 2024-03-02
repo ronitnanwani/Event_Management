@@ -148,24 +148,26 @@
                                     <div class="mx-auto w-full">
                                         <div class="w-full">
                                             <div class="mx-auto mb-8 grid max-w-4xl gap-6 sm:grid-cols-3">
-                                                <div class="group/nui-radio-headless relative">
-                                                    <!---->
-                                                    <div class="relative"><input id="ninja-input-10858" checked="" type="radio" value="free" name="radio_custom" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
+                                              <!---->
+                                              {% for acco in accomodations %}
+                                              <div class="group/nui-radio-headless relative">
+                                                    <div class="relative">
+                                                      <input id="ninja-input-10858" checked="" type="radio" value="free" name="radio_custom" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
                                                         <!--[-->
                                                         <div class="nui-card nui-card-curved nui-card-white peer-checked:!border-primary-500 relative border-2 p-8 opacity-60 grayscale peer-checked:opacity-100 peer-checked:grayscale-0 peer-checked:[&amp;_.child]:!opacity-100">
                                                             <!--[-->
-                                                            <div class="flex flex-col text-center"><img src="/img/illustrations/onboarding/pricing-1.svg" alt="2 factor authentication with email" class="mx-auto mb-3 max-w-[160px]">
+                                                            <div class="flex flex-col text-center"><img src="{% if acco.link is not defined %}{{ url_for('static', filename='img/home.jpg') }}{% else %}{{acco.link}}{% endif %}" alt="Accomodation" class="mx-auto mb-3 max-w-[160px]">
                                                                 <p class="nui-heading nui-heading-md nui-weight-medium nui-lead-normal">
-                                                                    <!--[-->Free
+                                                                    <!--[-->{{acco.title}}
                                                                     <!--]-->
                                                                 </p>
                                                                 <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-snug text-muted-500 dark:text-muted-400">
-                                                                    <!--[-->Start for free with most of our features. Get familiar with it and upgrade when you are ready.
+                                                                    <!--[-->{{acco.desc}}
                                                                     <!--]-->
                                                                 </p>
                                                                 <div class="flex items-center justify-center gap-2 pt-4">
                                                                     <p class="nui-text nui-content-md nui-weight-normal nui-lead-normal">
-                                                                        <!--[--><span>$0</span><span class="text-muted-400 text-xs"> /per month</span>
+                                                                        <!--[--><span>${{acco.price}}</span><span class="text-muted-400 text-xs"> /per day</span>
                                                                         <!--]-->
                                                                     </p>
                                                                 </div>
@@ -174,8 +176,9 @@
                                                             <!--]-->
                                                         </div>
                                                         <!--]-->
+                                                      </div>
                                                     </div>
-                                                </div>
+                                            {% endfor %}
                                             
                                               
                                             </div>
@@ -214,24 +217,25 @@
                                     <div class="mx-auto w-full">
                                         <div class="w-full">
                                             <div class="mx-auto mb-8 grid max-w-4xl gap-6 sm:grid-cols-3">
-                                                <div class="group/nui-radio-headless relative">
-                                                    <!---->
-                                                    <div class="relative"><input id="ninja-input-10858" checked="" type="radio" value="free" name="radio_custom" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
+                                                {% for plan in food %}
+                                              <div class="group/nui-radio-headless relative">
+                                                    <div class="relative">
+                                                      <input id="ninja-input-10858" checked="" type="radio" value="free" name="radio_custom" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
                                                         <!--[-->
                                                         <div class="nui-card nui-card-curved nui-card-white peer-checked:!border-primary-500 relative border-2 p-8 opacity-60 grayscale peer-checked:opacity-100 peer-checked:grayscale-0 peer-checked:[&amp;_.child]:!opacity-100">
                                                             <!--[-->
-                                                            <div class="flex flex-col text-center"><img src="/img/illustrations/onboarding/pricing-1.svg" alt="2 factor authentication with email" class="mx-auto mb-3 max-w-[160px]">
+                                                            <div class="flex flex-col text-center"><img src="{% if plan.link is not defined %}{{ url_for('static', filename='img/food.jpg') }}{% else %}{{plan.link}}{% endif %}" alt="Food" class="mx-auto mb-3 max-w-[160px]">
                                                                 <p class="nui-heading nui-heading-md nui-weight-medium nui-lead-normal">
-                                                                    <!--[-->Free
+                                                                    <!--[-->{{plan.title}}
                                                                     <!--]-->
                                                                 </p>
                                                                 <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-snug text-muted-500 dark:text-muted-400">
-                                                                    <!--[-->Start for free with most of our features. Get familiar with it and upgrade when you are ready.
+                                                                    <!--[-->{{plan.desc}}
                                                                     <!--]-->
                                                                 </p>
                                                                 <div class="flex items-center justify-center gap-2 pt-4">
                                                                     <p class="nui-text nui-content-md nui-weight-normal nui-lead-normal">
-                                                                        <!--[--><span>$0</span><span class="text-muted-400 text-xs"> /per month</span>
+                                                                        <!--[--><span>${{plan.price}}</span><span class="text-muted-400 text-xs"> /per day</span>
                                                                         <!--]-->
                                                                     </p>
                                                                 </div>
@@ -240,8 +244,9 @@
                                                             <!--]-->
                                                         </div>
                                                         <!--]-->
+                                                      </div>
                                                     </div>
-                                                </div>
+                                            {% endfor %}
                                             
                                               
                                             </div>
@@ -280,24 +285,25 @@
                                     <div class="mx-auto w-full">
                                         <div class="w-full">
                                             <div class="mx-auto mb-8 grid max-w-4xl gap-6 sm:grid-cols-3">
-                                                <div class="group/nui-radio-headless relative">
-                                                    <!---->
-                                                    <div class="relative"><input id="ninja-input-10858" checked="" type="radio" value="free" name="radio_custom" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
+                                                {% for item in facilities %}
+                                              <div class="group/nui-radio-headless relative">
+                                                    <div class="relative">
+                                                      <input id="ninja-input-10858" checked="" type="checkbox" value="free" name="facility" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
                                                         <!--[-->
                                                         <div class="nui-card nui-card-curved nui-card-white peer-checked:!border-primary-500 relative border-2 p-8 opacity-60 grayscale peer-checked:opacity-100 peer-checked:grayscale-0 peer-checked:[&amp;_.child]:!opacity-100">
                                                             <!--[-->
-                                                            <div class="flex flex-col text-center"><img src="/img/illustrations/onboarding/pricing-1.svg" alt="2 factor authentication with email" class="mx-auto mb-3 max-w-[160px]">
+                                                            <div class="flex flex-col text-center"><img src="{% if item.link is not defined %}{{ url_for('static', filename='img/facility.jpg') }}{% else %}{{item.link}}{% endif %}" alt="Accomodation" class="mx-auto mb-3 max-w-[160px]">
                                                                 <p class="nui-heading nui-heading-md nui-weight-medium nui-lead-normal">
-                                                                    <!--[-->Free
+                                                                    <!--[-->{{item.title}}
                                                                     <!--]-->
                                                                 </p>
                                                                 <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-snug text-muted-500 dark:text-muted-400">
-                                                                    <!--[-->Start for free with most of our features. Get familiar with it and upgrade when you are ready.
+                                                                    <!--[-->{{item.desc}}
                                                                     <!--]-->
                                                                 </p>
                                                                 <div class="flex items-center justify-center gap-2 pt-4">
                                                                     <p class="nui-text nui-content-md nui-weight-normal nui-lead-normal">
-                                                                        <!--[--><span>$0</span><span class="text-muted-400 text-xs"> /per month</span>
+                                                                        <!--[--><span>${{item.price}}</span><span class="text-muted-400 text-xs"> /per day</span>
                                                                         <!--]-->
                                                                     </p>
                                                                 </div>
@@ -306,8 +312,9 @@
                                                             <!--]-->
                                                         </div>
                                                         <!--]-->
+                                                      </div>
                                                     </div>
-                                                </div>
+                                            {% endfor %}
                                             
                                               
                                             </div>
