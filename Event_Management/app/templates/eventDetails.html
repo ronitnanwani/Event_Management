@@ -447,9 +447,10 @@
 <script>
     $(document).ready(function(){
   $("#register_event").click(function(){
-    
-    var pid={% user.roll_no is defined %}{{user.roll_no}}{% else %}{{user.pid}}{% endif %};
-    var type={% user.roll_no is defined %}Student{% else %}Participant{% endif %}
+
+    var user=localStorage.getItem('user');
+    var type=localStorage.getItem('utype');
+    var pid=(type==="Student"?user.roll_no:user.pid);
     
     $.post("/register_for_event", {id: pid, e_id: {{event.id}},type:type}, function(response){
       console.log("POST request successful");

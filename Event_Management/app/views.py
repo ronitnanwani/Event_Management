@@ -45,20 +45,19 @@ def eventDetails(id):
     
     return render_template('eventDetails.html', name='events',event=events[0],organiser=organiser,user=user)
 
-@app_views.route('/volunteers')
-def getVolunteers():
+@app_views.route('/event/<int:id>/volunteers')
+def getVolunteers(id):
     
-    events=[
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        
+    volunteers=[
+        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
         ]
     organiser={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('volunteers.html')
+    return render_template('volunteers.html',volunteers=volunteers,eventid=id)
 
 @app_views.route('/profile')
 def getProfile():
@@ -94,7 +93,7 @@ def loginParticipant():
         
         # Check if the username and password match
         if True:
-            return jsonify({'success':True,'user':{}})
+            return jsonify({'success':True,'user':{},'utype':'Participant'})
             # Authentication successful, redirect to a protected page
             # return redirect(url_for('app_views.dashboardParticipant'))
         else:
@@ -109,6 +108,7 @@ def loginStudent():
         
         # Check if the username and password match
         if True:
+            return jsonify({'success':True,'user':{},'utype':'Participant'})
             # Authentication successful, redirect to a protected page
             return redirect(url_for('app_views.dashboardStudent'))
         else:
@@ -284,3 +284,10 @@ def participantEvents():
         ]
     return render_template('schedule.html',events=events)
 
+
+@app_views.route('/add_task/<int:e_id>', methods=['GET','POST'])
+def addTask(e_id):
+    if request.method == 'POST':
+        # Check if the username already exists
+        return redirect(url_for('app_views.getVolunteers'))
+    return redirect(url_for('app_views.getVolunteers'))

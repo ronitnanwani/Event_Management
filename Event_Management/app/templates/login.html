@@ -302,10 +302,11 @@
         // Assuming the response is a JSON object
         // Store the response in localStorage
         console.log(response);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        
+        var utype=response.utype;
+        localStorage.setItem('user', JSON.stringify(response.user))
+        localStorage.setItem('utype':utype);
         // Optionally, you can redirect the user to another page
-        // window.location.href = "another_page.html";
+        window.location.href = "/dashboard/"+utype;
       },
       error: function(xhr, status, error) {
         console.error("Form submission failed");
