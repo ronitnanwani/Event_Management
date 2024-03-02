@@ -145,9 +145,16 @@ def registerOrganiser():
             return render_template('signup.html', error='Username already exists')
         
         # If username doesn't exist, add the user to the database
-        
+        info = request.form
+        email = info.get('email')
+        password = info.get('password')
+        name = info.get('name')
+        phone_number = info.get('phone_number')
+        success, error = insert_organiser(connection,cursor,email,password,name,phone_number)
+
+        if success:
         # Registration successful, redirect to login page
-        return redirect(url_for('app_views.loginUser'))
+            return redirect(url_for('app_views.loginUser'))
     
     # If GET request, render the registration form
     return render_template('signup.html', error=None)   
@@ -166,9 +173,20 @@ def registerStudent():
             return render_template('signup.html', error='User already exists')
         
         # If username doesn't exist, add the user to the database
-        
+        info = request.form
+        roll_no = info.get('roll_no')
+        dept = info.get('dept')
+        name = info.get('name')
+        phone_number = info.get('phone_number')
+        email = info.get('email')
+        password = info.get('password')
+
+        success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+
         # Registration successful, redirect to login page
-        return redirect(url_for('app_views.loginUser'))
+        if success:
+            return redirect(url_for('app_views.loginUser'))
+        
     
     # If GET request, render the registration form
     return render_template('signup.html', error=None)   
