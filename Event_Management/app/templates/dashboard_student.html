@@ -35,7 +35,7 @@
         >
           <img
             class="size-7 rounded-full"
-            src="/img/icons/flags/united-states-of-america.svg"
+            src="{{ url_for('static', filename='img/avatar.png') }}"
             alt="flag icon"
           /></button
         ><!--]--><!--[-->
@@ -178,16 +178,16 @@
             </div>
             <div>
               <a href="/dashboard/events" target="_blank">
-              <button
-                type="button"
-                rel=""
-                target=""
-                class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary h-11 w-full"
-              >
-                <span>View Schedule</span
-                ><!---->
-              </button>
-            </a>
+                <button
+                  type="button"
+                  rel=""
+                  target=""
+                  class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary h-11 w-full"
+                >
+                  <span>View Schedule</span
+                  ><!---->
+                </button>
+              </a>
             </div>
             <div class="mt-4">
               <!--options here-->
@@ -533,15 +533,18 @@
                     <p
                       class="nui-paragraph nui-paragraph-md nui-weight-normal nui-lead-none"
                     >
-                      <span class="text-primary-500 text-xs">{{user.college}}</span>
+                      <span class="text-primary-500 text-xs"
+                        >{{user.college}}</span
+                      >
                     </p>
                     <p
                       class="nui-paragraph nui-paragraph-md nui-weight-normal nui-lead-none"
                     >
-                      <span class="text-muted-400 text-xs">{{user.department}}</span>
+                      <span class="text-muted-400 text-xs"
+                        >{{user.department}}</span
+                      >
                     </p>
                   </div>
-                
                 </div>
                 <div class="mb-4 space-y-2 font-sans">
                   <div class="flex items-end gap-2">
@@ -640,7 +643,7 @@
               </a>
             </div>
             <div class="mb-2 space-y-5">
-                {% for event in trending_events %}
+              {% for event in trending_events %}
               <div class="flex items-center gap-3">
                 <div
                   class="border-muted-200 dark:border-muted-700 flex size-10 items-center justify-center rounded-full border"
@@ -656,7 +659,9 @@
                   <p
                     class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal"
                   >
-                    <span class="text-muted-400">  {{event.num_p}} registered </span>
+                    <span class="text-muted-400">
+                      {{event.num_p}} registered
+                    </span>
                   </p>
                 </div>
                 <div class="ms-auto flex items-center">
@@ -691,7 +696,6 @@
                 </div>
               </div>
               {% endfor %}
-            
             </div>
           </div>
         </div>

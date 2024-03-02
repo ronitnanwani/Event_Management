@@ -5,7 +5,6 @@
   <div class="mx-auto w-full max-w-7xl">
     <!--[-->
     <div class="relative z-[1] mb-5 flex h-16 items-center gap-2">
-      
       <h1
         class="nui-heading nui-heading-2xl nui-weight-light nui-lead-normal text-muted-800 hidden md:block dark:text-white"
       >
@@ -19,7 +18,7 @@
         >
           <img
             class="size-7 rounded-full"
-            src="/img/icons/flags/united-states-of-america.svg"
+            src="{{ url_for('static', filename='img/avatar.png') }}"
             alt="flag icon"
           /></button
         ><!--]--><!--[-->
@@ -276,7 +275,7 @@
           </div>
           <div class="grid grid-cols-12 gap-6">
             <div class="col-span-12">
-            <h1 class="text-muted py-2 font-bold">Organisers</h1>
+              <h1 class="text-muted py-2 font-bold">Organisers</h1>
 
               <div class="flex flex-col">
                 <div
@@ -475,7 +474,6 @@
           </div>
 
           <div class="grid grid-cols-12 gap-6">
-          
             <div class="col-span-6">
               <div>
                 <h1 class="text-muted py-2 font-bold">Students</h1>
@@ -524,7 +522,6 @@
                       </div>
                     </div>
                   </div>
-                 
                 </div>
                 <div>
                   <div>
@@ -560,7 +557,7 @@
                                     >
                                       Volunteer
                                     </th>
-                            
+
                                     <th
                                       class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase border-muted-200 dark:border-muted-700 last:border-e-none dark:bg-muted-800 border-r bg-white px-4 py-5"
                                     >
@@ -571,11 +568,10 @@
                                 <tbody
                                   class="divide-muted-200 dark:divide-muted-700 dark:bg-muted-800 divide-y bg-white"
                                 >
-                                {% for student in students %}
+                                  {% for student in students %}
                                   <tr
                                     class="hover:bg-muted-50 dark:hover:bg-muted-900 transition-colors duration-300"
                                   >
-                                    
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
@@ -597,7 +593,8 @@
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
                                       <span class="font-semibold"
-                                        >{% if student.is_volunteer %}Yes{% else %} No{% endif %}</span
+                                        >{% if student.is_volunteer %}Yes{% else
+                                        %} No{% endif %}</span
                                       >
                                     </td>
                                     <td
@@ -607,7 +604,7 @@
                                         >{{student.events}}</span
                                       >
                                     </td>
-                                    
+
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
@@ -623,7 +620,6 @@
                                     </td>
                                   </tr>
                                   {% endfor %}
-                                 
                                 </tbody>
                               </table>
                             </div>
@@ -631,7 +627,6 @@
                         </div>
                       </div>
                     </div>
-                   
                   </div>
                 </div>
               </div>
@@ -685,7 +680,6 @@
                       </div>
                     </div>
                   </div>
-                 
                 </div>
                 <div>
                   <div>
@@ -716,7 +710,7 @@
                                     >
                                       PID
                                     </th>
-                            
+
                                     <th
                                       class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase border-muted-200 dark:border-muted-700 last:border-e-none dark:bg-muted-800 border-r bg-white px-4 py-5"
                                     >
@@ -727,11 +721,10 @@
                                 <tbody
                                   class="divide-muted-200 dark:divide-muted-700 dark:bg-muted-800 divide-y bg-white"
                                 >
-                                {% for participant in participants %}
+                                  {% for participant in participants %}
                                   <tr
                                     class="hover:bg-muted-50 dark:hover:bg-muted-900 transition-colors duration-300"
                                   >
-                                    
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
@@ -749,7 +742,7 @@
                                         >{{participant.id}}</span
                                       >
                                     </td>
-                                    
+
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
@@ -765,7 +758,6 @@
                                     </td>
                                   </tr>
                                   {% endfor %}
-                                 
                                 </tbody>
                               </table>
                             </div>
@@ -773,7 +765,6 @@
                         </div>
                       </div>
                     </div>
-                   
                   </div>
                 </div>
               </div>
