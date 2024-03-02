@@ -1,7 +1,8 @@
 from . import *
 # from .__init__ import connection,cursor
-
+from flask import jsonify
 from Event_Management.database import *
+from datetime import datetime
 
 app_views = Blueprint('app_views', __name__)
 
@@ -42,20 +43,73 @@ def addEvent():
 
 @app_views.route('/event/<int:id>')
 def eventDetails(id):
+    # print("Hi ")
+    success, rows = fetch_event_details(connection,cursor,id)
+    success2,tags = fetch_all_tags_of_event(connection,cursor,id)
     
-    events=[
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        
-        ]
-    organiser={"name":"Smarak K.","role":"Events Head","email":"adjahs@g.co","phone":92309123912,"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    user={"name":"Smarak K.","num_tasks_allotted":50,"num_tasks_completed":20}
+    dt_object = datetime.fromisoformat(str(rows[0][1]))
     
-    return render_template('eventDetails.html', name='events',event=events[0],organiser=organiser,user=user)
+    date = dt_object.date()
+    time = dt_object.time()
+    
+    # print(rows)
+    # print(tags)
+    tags_list=[]
+    for tag in tags:
+        tags_list.append(tag[0])
+    
+    event_dict = {
+        'id': rows[0][0],
+        'time': str(time),
+        'date':str(date),
+        'title': rows[0][2],
+        'type': rows[0][3],
+        'desc': rows[0][4],
+        'first': rows[0][5],
+        'second': rows[0][6],
+        'third': rows[0][7],
+        'prize': rows[0][8],
+        'venue': rows[0][9],
+        'tags' : tags_list,
+        'num_p':1000
+    }
+    
+    roll_no=2130015
+    
+    count_allotted_query = """
+        SELECT COUNT(*) FROM tasks
+        WHERE roll_no = %s;
+    """
+
+    count_completed_query = """
+        SELECT COUNT(*) FROM tasks
+        WHERE roll_no = %s AND is_complete = 1;
+    """
+
+    cursor.execute(count_allotted_query, (roll_no,))
+    count_allotted = cursor.fetchone()[0]  
+
+    cursor.execute(count_completed_query, (roll_no,))
+    count_completed = cursor.fetchone()[0]
+    
+    query = """
+        SELECT task_description, is_complete
+        FROM tasks
+        WHERE roll_no = %s AND e_id = %s;
+    """
+
+    cursor.execute(query, (roll_no, id))
+    tasks = cursor.fetchall()
+
+
+    task_list = [{'description': task[0], 'is_complete': bool(task[1])} for task in tasks]
+    
+    success3,details = fetch_all_organisers_of_event(connection,cursor,id)
+    print(event_dict)
+    print(tags_list)
+    print(details)
+    organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
+    return render_template('eventDetails.html', name='events',event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list)
 
 @app_views.route('/volunteers')
 def getVolunteers():
@@ -306,3 +360,43 @@ def participantEvents():
         ]
     return render_template('schedule.html',events=events)
 
+
+@app_views.route('/create_event_volunteer', methods=['POST'])
+def create_event_volunteer():
+    info = request.json
+    e_id = info.get('e_id')
+    roll_no = info.get('roll_no')
+    
+    success, error = insert_volunteer(connection,cursor,e_id,roll_no)
+
+    if success:
+        return jsonify({"message": "Volunteer added successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
+    
+    
+@app_views.route('/create_task_for_volunteer', methods=['POST'])
+def create_task_for_volunteer():
+    info = request.json
+    roll_no = info.get('roll_no')
+    description = info.get('description')
+
+    success, error = insert_task(connection,cursor,roll_no,description)
+    if success:
+        return jsonify({"message": "Task added successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
+
+@app_views.route('/register_for_event', methods=['POST'])
+def register_for_event():
+    info = request.json
+    e_id = info.get('e_id')
+    participant_id = info.get('id')
+    participant_type = info.get('type')
+
+    success,error=register_participant(connection,cursor,e_id, participant_id, participant_type)
+
+    if success:
+        return jsonify({"message": "Registered successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500 

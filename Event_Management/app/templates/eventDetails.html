@@ -121,7 +121,7 @@
                                                         <!--]-->
                                                     </p>
                                                     <p class="nui-paragraph nui-paragraph-lg nui-weight-normal nui-lead-normal text-muted-600 dark:text-muted-400">
-                                                        <!--[-->{{event.category}}
+                                                        <!--[-->{{event.type}}
                                                         <!--]-->
                                                     </p>
                                                     <p class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-400 py-4">
@@ -188,7 +188,7 @@
                                                         viewBox="0 0 256 256" data-v-7663d7ec><g fill="currentColor"><path d="M120 56L60.32 78.38a8 8 0 0 0-5.08 6.17L32 224l139.45-23.24a8 8 0 0 0 6.17-5.08L200 136Zm-4 104a20 20 0 1 1 20-20a20 20 0 0 1-20 20" opacity=".2"/><path d="M240 100.68a15.86 15.86 0 0 0-4.69-11.31l-68.68-68.69a16 16 0 0 0-22.63 0l-28.43 28.43l-58 21.77a16.06 16.06 0 0 0-10.22 12.35L24.11 222.68A8 8 0 0 0 32 232a8.4 8.4 0 0 0 1.32-.11l139.44-23.24a16 16 0 0 0 12.35-10.17l21.77-58L235.31 112a15.87 15.87 0 0 0 4.69-11.32m-69.87 92.19L55.32 212l47.37-47.37a28 28 0 1 0-11.32-11.32L44 200.7L63.13 85.86L118 65.29L190.7 138ZM104 140a12 12 0 1 1 12 12a12 12 0 0 1-12-12m96-15.32L131.31 56l24-24L224 100.68Z"/></g></svg>
                                                     <div>
                                                         <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal" tag="h3">
-                                                            <!--[-->{{event.category}}
+                                                            <!--[-->{{event.type}}
                                                             <!--]-->
                                                         </p>
                                                         <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-tight text-muted-400">
@@ -216,7 +216,7 @@
                                                         viewBox="0 0 256 256" data-v-7663d7ec><g fill="currentColor"><path d="M216 48v40H40V48a8 8 0 0 1 8-8h160a8 8 0 0 1 8 8" opacity=".2"/><path d="M208 32h-24v-8a8 8 0 0 0-16 0v8H88v-8a8 8 0 0 0-16 0v8H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16M72 48v8a8 8 0 0 0 16 0v-8h80v8a8 8 0 0 0 16 0v-8h24v32H48V48Zm136 160H48V96h160z"/></g></svg>
                                                     <div>
                                                         <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal" tag="h3">
-                                                            <!--[-->{{event.deadline}}
+                                                            <!--[-->{{event.date}}
                                                             <!--]-->
                                                         </p>
                                                         <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-tight text-muted-400">
@@ -336,11 +336,11 @@
                                                     </div>
                                                     <div>
                                                         <p class="nui-heading nui-heading-lg nui-weight-medium nui-lead-none line-clamp-1" tag="h5">
-                                                            <!--[-->{{user.num_tasks_allotted}} Tasks allotted
+                                                            <!--[-->{{num_tasks_allotted}} Tasks allotted
                                                             <!--]-->
                                                         </p>
                                                         <p class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-400">
-                                                            <!--[-->{{user.num_tasks_completed}}/{{user.num_tasks_allotted}} Completed
+                                                            <!--[-->{{num_tasks_completed}}/{{num_tasks_allotted}} Completed
                                                             <!--]-->
                                                         </p>
                                                     </div>
@@ -348,13 +348,17 @@
                                                 <!--only for volunteer-->
                                                 <div class="w-full space-y-1">
 
+                                                    {% if num_tasks_allotted!=0 %}
                                                     <div class="flex items-center justify-between">
                                                         <h4 class="text-muted-700 dark:text-muted-100 font-sans text-sm font-medium"> Task Progress </h4>
-                                                        <div><span class="text-muted-400 font-sans text-sm">{{ (user.num_tasks_completed*100 // user.num_tasks_allotted) | int }}% </span></div>
+                                                        <div><span class="text-muted-400 font-sans text-sm">{{ (num_tasks_completed*100 // num_tasks_allotted) | int }}% </span></div>
                                                     </div>
-                                                    <div role="progressbar" aria-valuenow="{{ (user.num_tasks_completed*100 // user.num_tasks_allotted) | int }}" aria-valuemax="100" class="nui-progress nui-progress-xs nui-progress-default nui-progress-primary nui-progress-full">
-                                                        <div class="nui-progress-bar" style="width: {{ (user.num_tasks_completed*100 // user.num_tasks_allotted) | int }}%"></div>
+                                                    <div role="progressbar" aria-valuenow="{{ (num_tasks_completed*100 // num_tasks_allotted) | int }}" aria-valuemax="100" class="nui-progress nui-progress-xs nui-progress-default nui-progress-primary nui-progress-full">
+                                                        <div class="nui-progress-bar" style="width: {{ (num_tasks_completed*100 // num_tasks_allotted) | int }}%"></div>
                                                     </div>
+                                                    {% else %}
+                                                    <p>No tasks Allotted</p>
+                                                    {% endif %}
                                                 </div>
                                                 <!--]-->
                                             </div>
@@ -448,8 +452,8 @@
     $(document).ready(function(){
   $("#register_event").click(function(){
     
-    var pid={% user.roll_no is defined %}{{user.roll_no}}{% else %}{{user.pid}}{% endif %};
-    var type={% user.roll_no is defined %}Student{% else %}Participant{% endif %}
+    var pid=0
+    var type=""
     
     $.post("/register_for_event", {id: pid, e_id: {{event.id}},type:type}, function(response){
       console.log("POST request successful");
