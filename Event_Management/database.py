@@ -41,13 +41,13 @@ def insert_student(connection,cursor,roll_no,dept,name,phone_number,email,passwo
         connection.rollback()
         return False, str(e)
     
-def insert_organiser(connection,cursor,email,password,name,phone_number):
+def insert_organiser(connection,cursor,email,password,name,phone_number,can_create):
     try:
         cursor.execute("SELECT COALESCE(MAX(o_id), 0) + 1 FROM organiser")
         o_id = cursor.fetchone()[0]
 
-        cursor.execute("INSERT INTO organiser (o_id, email, password, name, phone_number) VALUES (%s, %s, %s, %s, %s)",
-                    (o_id,email,password,name,phone_number))
+        cursor.execute("INSERT INTO organiser (o_id, email, password, name, phone_number,can_create) VALUES (%s, %s, %s, %s, %s,%s)",
+                    (o_id,email,password,name,phone_number,can_create))
         connection.commit()
         return True, None
     except Exception as e:
@@ -89,6 +89,39 @@ def insert_food(connection,cursor,food_type,days,description):
         return True, None
     except Exception as e:
         connection.rollback()
+        return False, str(e)
+    
+def check_participant_login(connection,cursor,email,password):
+    try:
+        cursor.execute("SELECT * FROM participant WHERE email = %s AND password = %s", (email, password))
+        row = cursor.fetchone()
+        if row:
+            return True, row
+        else:
+            return False, None
+    except Exception as e:
+        return False, str(e)
+
+def check_student_login(connection,cursor,roll_no,password):
+    try:
+        cursor.execute("SELECT * FROM student WHERE roll_no = %s AND password = %s", (roll_no, password))
+        row = cursor.fetchone()
+        if row:
+            return True, row
+        else:
+            return False, None
+    except Exception as e:
+        return False, str(e)
+
+def check_organiser_login(connection,cursor,email,password):
+    try:
+        cursor.execute("SELECT * FROM organiser WHERE email = %s AND password = %s", (email, password))
+        row = cursor.fetchone()
+        if row:
+            return True, row
+        else:
+            return False, None
+    except Exception as e:
         return False, str(e)
         
 def fetch_all_events(connection,cursor):
