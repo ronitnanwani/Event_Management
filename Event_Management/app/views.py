@@ -2,6 +2,7 @@ from . import *
 # from .__init__ import connection,cursor
 from flask import jsonify
 from Event_Management.database import *
+from datetime import datetime
 
 app_views = Blueprint('app_views', __name__)
 
@@ -42,30 +43,73 @@ def addEvent():
 
 @app_views.route('/event/<int:id>')
 def eventDetails(id):
+    # print("Hi ")
     success, rows = fetch_event_details(connection,cursor,id)
     success2,tags = fetch_all_tags_of_event(connection,cursor,id)
     
+    dt_object = datetime.fromisoformat(str(rows[0][1]))
+    
+    date = dt_object.date()
+    time = dt_object.time()
+    
+    # print(rows)
+    # print(tags)
     tags_list=[]
     for tag in tags:
         tags_list.append(tag[0])
     
     event_dict = {
-        'e_id': rows[0][0],
-        'date_and_time': str(rows[0][1]),
-        'name': rows[0][2],
-        'type_event': rows[0][3],
-        'description': rows[0][4],
+        'id': rows[0][0],
+        'time': str(time),
+        'date':str(date),
+        'title': rows[0][2],
+        'type': rows[0][3],
+        'desc': rows[0][4],
         'first': rows[0][5],
         'second': rows[0][6],
         'third': rows[0][7],
         'prize': rows[0][8],
         'venue': rows[0][9],
-        'tags' : tags_list
+        'tags' : tags_list,
+        'num_p':1000
     }
     
+    roll_no=2130015
+    
+    count_allotted_query = """
+        SELECT COUNT(*) FROM tasks
+        WHERE roll_no = %s;
+    """
+
+    count_completed_query = """
+        SELECT COUNT(*) FROM tasks
+        WHERE roll_no = %s AND is_complete = 1;
+    """
+
+    cursor.execute(count_allotted_query, (roll_no,))
+    count_allotted = cursor.fetchone()[0]  
+
+    cursor.execute(count_completed_query, (roll_no,))
+    count_completed = cursor.fetchone()[0]
+    
+    query = """
+        SELECT task_description, is_complete
+        FROM tasks
+        WHERE roll_no = %s AND e_id = %s;
+    """
+
+    cursor.execute(query, (roll_no, id))
+    tasks = cursor.fetchall()
+
+
+    task_list = [{'description': task[0], 'is_complete': bool(task[1])} for task in tasks]
+    
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
+    print(event_dict)
+    print(tags_list)
+    print(details)
     organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
-    return render_template('eventDetails.html', name='events',event=event_dict,organiser=organiser)
+    return render_template('eventDetails.html', name='events',event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list)
 
 @app_views.route('/volunteers')
 def getVolunteers():

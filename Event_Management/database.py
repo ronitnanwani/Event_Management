@@ -135,7 +135,7 @@ def fetch_all_events(connection,cursor):
     
 def fetch_event_details(connection,cursor,e_id):
     try:
-        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue FROM event where e_id=%s",(e_id))
+        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue FROM event where e_id = %s",(e_id,))
         rows = cursor.fetchall()
         return True,rows
     
@@ -144,7 +144,7 @@ def fetch_event_details(connection,cursor,e_id):
     
 def fetch_all_tags_of_event(connection,cursor,id):
     try:
-        cursor.execute("SELECT tag FROM event_has_tag where e_id=%s",(id))
+        cursor.execute("SELECT tag FROM event_has_tag where e_id=%s",(id,))
         rows=cursor.fetchall()
         return True,rows
     except Exception as e:
@@ -152,7 +152,7 @@ def fetch_all_tags_of_event(connection,cursor,id):
     
 def fetch_all_organisers_of_event(connection,cursor,id):
     try:
-        cursor.execute("SELECT email,name,phone_number FROM event_has_organiser NATURAL JOIN organiser where e_id=%s",(id))
+        cursor.execute("SELECT email,name,phone_number FROM event_has_organiser NATURAL JOIN organiser where e_id=%s",(id,))
         rows=cursor.fetchall()
         return True,rows[0]
     except Exception as e:
