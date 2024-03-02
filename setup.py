@@ -15,8 +15,8 @@ def main():
         connection = establish_connection()
         cursor = connection.cursor()        
         if connection:
-            # query = "drop table accomodation, food, participant, student, event, event_has_volunteer, event_has_tag, organiser, event_has_organiser, dbadmin, event_has_participant, notifications, tasks;"
-            # cursor.execute(query)
+            query = "drop table accomodation, food, participant, student, event, event_has_volunteer, event_has_tag, organiser, event_has_organiser, dbadmin, event_has_participant, notifications, tasks;"
+            cursor.execute(query)
             
             query = """
                 create table accomodation(
