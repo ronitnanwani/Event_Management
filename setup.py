@@ -3,11 +3,10 @@ import psycopg2
 def establish_connection():
     #establishing the connection with the database and returning the connection object
     connection = psycopg2.connect(
-        user = "postgres",
-        password = "pass@1234",
-        host = "localhost",
-        database = "event_management",
-        port = "5435"
+        user = "21CS30043",
+        password = "21CS30043",
+        host = "10.5.18.71",
+        database = "21CS30043"
         )
     return connection
 
@@ -25,6 +24,7 @@ def main():
                     price int,
                     days int,
                     name varchar(50),
+                    description text,
                     num_of_participants int
                 );
             """
@@ -56,7 +56,7 @@ def main():
                     acc_id int,
                     food_id int,
                     foreign key (acc_id) references accomodation(acc_id),
-                    foreign  key (food_id) references food(food_id)
+                    foreign key (food_id) references food(food_id)
                 );
             """
             cursor.execute(query)
@@ -80,10 +80,12 @@ def main():
                     e_id int primary key,
                     date_and_time timestamp,
                     name varchar(50),
+                    type_event varchar(50),
                     description text,
                     first int,
                     second int,
                     third int,
+                    prize int,
                     venue varchar(100)
                 );
             """
@@ -105,7 +107,7 @@ def main():
                 create table event_has_tag(
                     e_id int references event(e_id),
                     tag varchar(50),
-                    primary key (e_id)
+                    primary key (e_id,tag)
                 );
             """
             
@@ -118,7 +120,8 @@ def main():
                     email varchar(255),
                     password varchar(50),
                     name varchar(50),
-                    phone_number char(10)
+                    phone_number char(10),
+                    can_create int
                 );
             """
             
@@ -172,8 +175,10 @@ def main():
             
             query = """
                 create table tasks(
-                    roll_no int,
-                    task_description text
+                    task_description text,
+                    e_id int references event(e_id), roll_no int references
+                    student(roll_no), primary key (e_id,roll_no,task_description),
+                    is_complete int
                 );
             """
             

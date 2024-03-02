@@ -1,6 +1,6 @@
 import psycopg2
 from flask import Flask, request, jsonify
-from Event_Management.database import *
+from database import *
 
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ try:
         password = "pass@1234",
         host = "localhost",
         database = "event_management",
-        port = "5435"
+        port = "5432"
     )
     cursor = connection.cursor()
 except Exception as err:
@@ -135,7 +135,7 @@ def fetch_accomodation_plans():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No accomodation plans Available"}), 201
+            return jsonify({"message": "No accomodation plans Available"}), 402
         
         plan_list = []
         for plan in rows:
@@ -156,7 +156,7 @@ def fetch_accomodation_plans_org():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No accomodation plans Available"}), 201
+            return jsonify({"message": "No accomodation plans Available"}), 402
         
         plan_list = []
         for plan in rows:
@@ -179,7 +179,7 @@ def fetch_food_plans():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No food plans Available"}), 201
+            return jsonify({"message": "No food plans Available"}), 402
         
         plan_list = []
         for plan in rows:
@@ -201,7 +201,7 @@ def fetch_food_plans_org():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No food plans Available"}), 201
+            return jsonify({"message": "No food plans Available"}), 402
         
         plan_list = []
         for plan in rows:
@@ -226,7 +226,7 @@ def fetch_events():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No events Available"}), 201
+            return jsonify({"message": "No events Available"}), 402
         
         event_list = []
         for event in rows:
@@ -238,7 +238,8 @@ def fetch_events():
                 'first': event[4],
                 'second': event[5],
                 'third': event[6],
-                'venue': event[7]
+                'venue': event[7],
+                'tags' : event[8]
             }
             event_list.append(event_dict)
         return jsonify({"message": event_list}), 201
@@ -254,7 +255,7 @@ def fetch_volunteers_of_event(e_id):
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No volunteers for this event"}), 201
+            return jsonify({"message": "No volunteers for this event"}), 402
         
         volunteers_list = []
         for row in rows:
@@ -279,7 +280,7 @@ def fetch_events_of_organiser(o_id):
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No events organised by you"}), 201
+            return jsonify({"message": "No events organised by you"}), 402
         
         events_list = []
         for row in rows:
@@ -302,7 +303,7 @@ def fetch_events_of_volunteer(roll_no):
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "You have not volunteered for any events"}), 201
+            return jsonify({"message": "You have not volunteered for any events"}), 402
         
         events_list = []
         for row in rows:
@@ -326,7 +327,7 @@ def fetch_events_of_participant(type_of_p,id):
         if success:
             
             if len(rows)==0:
-                return jsonify({"message": "You have not registered for any events"}), 201
+                return jsonify({"message": "You have not registered for any events"}), 402
             
             events_list = []
             for row in rows:
@@ -347,7 +348,7 @@ def fetch_events_of_participant(type_of_p,id):
         if success:
             
             if len(rows)==0:
-                return jsonify({"message": "You have not registered for any events"}), 201
+                return jsonify({"message": "You have not registered for any events"}), 402
             
             events_list = []
             for row in rows:
