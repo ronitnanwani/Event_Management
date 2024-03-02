@@ -34,7 +34,7 @@
         >
           <img
             class="size-7 rounded-full"
-            src="/img/icons/flags/united-states-of-america.svg"
+            src="{{ url_for('static', filename='img/avatar.png') }}"
             alt="flag icon"
           /></button
         ><!--]--><!--[-->
@@ -231,13 +231,12 @@
                       <div
                         class="flex flex-col items-center justify-center gap-3 text-center sm:flex-row sm:justify-start sm:text-left"
                       >
-                       
                         <div>
                           <p
                             class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal text-muted-800 dark:text-muted-100"
                             tag="h3"
                           >
-                           {{event.title}}
+                            {{event.title}}
                           </p>
                           <p
                             class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-none text-muted-400 flex items-end text-sm"
@@ -326,13 +325,16 @@
                         <div
                           class="ptablet:hidden flex w-full items-center justify-center gap-1 py-3 sm:w-[160px] sm:justify-start sm:py-0"
                         >
-                         
                           <p class="text-muted-400 font-sans text-sm">
                             Organiser
                           </p>
                           <div class="px-2 flex flex-col gap-0">
-                          <span class="text-black text-xs">{{event.organiser.phone}}</span>
-                          <span class="text-black text-xs">{{event.organiser.name}}</span>
+                            <span class="text-black text-xs"
+                              >{{event.organiser.phone}}</span
+                            >
+                            <span class="text-black text-xs"
+                              >{{event.organiser.name}}</span
+                            >
                           </div>
                         </div>
                         <div class="sm:ms-6">

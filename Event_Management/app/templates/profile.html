@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <div
-  class="bg-muted-100 dark:bg-muted-900 relative min-h-screen w-full overflow-x-hidden px-4 transition-all duration-300 xl:px-10 xl:max-w-[calc(100%_-_300px)] xl:ms-[300px]"
+  class="bg-muted-100 dark:bg-muted-900 relative min-h-screen w-full overflow-x-hidden px-4 transition-all duration-300 xl:px-10 xl:max-w-[calc(100%_-_300px)] xl:ms-[215px]"
 >
   <div class="mx-auto w-full max-w-7xl">
     <!--[-->
@@ -26,11 +26,9 @@
       >
         <!--[-->
         <!--[-->Profile
-   
       </h1>
       <div class="ms-auto"></div>
       <div class="flex items-center gap-2 h-16">
-
         <!--]-->
         <!--[--><button
           type="button"
@@ -38,7 +36,7 @@
         >
           <img
             class="size-7 rounded-full"
-            src="/img/icons/flags/united-states-of-america.svg"
+            src="{{ url_for('static', filename='img/avatar.png') }}"
             alt="flag icon"
           />
         </button>
@@ -220,21 +218,14 @@
               <div class="nui-avatar nui-avatar-2xl nui-avatar-full mx-auto">
                 <div class="nui-avatar-inner">
                   <!--[--><img
-                    src="/img/avatars/2.svg"
+                    src="{{ url_for('static', filename='img/avatar.png') }}"
                     class="nui-avatar-full nui-avatar-img"
                   />
                   <!---->
                   <!---->
                   <!--]-->
                 </div>
-                <div class="nui-avatar-badge">
-                  <!--[--><img
-                    src="/img/icons/flags/united-states-of-america.svg"
-                    class="nui-badge-img"
-                    alt=""
-                  />
-                  <!--]-->
-                </div>
+
                 <!---->
               </div>
               <div class="mx-auto w-full max-w-md text-center">
@@ -446,7 +437,7 @@
                               class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
                               tag="h3"
                             >
-                            {{event.name}}
+                              {{event.name}}
                             </p>
                             <p
                               class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
@@ -462,11 +453,11 @@
                             </p>
                           </div>
                         </div>
-                      {% endfor %}
+                        {% endfor %}
                         <!--]-->
                       </div>
                     </div>
-                 
+
                     <div class="py-8">
                       <div class="mb-8 flex items-center gap-2">
                         <h4
@@ -479,7 +470,6 @@
                         <!--[-->
                         {% for event in volunteered %}
                         <div class="flex w-full items-center gap-2">
-                          
                           <div>
                             <p
                               class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
@@ -491,20 +481,20 @@
                             <p
                               class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
                             >
-                              <!--[--><span>{{event.completed_tasks}}/{{event.allotted_tasks}}</span>
+                              <!--[--><span
+                                >{{event.completed_tasks}}/{{event.allotted_tasks}}</span
+                              >
                               <!--]-->
                             </p>
                           </div>
-                          
                         </div>
-                       {% endfor %}
+                        {% endfor %}
                         <!--]-->
                       </div>
                     </div>
-                  
+
                     <!--]-->
                   </div>
-                 
                 </div>
               </div>
               <div class="col-span-12 sm:col-span-4">
@@ -517,7 +507,6 @@
                       >
                         Notifications
                       </h4>
-                      
                     </div>
                     <div>
                       <p
@@ -537,25 +526,23 @@
                       <h4
                         class="text-muted-400 font-sans text-xs font-semibold uppercase"
                       >
-                      Details
+                        Details
                       </h4>
                     </div>
                     <div class="space-y-6">
                       <!--[-->
                       <div class="flex w-full items-center gap-2">
-                       
                         <div>
                           <p
                             class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
                             tag="h3"
                           >
-                          Department: {{dept}}
+                            Department: {{dept}}
                             <!--]-->
                           </p>
-                          
                         </div>
                       </div>
-                      
+
                       <!--]-->
                     </div>
                     <!--]-->
@@ -566,19 +553,18 @@
                       <h4
                         class="text-muted-400 font-sans text-xs font-semibold uppercase"
                       >
-                      Accomodation and Food
+                        Accomodation and Food
                       </h4>
                     </div>
                     <div class="space-y-6">
                       <!--[-->
                       <div class="flex w-full items-center gap-2">
-                        
                         <div>
                           <p
                             class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
                             tag="h3"
                           >
-                          Premium Accomodation
+                            Premium Accomodation
                             <!--]-->
                           </p>
                           <p
@@ -700,7 +686,7 @@
       >
         <img
           class="size-7 rounded-full"
-          src="/img/icons/flags/united-states-of-america.svg"
+          src="{{ url_for('static', filename='img/avatar.png') }}"
           alt="flag icon"
         />
       </button>

@@ -32,7 +32,6 @@
       </h1>
       <div class="ms-auto"></div>
       <div class="flex items-center gap-2 h-16">
-        
         <!--]-->
         <!--[--><button
           type="button"
@@ -40,7 +39,7 @@
         >
           <img
             class="size-7 rounded-full"
-            src="/img/icons/flags/united-states-of-america.svg"
+            src="{{ url_for('static', filename='img/avatar.png') }}"
             alt="flag icon"
           />
         </button>
@@ -231,7 +230,7 @@
                             id="ninja-input-10944"
                             type="text"
                             class="nui-input !h-11 !ps-11"
-                            placeholder="Ex: Next team building party"
+                            placeholder="Ex: Cultural Event"
                             value
                           />
                           <!---->
@@ -269,58 +268,7 @@
                     </div>
                     <!--]-->
                   </div>
-                  <div class="col-span-12">
-                    <!--[-->
-                    <div
-                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
-                    >
-                      <label for="ninja-input-10945" class="nui-input-label"
-                        ><!--[-->Short description<!--]--></label
-                      >
-                      <div class="nui-input-outer">
-                        <div>
-                          <input
-                            id="ninja-input-10945"
-                            type="text"
-                            class="nui-input !h-11 !ps-11"
-                            placeholder="Ex: We will meet to have fun together"
-                            value
-                          />
-                          <!---->
-                          <!---->
-                          <div class="!h-11 !w-11 nui-input-icon">
-                            <!--[--><svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink"
-                              aria-hidden="true"
-                              role="img"
-                              class="icon nui-input-icon-inner"
-                              style=""
-                              width="1em"
-                              height="1em"
-                              viewBox="0 0 256 256"
-                              data-v-7663d7ec
-                            >
-                              <g fill="currentColor">
-                                <path
-                                  d="M112 80a32 32 0 1 1-32-32a32 32 0 0 1 32 32m64 32a32 32 0 1 0-32-32a32 32 0 0 0 32 32m-96 32a32 32 0 1 0 32 32a32 32 0 0 0-32-32m96 0a32 32 0 1 0 32 32a32 32 0 0 0-32-32"
-                                  opacity=".2"
-                                />
-                                <path
-                                  d="M80 40a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96 16a40 40 0 1 0-40-40a40 40 0 0 0 40 40m0-64a24 24 0 1 1-24 24a24 24 0 0 1 24-24m-96 80a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96-64a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24"
-                                />
-                              </g>
-                            </svg>
-                            <!--]-->
-                          </div>
-                          <!--[-->
-                          <!--]-->
-                        </div>
-                        <!---->
-                      </div>
-                    </div>
-                    <!--]-->
-                  </div>
+              
                   <div class="col-span-12">
                     <!--[-->
                     <!--[-->
@@ -379,7 +327,7 @@
                           class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
                         >
                           <label for="ninja-input-10947" class="nui-input-label"
-                            ><!--[-->End date<!--]--></label
+                            ><!--[-->Time<!--]--></label
                           >
                           <div class="nui-input-outer">
                             <div>
@@ -391,29 +339,7 @@
                               <!---->
                               <!---->
                               <div class="!h-11 !w-11 nui-input-icon">
-                                <!--[--><svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                                  aria-hidden="true"
-                                  role="img"
-                                  class="icon nui-input-icon-inner"
-                                  style=""
-                                  width="1em"
-                                  height="1em"
-                                  viewBox="0 0 256 256"
-                                  data-v-7663d7ec
-                                >
-                                  <g fill="currentColor">
-                                    <path
-                                      d="M216 48v40H40V48a8 8 0 0 1 8-8h160a8 8 0 0 1 8 8"
-                                      opacity=".2"
-                                    />
-                                    <path
-                                      d="M208 32h-24v-8a8 8 0 0 0-16 0v8H88v-8a8 8 0 0 0-16 0v8H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16M72 48v8a8 8 0 0 0 16 0v-8h80v8a8 8 0 0 0 16 0v-8h24v32H48V48Zm136 160H48V96h160z"
-                                    />
-                                  </g>
-                                </svg>
-                                <!--]-->
+                                <!--[--><i class="fas fa-clock"></i>
                               </div>
                               <!--[-->
                               <!--]-->
@@ -464,7 +390,7 @@
                         id="headlessui-combobox-label-19536"
                         data-headlessui-state
                         class="nui-autocomplete-label"
-                        ><!--[-->Participants<!--]--></label
+                        ><!--[-->Tags<!--]--></label
                       >
                       <div class="nui-autocomplete-multiple">
                         <!---->
@@ -474,43 +400,27 @@
                           defaultvalue
                           aria-expanded="false"
                           aria-autocomplete="list"
-                          id="headlessui-combobox-input-19537"
+                          id="tag-input"
                           role="combobox"
                           type="text"
                           tabindex="0"
                           data-headlessui-state
                           class="nui-autocomplete-input"
-                          placeholder="Add participants..."
+                          placeholder="Add Tags..."
                         />
                         <!---->
                         <div class="nui-autocomplete-icon">
-                          <!--[--><svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                            aria-hidden="true"
-                            role="img"
-                            class="icon nui-autocomplete-icon-inner"
-                            style=""
-                            width="1em"
-                            height="1em"
-                            viewBox="0 0 256 256"
-                            data-v-7663d7ec
-                          >
-                            <g fill="currentColor">
-                              <path
-                                d="M136 108a52 52 0 1 1-52-52a52 52 0 0 1 52 52"
-                                opacity=".2"
-                              />
-                              <path
-                                d="M117.25 157.92a60 60 0 1 0-66.5 0a95.83 95.83 0 0 0-47.22 37.71a8 8 0 1 0 13.4 8.74a80 80 0 0 1 134.14 0a8 8 0 0 0 13.4-8.74a95.83 95.83 0 0 0-47.22-37.71M40 108a44 44 0 1 1 44 44a44.05 44.05 0 0 1-44-44m210.14 98.7a8 8 0 0 1-11.07-2.33A79.83 79.83 0 0 0 172 168a8 8 0 0 1 0-16a44 44 0 1 0-16.34-84.87a8 8 0 1 1-5.94-14.85a60 60 0 0 1 55.53 105.64a95.83 95.83 0 0 1 47.22 37.71a8 8 0 0 1-2.33 11.07"
-                              />
-                            </g>
-                          </svg>
+                          <!--[-->
+                          <i class="fas fa-tags"></i>
                           <!--]-->
                         </div>
                         <!---->
                         <!---->
                         <!---->
+                      </div>
+                      <input type="text" id="tags" name="tags" class="hidden" value=""/> 
+                      <div id="tag-container" class="py-3  flex flex-wrap">
+                        
                       </div>
                       <!---->
                       <div
@@ -529,49 +439,28 @@
                     <!--]-->
                     <!--]-->
                   </div>
-                  <div class="col-span-12 sm:col-span-6">
+             
+                  <div class="col-span-12 sm:col-span-12">
                     <!--[-->
                     <div
                       class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
                     >
-                      <label for="ninja-input-10949" class="nui-input-label"
-                        ><!--[-->Event color<!--]--></label
+                      <label for="ninja-input-10950" class="nui-input-label"
+                        ><!--[-->Venue<!--]--></label
                       >
                       <div class="nui-input-outer">
                         <div>
                           <input
-                            id="ninja-input-10949"
-                            type="color"
-                            list="eventColors"
-                            class="nui-input !h-11 !ps-11 appearance-none"
-                            placeholder="Pick an event color..."
+                            id="ninja-input-10950"
+                            type="text"
+                            class="nui-input !h-11 !ps-11"
+                            placeholder="Enter Venue..."
                             value
                           />
                           <!---->
                           <!---->
                           <div class="!h-11 !w-11 nui-input-icon">
-                            <!--[--><svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink"
-                              aria-hidden="true"
-                              role="img"
-                              class="icon nui-input-icon-inner"
-                              style=""
-                              width="1em"
-                              height="1em"
-                              viewBox="0 0 256 256"
-                              data-v-7663d7ec
-                            >
-                              <g fill="currentColor">
-                                <path
-                                  d="M208 144a80 80 0 0 1-80 80V16s80 56 80 128"
-                                  opacity=".2"
-                                />
-                                <path
-                                  d="M174 47.75a254.19 254.19 0 0 0-41.45-38.3a8 8 0 0 0-9.18 0A254.19 254.19 0 0 0 82 47.75C54.51 79.32 40 112.6 40 144a88 88 0 0 0 176 0c0-31.4-14.51-64.68-42-96.25M56 144c0-50 42.26-92.71 64-111.4v182.94A72.08 72.08 0 0 1 56 144m80 71.54V32.6C157.74 51.29 200 94 200 144a72.08 72.08 0 0 1-64 71.54"
-                                />
-                              </g>
-                            </svg>
+                            <!--[--><i class="fas fa-location"></i>
                             <!--]-->
                           </div>
                           <!--[-->
@@ -580,18 +469,39 @@
                         <!---->
                       </div>
                     </div>
-                    <datalist id="eventColors">
-                      <option value="#84cc16"></option>
-                      <option value="#22c55e"></option>
-                      <option value="#0ea5e9"></option>
-                      <option value="#6366f1"></option>
-                      <option value="#8b5cf6"></option>
-                      <option value="#d946ef"></option>
-                      <option value="#f43f5e"></option>
-                      <option value="#facc15"></option>
-                      <option value="#fb923c"></option>
-                      <option value="#9ca3af"></option>
-                    </datalist>
+                    
+                    <!--]-->
+                  </div>
+                  <div class="col-span-12 sm:col-span-6">
+                    <!--[-->
+                    <div
+                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                    >
+                      <label for="ninja-input-10950" class="nui-input-label"
+                        ><!--[-->Prize Pool<!--]--></label
+                      >
+                      <div class="nui-input-outer">
+                        <div>
+                          <input
+                            id="ninja-input-10950"
+                            type="text"
+                            class="nui-input !h-11 !ps-11"
+                            placeholder="Enter Prize Pool..."
+                            value
+                          />
+                          <!---->
+                          <!---->
+                          <div class="!h-11 !w-11 nui-input-icon">
+                            <!--[--><i class="fas fa-money-bill"></i>
+                            <!--]-->
+                          </div>
+                          <!--[-->
+                          <!--]-->
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+                    
                     <!--]-->
                   </div>
                   <div class="col-span-12 sm:col-span-6">
@@ -751,7 +661,7 @@
       >
         <img
           class="size-7 rounded-full"
-          src="/img/icons/flags/united-states-of-america.svg"
+          src="{{ url_for('static', filename='img/avatar.png') }}"
           alt="flag icon"
         />
       </button>
@@ -827,4 +737,45 @@
     <!--]-->
   </div>
 </div>
+<script>
+  const tagContainer = document.getElementById('tag-container');
+  const tagList = document.getElementById('tags');
+  const tagInput = document.getElementById('tag-input');
+
+  tagInput.addEventListener('keydown', function(event) {
+    
+    if (event.key === 'Enter' && tagInput.value.trim() !== '') {
+      event.preventDefault(); // Prevent form submission
+      const tag = document.createElement('span');
+      tag.className = 'tag m-1 text-muted-500 dark:text-muted-400 bg-muted-200 dark:bg-muted-700/40 inline-flex h-6 items-center justify-center rounded-full px-3 font-sans text-xs font-medium';
+      tag.innerHTML = tagInput.value.trim() + '<span class="ps-2 close"><i class=\" fas fa-close\"></i></span>';
+      tagContainer.appendChild(tag);
+      tagInput.value = '';
+      if(tagList.value!=="")
+      tagList.value+=","
+      tagList.value=tagList.value+tagInput.value.trim();
+
+          console.log(tagList.value);
+
+    }
+  });
+
+  tagContainer.addEventListener('click', function(event) {
+    console.log("click",event.target)
+
+    if (event.target.classList.contains('close')) {
+      event.target.parentNode.remove();
+      var substr=event.target.parentNode.innerText;
+    }
+    if (event.target.classList.contains('fa-close')) {
+      event.target.parentNode.parentNode.remove();
+      
+      var substr=event.target.parentNode.parentNode.innerText;
+    }
+    console.log(tagList.value);
+   var tmp=tagList.value;
+   tagList.value=tmp.replace(substr, "");
+  });
+
+</script>
 {% endblock %}
