@@ -1,6 +1,6 @@
 import psycopg2
 from flask import Flask, request, jsonify
-from database import *
+from Event_Management.database import *
 
 app = Flask(__name__)
 
