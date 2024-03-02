@@ -1,4 +1,5 @@
 import psycopg2
+from argparse import ArgumentParser
 
 def establish_connection():
     #establishing the connection with the database and returning the connection object
@@ -23,6 +24,241 @@ def sample_data():
     except Exception as err:
         connection.rollback()
         print(f"Error: {err}")
+
+def create_triggers():
+        connection = establish_connection()
+        cursor = connection.cursor()        
+        if connection:
+            cursor.execute("DROP TRIGGER IF EXISTS update_num_of_participants_trigger_accomodation ON participant")
+            cursor.execute("DROP TRIGGER IF EXISTS update_num_of_participants_trigger_food ON participant")
+            cursor.execute("DROP TRIGGER IF EXISTS update_winners_trigger ON event")
+            cursor.execute("DROP TRIGGER IF EXISTS update_event_trigger ON event")
+            cursor.execute("DROP TRIGGER IF EXISTS update_food_trigger ON food")
+            cursor.execute("DROP TRIGGER IF EXISTS update_accomodation_trigger ON accomodation")
+            cursor.execute("DROP TRIGGER IF EXISTS update_num_of_participants_trigger ON event_has_participant")
+
+            trigger_function = """
+                CREATE OR REPLACE FUNCTION update_num_of_participants_accomodation()
+                RETURNS TRIGGER AS
+                $$
+                BEGIN
+                    IF TG_OP = 'UPDATE' THEN
+                        IF OLD.acc_id IS NOT NULL AND NEW.acc_id IS NOT NULL AND OLD.acc_id <> NEW.acc_id THEN
+                            UPDATE accomodation
+                            SET num_of_participants = num_of_participants - 1
+                            WHERE acc_id = OLD.acc_id;
+
+                            UPDATE accomodation
+                            SET num_of_participants = num_of_participants + 1
+                            WHERE acc_id = NEW.acc_id;
+                            
+                        ELSIF OLD.acc_id IS NULL AND NEW.acc_id IS NOT NULL THEN
+                            UPDATE accomodation
+                            SET num_of_participants = num_of_participants + 1
+                            WHERE acc_id = NEW.acc_id;
+
+                        ELSIF OLD.acc_id IS NOT NULL AND NEW.acc_id IS NULL THEN
+                            UPDATE accomodation
+                            SET num_of_participants = num_of_participants - 1
+                            WHERE acc_id = OLD.acc_id;
+                        END IF;   
+                    END IF;
+                    RETURN NEW;
+                END;
+                $$
+                LANGUAGE plpgsql;
+            """
+            cursor.execute(trigger_function)
+
+            trigger = """
+                CREATE TRIGGER update_num_of_participants_trigger_accomodation
+                AFTER UPDATE OF acc_id ON participant
+                FOR EACH ROW
+                EXECUTE FUNCTION update_num_of_participants_accomodation();
+            """
+            cursor.execute(trigger)
+
+            connection.commit()
+
+            trigger_function = """
+                CREATE OR REPLACE FUNCTION update_num_of_participants_food()
+                RETURNS TRIGGER AS
+                $$
+                BEGIN
+                    IF TG_OP = 'UPDATE' THEN
+                        IF OLD.food_id IS NOT NULL AND NEW.food_id IS NOT NULL AND OLD.food_id <> NEW.food_id THEN
+                            UPDATE food
+                            SET num_of_participants = num_of_participants - 1
+                            WHERE food_id = OLD.food_id;
+
+                            UPDATE food
+                            SET num_of_participants = num_of_participants + 1
+                            WHERE food_id = NEW.food_id;
+                            
+                        ELSIF OLD.food_id IS NULL AND NEW.food_id IS NOT NULL THEN
+                            UPDATE food
+                            SET num_of_participants = num_of_participants + 1
+                            WHERE food_id = NEW.food_id;
+
+                        ELSIF OLD.food_id IS NOT NULL AND NEW.food_id IS NULL THEN
+                            UPDATE food
+                            SET num_of_participants = num_of_participants - 1
+                            WHERE food_id = OLD.food_id;
+                        END IF;   
+                    END IF;
+                    RETURN NEW;
+                END;
+                $$
+                LANGUAGE plpgsql;
+            """
+            cursor.execute(trigger_function)
+
+            trigger = """
+                CREATE TRIGGER update_num_of_participants_trigger_food
+                AFTER UPDATE OF food_id ON participant
+                FOR EACH ROW
+                EXECUTE FUNCTION update_num_of_participants_food();
+            """
+            cursor.execute(trigger)
+
+            connection.commit()
+
+            trigger_function = """
+                CREATE OR REPLACE FUNCTION update_winners()
+                RETURNS TRIGGER AS
+                $$
+                BEGIN
+                    IF TG_OP = 'UPDATE' THEN
+                        INSERT INTO notifications (time_t, description)
+                        VALUES (current_timestamp, 'Winnners for the event ' || NEW.name || ' are as follows: First: ' || NEW.first || ', Second: ' || NEW.second || ', Third: ' || NEW.third);
+                    END IF;
+                    RETURN NEW;
+                END;
+                $$
+                LANGUAGE plpgsql;
+            """
+            cursor.execute(trigger_function)
+
+            trigger = """
+                CREATE TRIGGER update_winners_trigger
+                AFTER UPDATE OF first, second, third ON event
+                FOR EACH ROW
+                EXECUTE FUNCTION update_winners();
+            """
+            cursor.execute(trigger)
+
+            connection.commit()
+
+            trigger_function = """
+                CREATE OR REPLACE FUNCTION update_event()
+                RETURNS TRIGGER AS
+                $$
+                BEGIN
+                    IF TG_OP = 'UPDATE' THEN
+                        INSERT INTO notifications (time_t, description)
+                        VALUES (current_timestamp, 'Event ' || NEW.name || ' has been updated. New venue: ' || NEW.venue || ', New date and time: ' || NEW.date_and_time);
+                    END IF;
+                    RETURN NEW;
+                END;
+                $$
+                LANGUAGE plpgsql;
+            """
+            cursor.execute(trigger_function)
+
+            trigger = """
+                CREATE TRIGGER update_event_trigger
+                AFTER UPDATE OF venue, date_and_time ON event
+                FOR EACH ROW
+                EXECUTE FUNCTION update_event();
+            """
+            cursor.execute(trigger)
+
+            connection.commit()
+
+            trigger_function = """
+                CREATE OR REPLACE FUNCTION update_food()
+                RETURNS TRIGGER AS
+                $$
+                BEGIN
+                    IF TG_OP = 'UPDATE' THEN
+                        INSERT INTO notifications (time_t, description)
+                        VALUES (current_timestamp, 'Food plan ' || NEW.food_type || ' has been updated. New price: ' || NEW.price);
+                    END IF;
+                    RETURN NEW;
+                END;
+                $$
+                LANGUAGE plpgsql;
+            """
+            cursor.execute(trigger_function)
+
+            trigger = """
+                CREATE TRIGGER update_food_trigger
+                AFTER UPDATE OF price ON food
+                FOR EACH ROW
+                EXECUTE FUNCTION update_food();
+            """
+            cursor.execute(trigger)
+
+            connection.commit()
+
+            trigger_function = """
+                CREATE OR REPLACE FUNCTION update_accomodation()
+                RETURNS TRIGGER AS
+                $$
+                BEGIN
+                    IF TG_OP = 'UPDATE' THEN
+                        INSERT INTO notifications (time_t, description)
+                        VALUES (current_timestamp, 'Accomodation plan ' || NEW.name || ' has been updated. New price: ' || NEW.price);
+                    END IF;
+                    RETURN NEW;
+                END;
+                $$
+                LANGUAGE plpgsql;
+            """
+            cursor.execute(trigger_function)
+
+            trigger = """
+                CREATE TRIGGER update_accomodation_trigger
+                AFTER UPDATE OF price ON accomodation
+                FOR EACH ROW
+                EXECUTE FUNCTION update_accomodation();
+            """
+            cursor.execute(trigger)
+
+            connection.commit()
+
+            # After the participant register for event update num of participants in event 
+            query = """
+                CREATE OR REPLACE FUNCTION update_num_of_participants()
+                RETURNS TRIGGER AS
+                $$
+                BEGIN
+                    IF TG_OP = 'INSERT' THEN
+                        UPDATE event
+                        SET num_p = num_p + 1
+                        WHERE e_id = NEW.e_id;
+                    END IF;
+                    RETURN NEW;
+                END;
+                $$
+                LANGUAGE plpgsql;
+            """
+
+            cursor.execute(query)
+
+            query = """
+                CREATE TRIGGER update_num_of_participants_trigger
+                AFTER INSERT ON event_has_participant
+                FOR EACH ROW
+                EXECUTE FUNCTION update_num_of_participants();
+            """
+
+            cursor.execute(query)
+            connection.commit()
+
+            print("Triggers created successfully")
+            cursor.close()
+            connection.close()
 
 def main():
     try:
@@ -49,6 +285,7 @@ def main():
                 create table food(
                     food_id int primary key,
                     type varchar(10),
+                    price int,
                     days int,
                     description text,
                     num_of_participants int,
@@ -100,7 +337,8 @@ def main():
                     second int,
                     third int,
                     prize int,
-                    venue varchar(100)
+                    venue varchar(100),
+                    num_p int
                 );
             """
             
@@ -195,6 +433,7 @@ def main():
                     is_complete int
                 );
             """
+
             
             cursor.execute(query)
             connection.commit()
@@ -207,4 +446,13 @@ def main():
         print(f"Error: {err}")
 
 if __name__ == '__main__':
-    main()
+    parser = ArgumentParser()
+    parser.add_argument("--create_triggers", action="store_true", help="Create triggers for the database")
+    parser.add_argument("--sample_data", action="store_true", help="Insert sample data into the database")
+    args = parser.parse_args()
+    if args.create_triggers:
+        create_triggers()
+    elif args.sample_data:
+        sample_data()
+    else:
+        main()
