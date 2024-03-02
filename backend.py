@@ -10,7 +10,7 @@ try:
         password = "pass@1234",
         host = "localhost",
         database = "event_management",
-        port = "5432"
+        port = "5435"
     )
     cursor = connection.cursor()
 except Exception as err:
@@ -410,6 +410,36 @@ def choose_food():
         return jsonify({"message": "Food Plan updated"}), 201
     else:
         return jsonify({"error": error}), 500 
+    
+@app.route('/update_winners', methods=['POST'])
+def update_winners():
+    data = request.json
+    e_id = data.get('e_id')
+    first = data.get('first')
+    second = data.get('second')
+    third = data.get('third')
+    
+    success,error = update_event_results(connection,cursor,e_id,first,second,third)
+    
+    if success:
+        return jsonify({"message": "Winners updated"}), 201
+    else:
+        return jsonify({"error": error}), 500
+    
+
+@app.route('/update_event', methods=['POST'])
+def update_event():
+    data = request.json
+    e_id = data.get('e_id')
+    venue = data.get('venue')
+    date_and_time = data.get('date_and_time')
+    
+    success,error = update_event_details(connection,cursor,e_id,venue,date_and_time)
+    
+    if success:
+        return jsonify({"message": "Event updated"}), 201
+    else:
+        return jsonify({"error": error}), 500
 
 def create_trigger1():
     try:
@@ -513,10 +543,88 @@ def create_trigger2():
     except Exception as e:
         print("Error creating trigger:", e)
 
+
+
+
+def create_trigger3():
+    try:
+        cursor.execute("DROP TRIGGER IF EXISTS update_winners_trigger ON event")
+
+        trigger_function = """
+            CREATE OR REPLACE FUNCTION update_winners()
+            RETURNS TRIGGER AS
+            $$
+            BEGIN
+                IF TG_OP = 'UPDATE' THEN
+                    INSERT INTO notifications (time_t, description)
+                    VALUES (current_timestamp, 'Winnners for the event ' || NEW.name || ' are as follows: First: ' || NEW.first || ', Second: ' || NEW.second || ', Third: ' || NEW.third);
+                END IF;
+                RETURN NEW;
+            END;
+            $$
+            LANGUAGE plpgsql;
+        """
+        cursor.execute(trigger_function)
+
+        trigger = """
+            CREATE TRIGGER update_winners_trigger
+            AFTER UPDATE OF first, second, third ON event
+            FOR EACH ROW
+            EXECUTE FUNCTION update_winners();
+        """
+        cursor.execute(trigger)
+
+        connection.commit()
+        print("Trigger created successfully")
+
+    except Exception as e:
+        print("Error creating trigger:", e)
+
+
+def create_trigger4():
+    try:
+        cursor.execute("DROP TRIGGER IF EXISTS update_event_trigger ON event")
+
+        trigger_function = """
+            CREATE OR REPLACE FUNCTION update_event()
+            RETURNS TRIGGER AS
+            $$
+            BEGIN
+                IF TG_OP = 'UPDATE' THEN
+                    INSERT INTO notifications (time_t, description)
+                    VALUES (current_timestamp, 'Event ' || NEW.name || ' has been updated. New venue: ' || NEW.venue || ', New date and time: ' || NEW.date_and_time);
+                END IF;
+                RETURN NEW;
+            END;
+            $$
+            LANGUAGE plpgsql;
+        """
+        cursor.execute(trigger_function)
+
+        trigger = """
+            CREATE TRIGGER update_event_trigger
+            AFTER UPDATE OF venue, date_and_time ON event
+            FOR EACH ROW
+            EXECUTE FUNCTION update_event();
+        """
+        cursor.execute(trigger)
+
+        connection.commit()
+        print("Trigger created successfully")
+
+    except Exception as e:
+        print("Error creating trigger:", e)
+
+
+
 # Updates num_of_participants whenever acc_id for any participant is changed
 create_trigger1()
 # Updates num_of_participants whenever food_id for any participant is changed
 create_trigger2()
+# Add the row to notifications table whenever winners are updated in event table
+create_trigger3()
+# Add the row to notifications table whenever venue or date_and_time is updated in event table
+create_trigger4()
 
 
 if __name__ == '__main__':

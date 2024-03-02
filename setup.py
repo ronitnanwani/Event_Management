@@ -7,7 +7,7 @@ def establish_connection():
         password = "pass@1234",
         host = "localhost",
         database = "event_management",
-        port = "5432"
+        port = "5435"
         )
     return connection
 

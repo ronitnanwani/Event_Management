@@ -227,3 +227,30 @@ def update_food(connection,cursor,p_id,food_id):     #if participant not in tabl
     except Exception as e:
         connection.rollback()
         return False, str(e)
+    
+def update_event_results(connection,cursor,e_id,first,second,third):
+    try:
+        print(e_id,first,second,third)
+        cursor.execute("""
+            UPDATE event
+            SET first = %s, second = %s, third = %s
+            WHERE e_id = %s
+        """,(first,second,third,e_id))
+        connection.commit()
+        return True, None
+    except Exception as e:
+        connection.rollback()
+        return False, str(e)
+    
+def update_event_details(connection,cursor,e_id,venue,date_time):
+    try:
+        cursor.execute("""
+            UPDATE event
+            SET venue = %s, date_and_time = %s
+            WHERE e_id = %s
+        """,(venue,date_time,e_id))
+        connection.commit()
+        return True, None
+    except Exception as e:
+        connection.rollback()
+        return False, str(e)
