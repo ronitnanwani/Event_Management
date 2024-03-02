@@ -1,0 +1,763 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="bg-muted-100 dark:bg-muted-900 relative min-h-screen w-full overflow-x-hidden px-4 transition-all duration-300 xl:px-10 xl:max-w-[calc(100%_-_300px)] xl:ms-[215px]"
+>
+  <div class="mx-auto w-full max-w-7xl">
+    <!--[-->
+    <div class="relative z-[1] mb-5 flex h-16 items-center gap-2">
+      <button
+        type="button"
+        class="flex size-10 items-center justify-center -ms-3"
+      >
+        <div class="scale-90 relative size-5">
+          <span
+            class="-rotate-45 rtl:rotate-45 max-w-[75%] top-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"
+          ></span
+          ><span
+            class="opacity-0 translate-x-4 rtl:-translate-x-4 bg-primary-500 absolute top-1/2 block h-0.5 w-full max-w-[50%] transition-all duration-300"
+          ></span
+          ><span
+            class="rotate-45 rtl:-rotate-45 max-w-[75%] bottom-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"
+          ></span>
+        </div>
+      </button>
+      <h1
+        class="nui-heading nui-heading-2xl nui-weight-light nui-lead-normal text-muted-800 hidden md:block dark:text-white"
+      >
+        <!--[--><!--[-->Dashboard<!--]--><!--]-->
+      </h1>
+      <div class="ms-auto"></div>
+      <div class="flex items-center gap-2 h-16">
+        <!--[--><!--[--><button
+          type="button"
+          class="border-muted-200 hover:ring-muted-200 dark:hover:ring-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:ring-offset-muted-900 flex size-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4"
+        >
+          <img
+            class="size-7 rounded-full"
+            src="/img/icons/flags/united-states-of-america.svg"
+            alt="flag icon"
+          /></button
+        ><!--]--><!--[-->
+        <div class="group inline-flex items-center justify-center text-right">
+          <div data-headlessui-state="" class="relative size-9 text-left">
+            <div
+              id="headlessui-menu-button-29774"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              data-headlessui-state=""
+            >
+              <button
+                type="button"
+                class="group-hover:ring-muted-200 dark:group-hover:ring-muted-700 dark:ring-offset-muted-900 inline-flex size-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4"
+              >
+                <span
+                  class="border-muted-200 dark:border-muted-700 dark:bg-muted-800 flex size-9 items-center justify-center rounded-full border bg-white"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    aria-hidden="true"
+                    role="img"
+                    class="icon text-muted-400 size-5"
+                    style=""
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 256 256"
+                    data-v-7663d7ec=""
+                  >
+                    <g fill="currentColor">
+                      <path
+                        d="M208 192H48a8 8 0 0 1-6.88-12C47.71 168.6 56 139.81 56 104a72 72 0 0 1 144 0c0 35.82 8.3 64.6 14.9 76a8 8 0 0 1-6.9 12"
+                        opacity=".2"
+                      ></path>
+                      <path
+                        d="M221.8 175.94c-5.55-9.56-13.8-36.61-13.8-71.94a80 80 0 1 0-160 0c0 35.34-8.26 62.38-13.81 71.94A16 16 0 0 0 48 200h40.81a40 40 0 0 0 78.38 0H208a16 16 0 0 0 13.8-24.06M128 216a24 24 0 0 1-22.62-16h45.24A24 24 0 0 1 128 216m-80-32c7.7-13.24 16-43.92 16-80a64 64 0 1 1 128 0c0 36.05 8.28 66.73 16 80Z"
+                      ></path>
+                    </g></svg
+                ></span>
+              </button>
+            </div>
+            <!---->
+          </div>
+        </div>
+        <!--]--><!--[--><button
+          type="button"
+          class="border-muted-200 hover:ring-muted-200 dark:hover:ring-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:ring-offset-muted-900 flex size-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="icon text-muted-400 size-5"
+            style=""
+            width="1em"
+            height="1em"
+            viewBox="0 0 256 256"
+            data-v-7663d7ec=""
+          >
+            <g fill="currentColor">
+              <path
+                d="M112 80a32 32 0 1 1-32-32a32 32 0 0 1 32 32m64 32a32 32 0 1 0-32-32a32 32 0 0 0 32 32m-96 32a32 32 0 1 0 32 32a32 32 0 0 0-32-32m96 0a32 32 0 1 0 32 32a32 32 0 0 0-32-32"
+                opacity=".2"
+              ></path>
+              <path
+                d="M80 40a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96 16a40 40 0 1 0-40-40a40 40 0 0 0 40 40m0-64a24 24 0 1 1-24 24a24 24 0 0 1 24-24m-96 80a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96-64a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24"
+              ></path>
+            </g>
+          </svg></button
+        ><!--]--><!--[-->
+        <div class="group inline-flex items-center justify-center text-right">
+          <div data-headlessui-state="" class="relative size-9 text-left">
+            <button
+              class="group-hover:ring-primary-500 dark:ring-offset-muted-900 inline-flex size-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4"
+              id="headlessui-menu-button-29776"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              data-headlessui-state=""
+              type="button"
+            >
+              <div
+                class="relative inline-flex size-9 items-center justify-center rounded-full"
+              >
+                <img
+                  src="/img/avatars/2.svg"
+                  class="max-w-full rounded-full object-cover shadow-sm dark:border-transparent"
+                  alt=""
+                />
+              </div></button
+            ><!---->
+          </div>
+        </div>
+        <!--]--><!--]-->
+      </div>
+    </div>
+    <!--]-->
+    <main>
+      <!--[--><!--[-->
+      <div
+        class="nuxt-loading-indicator"
+        style="
+          position: fixed;
+          top: 0px;
+          right: 0px;
+          left: 0px;
+          pointer-events: none;
+          width: auto;
+          height: 3px;
+          opacity: 0;
+          background: rgb(var(--color-primary-500));
+          transform: scaleX(0);
+          transform-origin: left center;
+          transition: transform 0.1s ease 0s, height 0.4s ease 0s,
+            opacity 0.4s ease 0s;
+          z-index: 999999;
+        "
+      ></div>
+      <div>
+        <div class="grid grid-cols-12 gap-6">
+          <div class="col-span-12">
+            <div class="nui-card nui-card-rounded nui-card-white p-5">
+              <div class="flex flex-col items-center md:flex-row">
+                <div
+                  class="ltablet:flex-row ltablet:items-center flex flex-col items-center gap-4 text-center md:items-start md:text-left lg:flex-row lg:items-center"
+                >
+                  <div class="text-center md:text-left">
+                    <h2
+                      class="nui-heading nui-heading-xl nui-weight-light nui-lead-tight text-muted-800 dark:text-white"
+                    >
+                      <span>Welcome back, {{user.name}}</span>
+                    </h2>
+                    <p
+                      class="nui-paragraph nui-paragraph-md nui-weight-normal nui-lead-normal"
+                    >
+                      <span class="text-muted-400"
+                        >It's nice to see you again</span
+                      >
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="ltablet:flex-row ltablet:items-center ms-auto flex flex-col gap-6 text-center md:text-left lg:flex-row lg:items-center"
+                >
+                  <div class="flex-1">
+                    <h3
+                      class="nui-heading nui-heading-3xl nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
+                    >
+                      <span>
+                        {{total_tasks}}
+                        <small class="text-base font-medium">Tasks</small></span
+                      >
+                    </h3>
+                    <p
+                      class="nui-paragraph nui-paragraph-md nui-weight-normal nui-lead-normal"
+                    >
+                      <span class="text-muted-400 text-sm">
+                        Are currently pending
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    class="nui-card nui-card-rounded nui-card-white from-primary-600 to-primary-700 shadow-primary-500/20 relative flex flex-1 items-center justify-center bg-gradient-to-br p-5 shadow-xl"
+                  >
+                    <div class="relative z-20 flex flex-col gap-3">
+                      <p
+                        class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal"
+                      >
+                        <span class="text-white/80">
+                          Manage the logistics of events under you
+                        </span>
+                      </p>
+                      <a
+                        aria-current="page"
+                        href="/dashboards/personal-2#"
+                        class="router-link-active router-link-exact-active font-sans text-sm text-white underline-offset-4 hover:underline"
+                      >
+                        click here
+                      </a>
+                    </div>
+                    <div
+                      class="absolute bottom-0 end-2 z-10 flex size-14 items-center justify-center"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon text-primary-900/50 size-10"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 256 256"
+                      >
+                        <g fill="currentColor">
+                          <path
+                            d="m239.78 86.62l-37 113.38S176 184 128 184s-74.78 16-74.78 16l-37-113.37a4.1 4.1 0 0 1 5.72-5l53.41 26.62a4.11 4.11 0 0 0 5.36-1.56L124.48 34a4.11 4.11 0 0 1 7 0l43.77 72.74a4.12 4.12 0 0 0 5.35 1.56l53.43-26.64a4.1 4.1 0 0 1 5.75 4.96"
+                            opacity=".2"
+                          ></path>
+                          <path
+                            d="M243.84 76.19a12.08 12.08 0 0 0-13.34-1.7l-50.21 25l-41.92-69.63a12.11 12.11 0 0 0-20.74 0L75.71 99.52l-50.19-25a12.11 12.11 0 0 0-16.9 14.6l37 113.36a8 8 0 0 0 11.68 4.4c.25-.15 25.82-14.88 70.7-14.88s70.45 14.73 70.68 14.87a8 8 0 0 0 11.71-4.39l37-113.33a12.06 12.06 0 0 0-3.55-12.96M198 188.83c-12-5.09-35.92-12.83-70-12.83s-58 7.74-70 12.83L26.71 93l45.07 22.47a12.17 12.17 0 0 0 15.78-4.59L128 43.66l40.44 67.2a12.18 12.18 0 0 0 15.77 4.59L229.29 93Zm-22.13-32a8 8 0 0 1-7.87 6.61a8.36 8.36 0 0 1-1.4-.12a228.2 228.2 0 0 0-77.22 0a8 8 0 0 1-2.78-15.76a244.42 244.42 0 0 1 82.78 0a8 8 0 0 1 6.5 9.24Z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ltablet:col-span-8 col-span-12 lg:col-span-8">
+            <div class="flex flex-col gap-6">
+              <div class="nui-card nui-card-rounded nui-card-white p-6">
+                <div class="mb-8 flex items-center justify-between">
+                  <h3
+                    class="nui-heading nui-heading-md nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
+                  >
+                    <span>My Events</span>
+                  </h3>
+                  <a
+                    aria-current="page"
+                    href="/organiser/events/{{user.id}}"
+                    class="router-link-active router-link-exact-active bg-muted-100 hover:bg-muted-200 dark:bg-muted-700 dark:hover:bg-muted-900 text-primary-500 rounded-lg px-4 py-2 font-sans text-sm font-medium underline-offset-4 transition-colors duration-300 hover:underline"
+                  >
+                    View All
+                  </a>
+                </div>
+                <div class="space-y-6">
+                  {% for event in myevents %}
+                  <div class="flex items-center gap-4">
+                    <div>
+                      <h4
+                        class="nui-heading nui-heading-md nui-weight-light nui-lead-tight text-muted-800 dark:text-white"
+                      >
+                        <span>{{event.name}}</span>
+                      </h4>
+                      <p
+                        class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal"
+                      >
+                        <span class="text-muted-400">{{event.timestamp}}</span>
+                      </p>
+                    </div>
+                    <div class="ms-auto hidden md:block">
+                      <p>{{event.num_volunteers}} Volunteers</p>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="flex flex-wrap">
+              <div class="w-full md:w-2/3 nui-card nui-card-rounded nui-card-white p-6">
+                <div class="mb-6">
+                  <h3
+                    class="nui-heading nui-heading-md nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
+                  >
+                    <span>Your Quick Stats</span>
+                  </h3>
+                </div>
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div
+                    class="bg-muted-100/80 dark:bg-muted-700 flex items-center gap-2 rounded-md px-5 py-10"
+                  >
+                    <div
+                      class="nui-icon-box nui-box-full nui-box-md nui-box-solid bg-primary-100 text-primary-500 dark:bg-primary-500/20 dark:text-primary-400 dark:border-primary-500 dark:border-2"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-5"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 256 256"
+                      >
+                        <g fill="currentColor">
+                          <path
+                            d="m219.84 73.16l-88-48.16a8 8 0 0 0-7.68 0l-88 48.18a8 8 0 0 0-4.16 7v95.64a8 8 0 0 0 4.16 7l88 48.18a8 8 0 0 0 7.68 0l88-48.18a8 8 0 0 0 4.16-7V80.18a8 8 0 0 0-4.16-7.02M128 168a40 40 0 1 1 40-40a40 40 0 0 1-40 40"
+                            opacity=".2"
+                          ></path>
+                          <path
+                            d="M128 80a48 48 0 1 0 48 48a48.06 48.06 0 0 0-48-48m0 80a32 32 0 1 1 32-32a32 32 0 0 1-32 32m95.68-93.85l-88-48.15a15.88 15.88 0 0 0-15.36 0l-88 48.17a16 16 0 0 0-8.32 14v95.64a16 16 0 0 0 8.32 14l88 48.17a15.88 15.88 0 0 0 15.36 0l88-48.17a16 16 0 0 0 8.32-14V80.18a16 16 0 0 0-8.32-14.03M128 224l-88-48.18V80.18L128 32l88 48.17v95.63Z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <div>
+                      <h2
+                        class="nui-heading nui-heading-md nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
+                      >
+                        <span>{{user.volunteer_in_event}}</span>
+                      </h2>
+                      <p
+                        class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal"
+                      >
+                        <span class="text-muted-500 dark:text-muted-400">
+                          Volunteers
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="bg-muted-100/80 dark:bg-muted-700 flex items-center gap-2 rounded-md px-5 py-10"
+                  >
+                    <div
+                      class="nui-icon-box nui-box-full nui-box-md nui-box-solid bg-amber-100 text-amber-500 dark:border-2 dark:border-amber-500 dark:bg-amber-500/20 dark:text-amber-400"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-5"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 256 256"
+                      >
+                        <g fill="currentColor">
+                          <path
+                            d="m200 152l-40 40l-64-16l-56-40l32-64l56-16l56 16h-40l-45.66 44.29a8 8 0 0 0 1.38 12.42C117.23 139.9 141 139.13 160 120Z"
+                            opacity=".2"
+                          ></path>
+                          <path
+                            d="M119.76 217.94A8 8 0 0 1 112 224a8.13 8.13 0 0 1-2-.24l-32-8a8 8 0 0 1-2.5-1.11l-24-16a8 8 0 1 1 8.88-13.31l22.84 15.23l30.66 7.67a8 8 0 0 1 5.88 9.7m132.69-96.46a15.89 15.89 0 0 1-8 9.25l-23.68 11.84l-55.08 55.09a8 8 0 0 1-7.6 2.1l-64-16a8.06 8.06 0 0 1-2.71-1.25l-55.52-39.64l-24.28-12.14a16 16 0 0 1-7.16-21.46l24.85-49.69a16 16 0 0 1 21.46-7.16l22.06 11l53-15.14a8 8 0 0 1 4.4 0l53 15.14l22.06-11a16 16 0 0 1 21.46 7.16l24.85 49.69a15.9 15.9 0 0 1 .89 12.21m-46.18 12.94L179.06 80h-31.82L104 122c12.66 8.09 32.51 10.32 50.32-7.63a8 8 0 0 1 10.68-.61l34.41 27.57Zm-187.54-18l17.69 8.85l24.85-49.69l-17.69-8.85ZM188 152.66l-27.71-22.19c-19.54 16-44.35 18.11-64.91 5a16 16 0 0 1-2.72-24.82a.6.6 0 0 1 .08-.08l44.86-43.51l-9.6-2.74l-50.42 14.41l-27.37 54.73l49.2 35.15l58.14 14.53Zm49.24-36.24l-24.82-49.69l-17.69 8.85l24.85 49.69Z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <div>
+                      <h2
+                        class="nui-heading nui-heading-md nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
+                      >
+                        <span>{{user.registered_in_event}}</span>
+                      </h2>
+                      <p
+                        class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal"
+                      >
+                        <span class="text-muted-500 dark:text-muted-400">
+                          Registered Users
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="bg-muted-100/80 dark:bg-muted-700 flex items-center gap-2 rounded-md px-5 py-10"
+                  >
+                    <div
+                      class="nui-icon-box nui-box-full nui-box-md nui-box-solid bg-green-100 text-green-500 dark:border-2 dark:border-green-500 dark:bg-green-500/20 dark:text-green-400"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-5"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 256 256"
+                      >
+                        <g fill="currentColor">
+                          <path
+                            d="M240 104L128 224L80 104l48-64h56Z"
+                            opacity=".2"
+                          ></path>
+                          <path
+                            d="m246 98.73l-56-64a8 8 0 0 0-6-2.73H72a8 8 0 0 0-6 2.73l-56 64a8 8 0 0 0 .17 10.73l112 120a8 8 0 0 0 11.7 0l112-120a8 8 0 0 0 .13-10.73M222.37 96H180l-36-48h36.37ZM74.58 112l30.13 75.33L34.41 112Zm89.6 0L128 202.46L91.82 112ZM96 96l32-42.67L160 96Zm85.42 16h40.17l-70.3 75.33ZM75.63 48H112L76 96H33.63Z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <div>
+                      <h2
+                        class="nui-heading nui-heading-md nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
+                      >
+                        <span>{{user.num_accomodation}}</span>
+                      </h2>
+                      <p
+                        class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal"
+                      >
+                        <span class="text-muted-500 dark:text-muted-400">
+                          Accomodation Bookings
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="bg-muted-100/80 dark:bg-muted-700 flex items-center gap-2 rounded-md px-5 py-10"
+                  >
+                    <div
+                      class="nui-icon-box nui-box-full nui-box-md nui-box-solid bg-indigo-100 text-indigo-500 dark:border-2 dark:border-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-400"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-5"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 256 256"
+                      >
+                        <g fill="currentColor">
+                          <path d="M232 96H24l104-64Z" opacity=".2"></path>
+                          <path
+                            d="M24 104h24v64H32a8 8 0 0 0 0 16h192a8 8 0 0 0 0-16h-16v-64h24a8 8 0 0 0 4.19-14.81l-104-64a8 8 0 0 0-8.38 0l-104 64A8 8 0 0 0 24 104m40 0h32v64H64Zm80 0v64h-32v-64Zm48 64h-32v-64h32ZM128 41.39L203.74 88H52.26ZM248 208a8 8 0 0 1-8 8H16a8 8 0 0 1 0-16h224a8 8 0 0 1 8 8"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <div>
+                      <h2
+                        class="nui-heading nui-heading-md nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
+                      >
+                        <span>{{user.num_events}}</span>
+                      </h2>
+                      <p
+                        class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal"
+                      >
+                        <span class="text-muted-500 dark:text-muted-400">
+                          Total Events
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full md:w-1/3 nui-card nui-card-curved nui-card-white p-4">
+                <div class="flex flex-col gap-4" rounded="lg">
+                  <a href="/" class="group flex items-center gap-3"
+                    ><div
+                      class="text-muted-500 dark:text-muted-100 bg-muted-100 dark:bg-muted-700 group-hover:bg-primary-500 group-hover:shadow-primary-500/30 flex size-11 items-center justify-center transition-all duration-300 group-hover:text-white group-hover:shadow-xl dark:group-hover:text-white rounded-lg"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-4"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        ></circle>
+                      </svg>
+                    </div>
+                    <span
+                      class="text-muted-400 group-hover:text-muted-800 dark:group-hover:text-muted-100 font-sans text-sm transition-colors duration-300"
+                      >My Events</span
+                    ></a
+                  ><a href="/" class="group flex items-center gap-3"
+                    ><div
+                      class="text-muted-500 dark:text-muted-100 bg-muted-100 dark:bg-muted-700 group-hover:bg-primary-500 group-hover:shadow-primary-500/30 flex size-11 items-center justify-center transition-all duration-300 group-hover:text-white group-hover:shadow-xl dark:group-hover:text-white rounded-lg"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-4"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                      >
+                        <g
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        >
+                          <rect
+                            width="20"
+                            height="14"
+                            x="2"
+                            y="7"
+                            rx="2"
+                            ry="2"
+                          ></rect>
+                          <path
+                            d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <span
+                      class="text-muted-400 group-hover:text-muted-800 dark:group-hover:text-muted-100 font-sans text-sm transition-colors duration-300"
+                      >Logistics</span
+                    ></a
+                  ><a href="/" class="group flex items-center gap-3"
+                    ><div
+                      class="text-muted-500 dark:text-muted-100 bg-muted-100 dark:bg-muted-700 group-hover:bg-primary-500 group-hover:shadow-primary-500/30 flex size-11 items-center justify-center transition-all duration-300 group-hover:text-white group-hover:shadow-xl dark:group-hover:text-white rounded-lg"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-4"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="m5 3l14 9l-14 9z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <span
+                      class="text-muted-400 group-hover:text-muted-800 dark:group-hover:text-muted-100 font-sans text-sm transition-colors duration-300"
+                      >Work Distribution</span
+                    ></a
+                  ><a href="/" class="group flex items-center gap-3"
+                    ><div
+                      class="text-muted-500 dark:text-muted-100 bg-muted-100 dark:bg-muted-700 group-hover:bg-primary-500 group-hover:shadow-primary-500/30 flex size-11 items-center justify-center transition-all duration-300 group-hover:text-white group-hover:shadow-xl dark:group-hover:text-white rounded-lg"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-4"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5zM16 8L2 22m15.5-7H9"
+                        ></path>
+                      </svg>
+                    </div>
+                    <span
+                      class="text-muted-400 group-hover:text-muted-800 dark:group-hover:text-muted-100 font-sans text-sm transition-colors duration-300"
+                      >Profile</span
+                    ></a
+                  ><a href="/" class="group flex items-center gap-3"
+                    ><div
+                      class="text-muted-500 dark:text-muted-100 bg-muted-100 dark:bg-muted-700 group-hover:bg-primary-500 group-hover:shadow-primary-500/30 flex size-11 items-center justify-center transition-all duration-300 group-hover:text-white group-hover:shadow-xl dark:group-hover:text-white rounded-lg"
+                    >
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-4"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                      >
+                        <g
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        >
+                          <path
+                            d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+                          ></path>
+                          <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <span
+                      class="text-muted-400 group-hover:text-muted-800 dark:group-hover:text-muted-100 font-sans text-sm transition-colors duration-300"
+                      >Manage Events</span
+                    ></a
+                  >
+                </div>
+              </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="ltablet:col-span-4 col-span-12 lg:col-span-4">
+            <div class="ptablet:grid-cols-2 grid gap-6 lg:flex lg:flex-col">
+              <div class="nui-card nui-card-curved nui-card-white p-6">
+                <div class="flex h-full flex-col">
+                  <div class="mb-4 flex items-center flex-col-reverse">
+                    <div class="flex-1">
+                      <h3
+                        class="nui-heading nui-heading-md nui-weight-medium nui-lead-relaxed text-muted-800 dark:text-white text-center"
+                      >
+                        <span>{{user.name}}</span>
+                      </h3>
+                      <!---->
+                      <p
+                        class="nui-paragraph nui-paragraph-md nui-weight-normal nui-lead-none text-center"
+                      >
+                        <span class="text-muted-400 text-xs"
+                          >Core Team Head</span
+                        >
+                      </p>
+                    </div>
+                    <div class="flex-1 shrink-0">
+                      <div class="mx-auto w-16">
+                        <div class="nui-avatar nui-avatar-lg nui-avatar-full">
+                          <div class="nui-avatar-inner">
+                            <img
+                              src="/img/avatars/2.svg"
+                              class="nui-avatar-img nui-avatar-full"
+                            /><!----><!---->
+                          </div>
+                          <!----><!---->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-4 space-y-2 font-sans">
+                    <div class="flex items-end gap-2 justify-center">
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon text-primary-500 size-4"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 256 256"
+                      >
+                        <g fill="currentColor">
+                          <path
+                            d="M128 24a80 80 0 0 0-80 80c0 72 80 128 80 128s80-56 80-128a80 80 0 0 0-80-80m0 112a32 32 0 1 1 32-32a32 32 0 0 1-32 32"
+                            opacity=".2"
+                          ></path>
+                          <path
+                            d="M128 64a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m0-112a88.1 88.1 0 0 0-88 88c0 31.4 14.51 64.68 42 96.25a254.19 254.19 0 0 0 41.45 38.3a8 8 0 0 0 9.18 0a254.19 254.19 0 0 0 41.37-38.3c27.45-31.57 42-64.85 42-96.25a88.1 88.1 0 0 0-88-88m0 206c-16.53-13-72-60.75-72-118a72 72 0 0 1 144 0c0 57.23-55.47 105-72 118"
+                          ></path>
+                        </g></svg
+                      ><span class="text-muted-400 text-xs"
+                        >{{user.state}}</span
+                      >
+                    </div>
+                    <div class="flex items-end gap-2 justify-center">
+                      <svg
+                        data-v-7663d7ec=""
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon text-primary-500 size-4"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 256 256"
+                      >
+                        <g fill="currentColor">
+                          <path
+                            d="M223.94 174.08A48.33 48.33 0 0 1 176 216A136 136 0 0 1 40 80a48.33 48.33 0 0 1 41.92-47.94a8 8 0 0 1 8.3 4.8l21.13 47.2a8 8 0 0 1-.66 7.53L89.32 117a7.93 7.93 0 0 0-.54 7.81c8.27 16.93 25.77 34.22 42.75 42.41a7.92 7.92 0 0 0 7.83-.59l25-21.3a8 8 0 0 1 7.59-.69l47.16 21.13a8 8 0 0 1 4.83 8.31"
+                            opacity=".2"
+                          ></path>
+                          <path
+                            d="m222.37 158.46l-47.11-21.11l-.13-.06a16 16 0 0 0-15.17 1.4a8.12 8.12 0 0 0-.75.56L134.87 160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16 16 0 0 0 1.32-15.06v-.12L97.54 33.64a16 16 0 0 0-16.62-9.52A56.26 56.26 0 0 0 32 80c0 79.4 64.6 144 144 144a56.26 56.26 0 0 0 55.88-48.92a16 16 0 0 0-9.51-16.62M176 208A128.14 128.14 0 0 1 48 80a40.2 40.2 0 0 1 34.87-40a.61.61 0 0 0 0 .12l21 47l-20.67 24.74a6.13 6.13 0 0 0-.57.77a16 16 0 0 0-1 15.7c9.06 18.53 27.73 37.06 46.46 46.11a16 16 0 0 0 15.75-1.14a8.44 8.44 0 0 0 .74-.56L168.89 152l47 21.05h.11A40.21 40.21 0 0 1 176 208"
+                          ></path>
+                        </g></svg
+                      ><span class="text-muted-400 text-xs"
+                        >{{user.phone}}</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="border-muted-200 dark:border-muted-700 mt-auto flex items-end justify-between border-t pt-3"
+                  >
+                    <a
+                      href="mailto:{{user.email}}"
+                      class="text-primary-500 font-sans text-sm underline-offset-4 hover:underline"
+                    >
+                      {{user.email}} </a
+                    ><svg
+                      data-v-7663d7ec=""
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      aria-hidden="true"
+                      role="img"
+                      class="icon text-muted-400 size-4"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 256 256"
+                    >
+                      <g fill="currentColor">
+                        <path d="m224 56l-96 88l-96-88Z" opacity=".2"></path>
+                        <path
+                          d="M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8m-96 85.15L52.57 64h150.86ZM98.71 128L40 181.81V74.19Zm11.84 10.85l12 11.05a8 8 0 0 0 10.82 0l12-11.05l58 53.15H52.57ZM157.29 128L216 74.18v107.64Z"
+                        ></path>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--]--><!--]-->
+    </main>
+  </div>
+</div>
+{% endblock %}

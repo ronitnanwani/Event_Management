@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-capo="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Event Management</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/tailwind.css') }}"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css"
+      integrity="sha512-d0olNN35C6VLiulAobxYHZiXJmq+vl+BGIgAxQtD5+kqudro/xNMvv2yIHAciGHpExsIbKX3iLg+0B6d0k4+ZA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" type="image/png" href="/img/favicon.png" />
+    <meta name="og:image:width" content="1200" />
+    <meta name="og:image:height" content="630" />
+    <meta
+      name="og:image"
+      content="https://media.cssninja.io/embed/marketplace/product/wide.png?headline=Jobs%20dashboard%20-%20For%20recruitment%20and%20job%20search&url=https%3A%2F%2Fmedia.cssninja.io%2Fcontent%2Fproducts%2Flogos%2Ftairo-text-white.svg&previewUrl=https%3A%2F%2Ftairo.cssninja.io%2Fimg%2Fscreens%2Fdashboards-jobs.png"
+    />
+  </head>
+
+  <body>
+    <div id="__nuxt">
+      <div>
+        <!---->
+        <!---->
+        <div class="bg-muted-100 dark:bg-muted-900 pb-20">
+          <div>
+            <!--[-->
+            <div
+              class="nuxt-loading-indicator"
+              style="
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: 0;
+                pointer-events: none;
+                width: auto;
+                height: 3px;
+                opacity: 0;
+                background: rgb(var(--color-primary-500));
+                background-size: Infinity% auto;
+                transform: scaleX(0%);
+                transform-origin: left;
+                transition: transform 0.1s, height 0.4s, opacity 0.4s;
+                z-index: 999999;
+              "
+            ></div>
+            <div class="h-screen md:flex">
+              <div
+                class="from-primary-900 to-primary-500 i group relative hidden w-1/2 items-center justify-around overflow-hidden bg-gradient-to-tr md:flex"
+              >
+                <div class="mx-auto max-w-xs text-center">
+                  <h2
+                    class="nui-heading nui-heading-3xl nui-weight-medium nui-lead-normal text-white"
+                  >
+                    <!--[-->Have an Account?
+                    <!--]-->
+                  </h2>
+                  <p
+                    class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-200 mb-3"
+                  >
+                    <!--[-->No need to waste time on this page, let&#39;s take
+                    you back to your account
+                    <!--]-->
+                  </p>
+                  <a
+                    href="/login"
+                    class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-default w-full"
+                    rel
+                  >
+                    <!--[-->Login to Account
+                    <!--]-->
+                    <!---->
+                  </a>
+                </div>
+                <div
+                  class="bg-muted-200/20 absolute -start-6 -top-6 h-14 w-0 origin-top-left rotate-45 rounded-full transition-all delay-[25ms] duration-300 group-hover:w-72"
+                ></div>
+                <div
+                  class="bg-muted-200/20 absolute -top-12 start-20 h-14 w-0 origin-top-left rotate-45 rounded-full transition-all delay-75 duration-300 group-hover:w-48"
+                ></div>
+                <div
+                  class="bg-muted-200/20 absolute -start-7 top-24 h-14 w-0 origin-top-left rotate-45 rounded-full transition-all delay-150 duration-300 group-hover:w-40"
+                ></div>
+                <div
+                  class="bg-muted-200/20 absolute -bottom-6 -end-6 h-14 w-0 origin-bottom-right rotate-45 rounded-full transition-all delay-150 duration-300 group-hover:w-72"
+                ></div>
+                <div
+                  class="bg-muted-200/20 absolute -bottom-12 end-20 h-14 w-0 origin-bottom-right rotate-45 rounded-full transition-all delay-75 duration-300 group-hover:w-48"
+                ></div>
+                <div
+                  class="bg-muted-200/20 absolute -end-7 bottom-24 h-14 w-0 origin-bottom-right rotate-45 rounded-full transition-all delay-[25ms] duration-300 group-hover:w-40"
+                ></div>
+              </div>
+              <div
+                class="dark:bg-muted-900 flex flex-col items-center justify-start bg-white py-10 md:w-1/2"
+              >
+                <div
+                  class="mx-auto flex w-full max-w-xs items-center justify-start"
+                ></div>
+                <h2 class="nui-heading nui-heading-3xl nui-weight-medium nui-lead-relaxed mt-6">
+                                    <!--[-->Cultural Fest
+                                    <!--]-->
+                    </h2>
+                    <p
+                    class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-400 mb-6"
+                  >
+                    <!--[-->Let&#39;s start by creating you account
+                    <!--]-->
+                  </p> 
+                  
+                  <div class="w-2/3 ">
+                    <div class="relative right-0">
+                    <ul
+                        class="relative flex flex-wrap p-1 list-none rounded-xl bg-slate-200"
+                        data-tabs="tabs"
+                        role="list"
+                    >
+                        <li class="z-30 flex-auto text-center">
+                        <a
+                            class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg cursor-pointer text-slate-700 bg-inherit"
+                            data-tab-target=""
+                            active=""
+                            role="tab"
+                            aria-selected="true"
+                            aria-controls="participant"
+                        >
+                            <span class="ml-1">Participant</span>
+                        </a>
+                        </li>
+                        <li class="z-30 flex-auto text-center">
+                        <a
+                            class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg cursor-pointer text-slate-700 bg-inherit"
+                            data-tab-target=""
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="student"
+                        >
+                            <span class="ml-1">Student</span>
+                        </a>
+                        </li>
+                        <li class="z-30 flex-auto text-center">
+                        <a
+                            class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg cursor-pointer text-slate-700 bg-inherit"
+                            data-tab-target=""
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="organiser"
+                        >
+                            <span class="ml-1">Organiser</span>
+                        </a>
+                        </li>
+                    </ul>
+                    <div data-tab-content="" class="p-5">
+                        <div class="block opacity-100" id="participant" role="tabpanel">
+                        <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
+                        <!-- participant form  -->
+                            <form
+                            method="POST"
+                            action="/register/participant"
+                            class="mx-auto w-full max-w-xs"
+                            novalidate
+                            >
+                        
+                        
+                        <div class="mb-4 space-y-3">
+                            <!--[-->
+                          <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon">
+                            <!---->
+                            <div class="nui-input-outer">
+                                <div>
+                                <input
+                                    id="ninja-input-8953"
+                                    name="Name"
+                                    type="text"
+                                    class="nui-input"
+                                    placeholder="Full Name"
+                                    value=""
+                                />
+                                <!---->
+                                <!---->
+                                <div class="nui-input-icon">
+                                    <!--[--><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    aria-hidden="true"
+                                    role="img"
+                                    class="icon nui-input-icon-inner"
+                                    style=""
+                                    width="1em"
+                                    height="1em"
+                                    viewBox="0 0 256 256"
+                                    data-v-7663d7ec
+                                    >
+                                    <g fill="currentColor">
+                                        <path
+                                        d="M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96"
+                                        opacity=".2"
+                                        />
+                                        <path
+                                        d="M72 128a134.63 134.63 0 0 1-14.16 60.47a8 8 0 1 1-14.32-7.12A118.8 118.8 0 0 0 56 128a71.73 71.73 0 0 1 27-56.2a8 8 0 1 1 10 12.49A55.76 55.76 0 0 0 72 128m56-8a8 8 0 0 0-8 8a184.12 184.12 0 0 1-23 89.1a8 8 0 0 0 14 7.76A200.19 200.19 0 0 0 136 128a8 8 0 0 0-8-8m0-32a40 40 0 0 0-40 40a8 8 0 0 0 16 0a24 24 0 0 1 48 0a214.09 214.09 0 0 1-20.51 92a8 8 0 1 0 14.51 6.83A230 230 0 0 0 168 128a40 40 0 0 0-40-40m0-64A104.11 104.11 0 0 0 24 128a87.76 87.76 0 0 1-5 29.33a8 8 0 0 0 15.09 5.33A103.9 103.9 0 0 0 40 128a88 88 0 0 1 176 0a282.24 282.24 0 0 1-5.29 54.45a8 8 0 0 0 6.3 9.4a8.22 8.22 0 0 0 1.55.15a8 8 0 0 0 7.84-6.45A298.37 298.37 0 0 0 232 128A104.12 104.12 0 0 0 128 24M94.4 152.17a8 8 0 0 0-9.4 6.25a151 151 0 0 1-17.21 45.44a8 8 0 0 0 13.86 8a166.67 166.67 0 0 0 19-50.25a8 8 0 0 0-6.25-9.44M128 56a72.85 72.85 0 0 0-9 .56a8 8 0 0 0 2 15.87A56.08 56.08 0 0 1 184 128a252.12 252.12 0 0 1-1.92 31a8 8 0 0 0 6.92 9a8.39 8.39 0 0 0 1 .06a8 8 0 0 0 7.92-7a266.48 266.48 0 0 0 2-33A72.08 72.08 0 0 0 128 56m57.93 128.25a8 8 0 0 0-9.75 5.75c-1.46 5.69-3.15 11.4-5 17a8 8 0 0 0 5 10.13a7.88 7.88 0 0 0 2.55.42a8 8 0 0 0 7.58-5.46c2-5.92 3.79-12 5.35-18.05a8 8 0 0 0-5.72-9.78Z"
+                                        />
+                                    </g>
+                                    </svg>
+                                    <!--]-->
+                                </div>
+                                <!--[-->
+                                <!--]-->
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                            <!--]-->
+                            <!--[-->
+                            <div
+                            class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                            >
+                            <!---->
+                            <div class="nui-input-outer">
+                                <div>
+                                <input
+                                    id="ninja-input-8954"
+                                    name="email"
+                                    type="email"
+                                    class="nui-input"
+                                    placeholder="Email Address"
+                                    value
+                                />
+                                <!---->
+                                <!---->
+                                <div class="nui-input-icon">
+                                    <!--[--><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    aria-hidden="true"
+                                    role="img"
+                                    class="icon nui-input-icon-inner"
+                                    style=""
+                                    width="1em"
+                                    height="1em"
+                                    viewBox="0 0 256 256"
+                                    data-v-7663d7ec
+                                    >
+                                    <g fill="currentColor">
+                                        <path
+                                        d="M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96"
+                                        opacity=".2"
+                                        />
+                                        <path
+                                        d="M128 24a104 104 0 0 0 0 208c21.51 0 44.1-6.48 60.43-17.33a8 8 0 0 0-8.86-13.33C166 210.38 146.21 216 128 216a88 88 0 1 1 88-88c0 26.45-10.88 32-20 32s-20-5.55-20-32V88a8 8 0 0 0-16 0v4.26a48 48 0 1 0 5.93 65.1c6 12 16.35 18.64 30.07 18.64c22.54 0 36-17.94 36-48A104.11 104.11 0 0 0 128 24m0 136a32 32 0 1 1 32-32a32 32 0 0 1-32 32"
+                                        />
+                                    </g>
+                                    </svg>
+                                    <!--]-->
+                                </div>
+                                <!--[-->
+                                <!--]-->
+                                </div>
+                                <!---->
+                            </div>
+                            </div>
+
+                        <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon">
+                            <!---->
+                            <div class="nui-input-outer">
+                                <div>
+                                <input
+                                    id="ninja-input-8953"
+                                    name="college"
+                                    type="text"
+                                    class="nui-input"
+                                    placeholder="College Name"
+                                    value=""
+                                    style="padding-inline-start: 1rem;"
+                                />
+                                <!---->
+                                <!---->
+                                <div class="nui-input-icon">
+                                   
+                                </div>
+                                <!--[-->
+                                <!--]-->
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon">
+                            <!---->
+                            <div class="nui-input-outer">
+                                <div>
+                                <input
+                                    id="ninja-input-8953"
+                                    name="phone"
+                                    type="text"
+                                    class="nui-input"
+                                    placeholder="Phone no."
+                                    value=""
+                                    style="padding-inline-start: 1rem;"
+                                />
+                                <!---->
+                                <!---->
+                                <div class="nui-input-icon">
+                                   
+                                </div>
+                                <!--[-->
+                                <!--]-->
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                            <!--]-->
+                            <!--[-->
+                            <div class="group/password-strength relative">
+                            <!---->
+                            <div
+                                class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                            >
+                                <!---->
+                                <div class="nui-input-outer">
+                                <div>
+                                    <input
+                                    id="ninja-input-8955"
+                                    name="password"
+                                    type="password"
+                                    class="nui-input !pe-12"
+                                    placeholder="Password"
+                                    value
+                                    />
+                                    <!---->
+                                    <!---->
+                                    <div class="nui-input-icon">
+                                    <!--[--><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        aria-hidden="true"
+                                        role="img"
+                                        class="icon nui-input-icon-inner"
+                                        style=""
+                                        width="1em"
+                                        height="1em"
+                                        viewBox="0 0 256 256"
+                                        data-v-7663d7ec
+                                    >
+                                        <g fill="currentColor">
+                                        <path
+                                            d="M216 96v112a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V96a8 8 0 0 1 8-8h160a8 8 0 0 1 8 8"
+                                            opacity=".2"
+                                        />
+                                        <path
+                                            d="M208 80h-32V56a48 48 0 0 0-96 0v24H48a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16M96 56a32 32 0 0 1 64 0v24H96Zm112 152H48V96h160zm-68-56a12 12 0 1 1-12-12a12 12 0 0 1 12 12"
+                                        />
+                                        </g>
+                                    </svg>
+                                    <!--]-->
+                                    </div>
+                                    <!--[-->
+                                    <!--[-->
+                                    <!--]-->
+                                </div>
+                                <!---->
+                                </div>
+                            </div>
+                            </div>
+                            <!--]-->
+                            <!--[-->
+                            <div
+                            class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                            >
+                            <!---->
+                            <div class="nui-input-outer">
+                                <div>
+                                <input
+                                    id="ninja-input-8956"
+                                    name="password1"
+                                    type="password"
+                                    class="nui-input"
+                                    placeholder="Confirm password"
+                                    value
+                                />
+                                <!---->
+                                <!---->
+                                <div class="nui-input-icon">
+                                    <!--[--><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    aria-hidden="true"
+                                    role="img"
+                                    class="icon nui-input-icon-inner"
+                                    style=""
+                                    width="1em"
+                                    height="1em"
+                                    viewBox="0 0 256 256"
+                                    data-v-7663d7ec
+                                    >
+                                    <path
+                                        fill="currentColor"
+                                        d="m229.66 77.66l-128 128a8 8 0 0 1-11.32 0l-56-56a8 8 0 0 1 11.32-11.32L96 188.69L218.34 66.34a8 8 0 0 1 11.32 11.32"
+                                    />
+                                    </svg>
+                                    <!--]-->
+                                </div>
+                                <!--[-->
+                                <!--]-->
+                                </div>
+                                <!---->
+                            </div>
+                            </div>
+                            <!--]-->
+                        </div>
+                        <button
+                            type="submit"
+                            rel
+                            target
+                            class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary !h-11 w-full"
+                        >
+                            <!--[-->
+                            Create Account
+                            <!--]--><!---->
+                        </button>
+                        <p
+                            class="text-muted-400 mt-4 flex justify-between font-sans text-sm leading-5"
+                        >
+                            <span>Have an account?</span
+                            ><a
+                            href="/login"
+                            class="text-primary-600 hover:text-primary-500 font-medium underline-offset-4 transition duration-150 ease-in-out hover:underline focus:underline focus:outline-none"
+                            >
+                            Login here
+                            </a>
+                        </p>
+                        </form>
+                        </p>
+                        </div>
+                        <div class="hidden opacity-0" id="student" role="tabpanel">
+                        <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
+                            <form
+                  method="POST"
+                  action="/register/student"
+                  class="mx-auto w-full max-w-xs"
+                  novalidate
+                >
+                  
+                  
+                  <div class="mb-4 space-y-3">
+                    <!--[-->
+                    <div
+                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                    >
+                      <!---->
+                      <div class="nui-input-outer">
+                        <div>
+                          <input
+                            id="ninja-input-8953"
+                            name="Name"
+                            type="text"
+                            class="nui-input"
+                            placeholder="Full Name"
+                            value=""
+                          />
+                          <!---->
+                          <!---->
+                          <div class="nui-input-icon">
+                            <!--[--><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              aria-hidden="true"
+                              role="img"
+                              class="icon nui-input-icon-inner"
+                              style=""
+                              width="1em"
+                              height="1em"
+                              viewBox="0 0 256 256"
+                              data-v-7663d7ec
+                            >
+                              <g fill="currentColor">
+                                <path
+                                  d="M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96"
+                                  opacity=".2"
+                                />
+                                <path
+                                  d="M72 128a134.63 134.63 0 0 1-14.16 60.47a8 8 0 1 1-14.32-7.12A118.8 118.8 0 0 0 56 128a71.73 71.73 0 0 1 27-56.2a8 8 0 1 1 10 12.49A55.76 55.76 0 0 0 72 128m56-8a8 8 0 0 0-8 8a184.12 184.12 0 0 1-23 89.1a8 8 0 0 0 14 7.76A200.19 200.19 0 0 0 136 128a8 8 0 0 0-8-8m0-32a40 40 0 0 0-40 40a8 8 0 0 0 16 0a24 24 0 0 1 48 0a214.09 214.09 0 0 1-20.51 92a8 8 0 1 0 14.51 6.83A230 230 0 0 0 168 128a40 40 0 0 0-40-40m0-64A104.11 104.11 0 0 0 24 128a87.76 87.76 0 0 1-5 29.33a8 8 0 0 0 15.09 5.33A103.9 103.9 0 0 0 40 128a88 88 0 0 1 176 0a282.24 282.24 0 0 1-5.29 54.45a8 8 0 0 0 6.3 9.4a8.22 8.22 0 0 0 1.55.15a8 8 0 0 0 7.84-6.45A298.37 298.37 0 0 0 232 128A104.12 104.12 0 0 0 128 24M94.4 152.17a8 8 0 0 0-9.4 6.25a151 151 0 0 1-17.21 45.44a8 8 0 0 0 13.86 8a166.67 166.67 0 0 0 19-50.25a8 8 0 0 0-6.25-9.44M128 56a72.85 72.85 0 0 0-9 .56a8 8 0 0 0 2 15.87A56.08 56.08 0 0 1 184 128a252.12 252.12 0 0 1-1.92 31a8 8 0 0 0 6.92 9a8.39 8.39 0 0 0 1 .06a8 8 0 0 0 7.92-7a266.48 266.48 0 0 0 2-33A72.08 72.08 0 0 0 128 56m57.93 128.25a8 8 0 0 0-9.75 5.75c-1.46 5.69-3.15 11.4-5 17a8 8 0 0 0 5 10.13a7.88 7.88 0 0 0 2.55.42a8 8 0 0 0 7.58-5.46c2-5.92 3.79-12 5.35-18.05a8 8 0 0 0-5.72-9.78Z"
+                                />
+                              </g>
+                            </svg>
+                            <!--]-->
+                          </div>
+                          <!--[-->
+                          <!--]-->
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+                    <!--]-->
+                    <!--[-->
+
+                    <div
+                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                    >
+                      <!---->
+                      <div class="nui-input-outer">
+                        <div>
+                          <input
+                            id="ninja-input-8954"
+                            name="email"
+                            type="email"
+                            class="nui-input"
+                            placeholder="Email Address"
+                            value
+                          />
+                          <!---->
+                          <!---->
+                          <div class="nui-input-icon">
+                            <!--[--><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              aria-hidden="true"
+                              role="img"
+                              class="icon nui-input-icon-inner"
+                              style=""
+                              width="1em"
+                              height="1em"
+                              viewBox="0 0 256 256"
+                              data-v-7663d7ec
+                            >
+                              <g fill="currentColor">
+                                <path
+                                  d="M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96"
+                                  opacity=".2"
+                                />
+                                <path
+                                  d="M128 24a104 104 0 0 0 0 208c21.51 0 44.1-6.48 60.43-17.33a8 8 0 0 0-8.86-13.33C166 210.38 146.21 216 128 216a88 88 0 1 1 88-88c0 26.45-10.88 32-20 32s-20-5.55-20-32V88a8 8 0 0 0-16 0v4.26a48 48 0 1 0 5.93 65.1c6 12 16.35 18.64 30.07 18.64c22.54 0 36-17.94 36-48A104.11 104.11 0 0 0 128 24m0 136a32 32 0 1 1 32-32a32 32 0 0 1-32 32"
+                                />
+                              </g>
+                            </svg>
+                            <!--]-->
+                          </div>
+                          <!--[-->
+                          <!--]-->
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+                    <!--]-->
+                    <!--[-->
+                    <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon">
+                            <!---->
+                            <div class="nui-input-outer">
+                                <div>
+                                <input
+                                    id="ninja-input-8953"
+                                    name="department"
+                                    type="text"
+                                    class="nui-input"
+                                    placeholder="Department"
+                                    value=""
+                                    style="padding-inline-start: 1rem;"
+                                />
+                                <!---->
+                                <!---->
+                                <div class="nui-input-icon">
+                                   
+                                </div>
+                                <!--[-->
+                                <!--]-->
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                    <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon">
+                            <!---->
+                            <div class="nui-input-outer">
+                                <div>
+                                <input
+                                    id="ninja-input-8953"
+                                    name="rollno"
+                                    type="text"
+                                    class="nui-input"
+                                    placeholder="Roll no."
+                                    value=""
+                                    style="padding-inline-start: 1rem;"
+                                />
+                                <!---->
+                                <!---->
+                                <div class="nui-input-icon">
+                                   
+                                </div>
+                                <!--[-->
+                                <!--]-->
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                    <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon">
+                            <!---->
+                            <div class="nui-input-outer">
+                                <div>
+                                <input
+                                    id="ninja-input-8953"
+                                    name="phone"
+                                    type="text"
+                                    class="nui-input"
+                                    placeholder="Phone no."
+                                    value=""
+                                    style="padding-inline-start: 1rem;"
+                                />
+                                <!---->
+                                <!---->
+                                <div class="nui-input-icon">
+                                   
+                                </div>
+                                <!--[-->
+                                <!--]-->
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+
+
+                    <div class="group/password-strength relative">
+                      <!---->
+                      <div
+                        class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                      >
+                        <!---->
+                        <div class="nui-input-outer">
+                          <div>
+                            <input
+                              id="ninja-input-8955"
+                              name="password"
+                              type="password"
+                              class="nui-input !pe-12"
+                              placeholder="Password"
+                              value
+                            />
+                            <!---->
+                            <!---->
+                            <div class="nui-input-icon">
+                              <!--[--><svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true"
+                                role="img"
+                                class="icon nui-input-icon-inner"
+                                style=""
+                                width="1em"
+                                height="1em"
+                                viewBox="0 0 256 256"
+                                data-v-7663d7ec
+                              >
+                                <g fill="currentColor">
+                                  <path
+                                    d="M216 96v112a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V96a8 8 0 0 1 8-8h160a8 8 0 0 1 8 8"
+                                    opacity=".2"
+                                  />
+                                  <path
+                                    d="M208 80h-32V56a48 48 0 0 0-96 0v24H48a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16M96 56a32 32 0 0 1 64 0v24H96Zm112 152H48V96h160zm-68-56a12 12 0 1 1-12-12a12 12 0 0 1 12 12"
+                                  />
+                                </g>
+                              </svg>
+                              <!--]-->
+                            </div>
+                            <!--[-->
+                            <!--[-->
+                            <!--]-->
+                          </div>
+                          <!---->
+                        </div>
+                      </div>
+                    </div>
+                    <!--]-->
+                    <!--[-->
+                    <div
+                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                    >
+                      <!---->
+                      <div class="nui-input-outer">
+                        <div>
+                          <input
+                            id="ninja-input-8956"
+                            name="password1"
+                            type="password"
+                            class="nui-input"
+                            placeholder="Confirm password"
+                            value
+                          />
+                          <!---->
+                          <!---->
+                          <div class="nui-input-icon">
+                            <!--[--><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              aria-hidden="true"
+                              role="img"
+                              class="icon nui-input-icon-inner"
+                              style=""
+                              width="1em"
+                              height="1em"
+                              viewBox="0 0 256 256"
+                              data-v-7663d7ec
+                            >
+                              <path
+                                fill="currentColor"
+                                d="m229.66 77.66l-128 128a8 8 0 0 1-11.32 0l-56-56a8 8 0 0 1 11.32-11.32L96 188.69L218.34 66.34a8 8 0 0 1 11.32 11.32"
+                              />
+                            </svg>
+                            <!--]-->
+                          </div>
+                          <!--[-->
+                          <!--]-->
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+                    <!--]-->
+                  </div>
+                  <button
+                    type="submit"
+                    rel
+                    target
+                    class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary !h-11 w-full"
+                  >
+                    <!--[-->
+                    Create Account
+                    <!--]--><!---->
+                  </button>
+                  <p
+                    class="text-muted-400 mt-4 flex justify-between font-sans text-sm leading-5"
+                  >
+                    <span>Have an account?</span
+                    ><a
+                      href="/login"
+                      class="text-primary-600 hover:text-primary-500 font-medium underline-offset-4 transition duration-150 ease-in-out hover:underline focus:underline focus:outline-none"
+                    >
+                      Login here
+                    </a>
+                  </p>
+                </form>
+                        </p>
+                        </div>
+                        <div class="hidden opacity-0" id="organiser" role="tabpanel">
+                        <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
+                            <form
+                  method="POST"
+                  action="/register/organiser"
+                  class="mx-auto w-full max-w-xs"
+                  novalidate
+                >
+                  
+                  
+                  <div class="mb-4 space-y-3">
+                    <!--[-->
+                    <div
+                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                    >
+                      <!---->
+                      <div class="nui-input-outer">
+                        <div>
+                          <input
+                            id="ninja-input-8953"
+                            name="Name"
+                            type="text"
+                            class="nui-input"
+                            placeholder="Full Name"
+                            value=""
+                          />
+                          <!---->
+                          <!---->
+                          <div class="nui-input-icon">
+                            <!--[--><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              aria-hidden="true"
+                              role="img"
+                              class="icon nui-input-icon-inner"
+                              style=""
+                              width="1em"
+                              height="1em"
+                              viewBox="0 0 256 256"
+                              data-v-7663d7ec
+                            >
+                              <g fill="currentColor">
+                                <path
+                                  d="M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96"
+                                  opacity=".2"
+                                />
+                                <path
+                                  d="M72 128a134.63 134.63 0 0 1-14.16 60.47a8 8 0 1 1-14.32-7.12A118.8 118.8 0 0 0 56 128a71.73 71.73 0 0 1 27-56.2a8 8 0 1 1 10 12.49A55.76 55.76 0 0 0 72 128m56-8a8 8 0 0 0-8 8a184.12 184.12 0 0 1-23 89.1a8 8 0 0 0 14 7.76A200.19 200.19 0 0 0 136 128a8 8 0 0 0-8-8m0-32a40 40 0 0 0-40 40a8 8 0 0 0 16 0a24 24 0 0 1 48 0a214.09 214.09 0 0 1-20.51 92a8 8 0 1 0 14.51 6.83A230 230 0 0 0 168 128a40 40 0 0 0-40-40m0-64A104.11 104.11 0 0 0 24 128a87.76 87.76 0 0 1-5 29.33a8 8 0 0 0 15.09 5.33A103.9 103.9 0 0 0 40 128a88 88 0 0 1 176 0a282.24 282.24 0 0 1-5.29 54.45a8 8 0 0 0 6.3 9.4a8.22 8.22 0 0 0 1.55.15a8 8 0 0 0 7.84-6.45A298.37 298.37 0 0 0 232 128A104.12 104.12 0 0 0 128 24M94.4 152.17a8 8 0 0 0-9.4 6.25a151 151 0 0 1-17.21 45.44a8 8 0 0 0 13.86 8a166.67 166.67 0 0 0 19-50.25a8 8 0 0 0-6.25-9.44M128 56a72.85 72.85 0 0 0-9 .56a8 8 0 0 0 2 15.87A56.08 56.08 0 0 1 184 128a252.12 252.12 0 0 1-1.92 31a8 8 0 0 0 6.92 9a8.39 8.39 0 0 0 1 .06a8 8 0 0 0 7.92-7a266.48 266.48 0 0 0 2-33A72.08 72.08 0 0 0 128 56m57.93 128.25a8 8 0 0 0-9.75 5.75c-1.46 5.69-3.15 11.4-5 17a8 8 0 0 0 5 10.13a7.88 7.88 0 0 0 2.55.42a8 8 0 0 0 7.58-5.46c2-5.92 3.79-12 5.35-18.05a8 8 0 0 0-5.72-9.78Z"
+                                />
+                              </g>
+                            </svg>
+                            <!--]-->
+                          </div>
+                          <!--[-->
+                          <!--]-->
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+                    <!--]-->
+                    <!--[-->
+                    <div
+                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                    >
+                      <!---->
+                      <div class="nui-input-outer">
+                        <div>
+                          <input
+                            id="ninja-input-8954"
+                            name="email"
+                            type="email"
+                            class="nui-input"
+                            placeholder="Email Address"
+                            value
+                          />
+                          <!---->
+                          <!---->
+                          <div class="nui-input-icon">
+                            <!--[--><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              aria-hidden="true"
+                              role="img"
+                              class="icon nui-input-icon-inner"
+                              style=""
+                              width="1em"
+                              height="1em"
+                              viewBox="0 0 256 256"
+                              data-v-7663d7ec
+                            >
+                              <g fill="currentColor">
+                                <path
+                                  d="M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96"
+                                  opacity=".2"
+                                />
+                                <path
+                                  d="M128 24a104 104 0 0 0 0 208c21.51 0 44.1-6.48 60.43-17.33a8 8 0 0 0-8.86-13.33C166 210.38 146.21 216 128 216a88 88 0 1 1 88-88c0 26.45-10.88 32-20 32s-20-5.55-20-32V88a8 8 0 0 0-16 0v4.26a48 48 0 1 0 5.93 65.1c6 12 16.35 18.64 30.07 18.64c22.54 0 36-17.94 36-48A104.11 104.11 0 0 0 128 24m0 136a32 32 0 1 1 32-32a32 32 0 0 1-32 32"
+                                />
+                              </g>
+                            </svg>
+                            <!--]-->
+                          </div>
+                          <!--[-->
+                          <!--]-->
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+                    <!--]-->
+                    <!--[-->
+                    <div class="group/password-strength relative">
+                      <!---->
+                      <div
+                        class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                      >
+                        <!---->
+                        <div class="nui-input-outer">
+                          <div>
+                            <input
+                              id="ninja-input-8955"
+                              name="password"
+                              type="password"
+                              class="nui-input !pe-12"
+                              placeholder="Password"
+                              value
+                            />
+                            <!---->
+                            <!---->
+                            <div class="nui-input-icon">
+                              <!--[--><svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true"
+                                role="img"
+                                class="icon nui-input-icon-inner"
+                                style=""
+                                width="1em"
+                                height="1em"
+                                viewBox="0 0 256 256"
+                                data-v-7663d7ec
+                              >
+                                <g fill="currentColor">
+                                  <path
+                                    d="M216 96v112a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V96a8 8 0 0 1 8-8h160a8 8 0 0 1 8 8"
+                                    opacity=".2"
+                                  />
+                                  <path
+                                    d="M208 80h-32V56a48 48 0 0 0-96 0v24H48a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16M96 56a32 32 0 0 1 64 0v24H96Zm112 152H48V96h160zm-68-56a12 12 0 1 1-12-12a12 12 0 0 1 12 12"
+                                  />
+                                </g>
+                              </svg>
+                              <!--]-->
+                            </div>
+                            <!--[-->
+                            <!--[-->
+                            <!--]-->
+                          </div>
+                          <!---->
+                        </div>
+                      </div>
+                    </div>
+                    <!--]-->
+                    <!--[-->
+                    <div
+                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                    >
+                      <!---->
+                      <div class="nui-input-outer">
+                        <div>
+                          <input
+                            id="ninja-input-8956"
+                            name="password1"
+                            type="password"
+                            class="nui-input"
+                            placeholder="Confirm password"
+                            value
+                          />
+                          <!---->
+                          <!---->
+                          <div class="nui-input-icon">
+                            <!--[--><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              aria-hidden="true"
+                              role="img"
+                              class="icon nui-input-icon-inner"
+                              style=""
+                              width="1em"
+                              height="1em"
+                              viewBox="0 0 256 256"
+                              data-v-7663d7ec
+                            >
+                              <path
+                                fill="currentColor"
+                                d="m229.66 77.66l-128 128a8 8 0 0 1-11.32 0l-56-56a8 8 0 0 1 11.32-11.32L96 188.69L218.34 66.34a8 8 0 0 1 11.32 11.32"
+                              />
+                            </svg>
+                            <!--]-->
+                          </div>
+                          <!--[-->
+                          <!--]-->
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+                    <!--]-->
+                  </div>
+                  <button
+                    type="submit"
+                    rel
+                    target
+                    class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary !h-11 w-full"
+                  >
+                    <!--[-->
+                    Create Account
+                    <!--]--><!---->
+                  </button>
+                  <p
+                    class="text-muted-400 mt-4 flex justify-between font-sans text-sm leading-5"
+                  >
+                    <span>Have an account?</span
+                    ><a
+                      href="/login"
+                      class="text-primary-600 hover:text-primary-500 font-medium underline-offset-4 transition duration-150 ease-in-out hover:underline focus:underline focus:outline-none"
+                    >
+                      Login here
+                    </a>
+                  </p>
+                </form>
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                  <p
+                    class="nui-text nui-content-sm nui-weight-normal nui-lead-normal text-muted-400"
+                  >
+                    <!--]-->
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!--]-->
+            <div>
+              <!---->
+              <div
+                role="button"
+                tabindex="0"
+                class="opacity-0 pointer-events-none bg-muted-800/60 fixed start-0 top-0 z-[99] size-full cursor-pointer transition-opacity duration-300"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
+  </body>
+</html>

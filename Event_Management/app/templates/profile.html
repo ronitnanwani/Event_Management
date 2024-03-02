@@ -1,0 +1,779 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="bg-muted-100 dark:bg-muted-900 relative min-h-screen w-full overflow-x-hidden px-4 transition-all duration-300 xl:px-10 xl:max-w-[calc(100%_-_300px)] xl:ms-[300px]"
+>
+  <div class="mx-auto w-full max-w-7xl">
+    <!--[-->
+    <div class="relative z-[1] mb-5 flex h-16 items-center gap-2">
+      <button
+        type="button"
+        class="flex size-10 items-center justify-center -ms-3"
+      >
+        <div class="scale-90 relative size-5">
+          <span
+            class="-rotate-45 rtl:rotate-45 max-w-[75%] top-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"
+          ></span
+          ><span
+            class="opacity-0 translate-x-4 rtl:-translate-x-4 bg-primary-500 absolute top-1/2 block h-0.5 w-full max-w-[50%] transition-all duration-300"
+          ></span
+          ><span
+            class="rotate-45 rtl:-rotate-45 max-w-[75%] bottom-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"
+          ></span>
+        </div>
+      </button>
+      <h1
+        class="nui-heading nui-heading-2xl nui-weight-light nui-lead-normal text-muted-800 hidden md:block dark:text-white"
+      >
+        <!--[-->
+        <!--[-->Profile
+   
+      </h1>
+      <div class="ms-auto"></div>
+      <div class="flex items-center gap-2 h-16">
+
+        <!--]-->
+        <!--[--><button
+          type="button"
+          class="border-muted-200 hover:ring-muted-200 dark:hover:ring-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:ring-offset-muted-900 flex size-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4"
+        >
+          <img
+            class="size-7 rounded-full"
+            src="/img/icons/flags/united-states-of-america.svg"
+            alt="flag icon"
+          />
+        </button>
+        <!--]-->
+        <!--[-->
+        <div class="group inline-flex items-center justify-center text-right">
+          <div data-headlessui-state class="relative size-9 text-left">
+            <div
+              id="headlessui-menu-button-19336"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              data-headlessui-state
+            >
+              <button
+                type="button"
+                class="group-hover:ring-muted-200 dark:group-hover:ring-muted-700 dark:ring-offset-muted-900 inline-flex size-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4"
+              >
+                <span
+                  class="border-muted-200 dark:border-muted-700 dark:bg-muted-800 flex size-9 items-center justify-center rounded-full border bg-white"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    aria-hidden="true"
+                    role="img"
+                    class="icon text-muted-400 size-5"
+                    style=""
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 256 256"
+                    data-v-7663d7ec
+                  >
+                    <g fill="currentColor">
+                      <path
+                        d="M208 192H48a8 8 0 0 1-6.88-12C47.71 168.6 56 139.81 56 104a72 72 0 0 1 144 0c0 35.82 8.3 64.6 14.9 76a8 8 0 0 1-6.9 12"
+                        opacity=".2"
+                      />
+                      <path
+                        d="M221.8 175.94c-5.55-9.56-13.8-36.61-13.8-71.94a80 80 0 1 0-160 0c0 35.34-8.26 62.38-13.81 71.94A16 16 0 0 0 48 200h40.81a40 40 0 0 0 78.38 0H208a16 16 0 0 0 13.8-24.06M128 216a24 24 0 0 1-22.62-16h45.24A24 24 0 0 1 128 216m-80-32c7.7-13.24 16-43.92 16-80a64 64 0 1 1 128 0c0 36.05 8.28 66.73 16 80Z"
+                      />
+                    </g></svg
+                ></span>
+              </button>
+            </div>
+            <!---->
+          </div>
+        </div>
+        <!--]-->
+        <!--[--><button
+          type="button"
+          class="border-muted-200 hover:ring-muted-200 dark:hover:ring-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:ring-offset-muted-900 flex size-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="icon text-muted-400 size-5"
+            style=""
+            width="1em"
+            height="1em"
+            viewBox="0 0 256 256"
+            data-v-7663d7ec
+          >
+            <g fill="currentColor">
+              <path
+                d="M112 80a32 32 0 1 1-32-32a32 32 0 0 1 32 32m64 32a32 32 0 1 0-32-32a32 32 0 0 0 32 32m-96 32a32 32 0 1 0 32 32a32 32 0 0 0-32-32m96 0a32 32 0 1 0 32 32a32 32 0 0 0-32-32"
+                opacity=".2"
+              />
+              <path
+                d="M80 40a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96 16a40 40 0 1 0-40-40a40 40 0 0 0 40 40m0-64a24 24 0 1 1-24 24a24 24 0 0 1 24-24m-96 80a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96-64a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24"
+              />
+            </g>
+          </svg>
+        </button>
+        <!--]-->
+        <!--[-->
+        <div class="group inline-flex items-center justify-center text-right">
+          <div data-headlessui-state class="relative size-9 text-left">
+            <button
+              class="group-hover:ring-primary-500 dark:ring-offset-muted-900 inline-flex size-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4"
+              id="headlessui-menu-button-19338"
+              aria-haspopup="menu"
+              aria-expanded="false"
+              data-headlessui-state
+            >
+              <div
+                class="relative inline-flex size-9 items-center justify-center rounded-full"
+              >
+                <img
+                  src="/img/avatars/2.svg"
+                  class="max-w-full rounded-full object-cover shadow-sm dark:border-transparent"
+                  alt
+                />
+              </div>
+            </button>
+            <!---->
+          </div>
+        </div>
+        <!--]-->
+        <!--]-->
+      </div>
+    </div>
+    <!--]-->
+    <main>
+      <!--[-->
+      <!--[-->
+      <div
+        class="nuxt-loading-indicator"
+        style="
+          position: fixed;
+          top: 0;
+          right: 0;
+          left: 0;
+          pointer-events: none;
+          width: auto;
+          height: 3px;
+          opacity: 0;
+          background: rgb(var(--color-primary-500));
+          background-size: Infinity% auto;
+          transform: scaleX(0%);
+          transform-origin: left;
+          transition: transform 0.1s, height 0.4s, opacity 0.4s;
+          z-index: 999999;
+        "
+      ></div>
+      <div>
+        <div class="mx-auto w-full max-w-5xl">
+          <div class="relative w-full">
+            <div class="absolute end-0 top-2 z-20">
+              <div class="nui-dropdown z-20" data-v-84945349>
+                <div data-headlessui-state class="nui-menu" data-v-84945349>
+                  <!--[--><button
+                    class="nui-context-button nui-focus"
+                    id="headlessui-menu-button-19340"
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                    data-headlessui-state
+                    data-v-84945349
+                    data-v-84945349
+                  >
+                    <span class="nui-context-button-inner" data-v-84945349
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon nui-context-icon"
+                        data-v-84945349
+                        style=""
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                        data-v-7663d7ec
+                      >
+                        <g
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        >
+                          <circle cx="12" cy="12" r="1" />
+                          <circle cx="19" cy="12" r="1" />
+                          <circle cx="5" cy="12" r="1" />
+                        </g></svg
+                    ></span>
+                  </button>
+                  <div
+                    class=""
+                    style="position: absolute; left: 0; top: 0; z-index: 20"
+                  >
+                    <!---->
+                  </div>
+                  <!--]-->
+                </div>
+              </div>
+            </div>
+            <div class="flex w-full flex-col">
+              <div class="nui-avatar nui-avatar-2xl nui-avatar-full mx-auto">
+                <div class="nui-avatar-inner">
+                  <!--[--><img
+                    src="/img/avatars/2.svg"
+                    class="nui-avatar-full nui-avatar-img"
+                  />
+                  <!---->
+                  <!---->
+                  <!--]-->
+                </div>
+                <div class="nui-avatar-badge">
+                  <!--[--><img
+                    src="/img/icons/flags/united-states-of-america.svg"
+                    class="nui-badge-img"
+                    alt=""
+                  />
+                  <!--]-->
+                </div>
+                <!---->
+              </div>
+              <div class="mx-auto w-full max-w-md text-center">
+                <p
+                  class="nui-heading nui-heading-xl nui-weight-medium nui-lead-normal mt-4"
+                  tag="h2"
+                >
+                  <!--[-->Chinmay Rocks
+                  <!--]-->
+                </p>
+                <p
+                  class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-400 mb-3 mt-1"
+                >
+                  <!--[-->I am a bla bla bl, i doi dsa dasdas dasd sad saf
+                  fdsgfassjasjklcxcvhjcsdn fsdj f fedsfbsadohifyasd
+                  <!--]-->
+                </p>
+                <div
+                  class="divide-muted-200 dark:divide-muted-800 flex items-center justify-center divide-x"
+                >
+                  <div class="text-muted-400 flex h-8 items-center gap-1 px-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      aria-hidden="true"
+                      role="img"
+                      class="icon size-5"
+                      style=""
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 256 256"
+                      data-v-7663d7ec
+                    >
+                      <g fill="currentColor">
+                        <path
+                          d="M128 112a36 36 0 1 1 36-36a36 36 0 0 1-36 36m60 24a36 36 0 1 0 36 36a36 36 0 0 0-36-36m-120 0a36 36 0 1 0 36 36a36 36 0 0 0-36-36"
+                          opacity=".2"
+                        />
+                        <path
+                          d="M172 76a44 44 0 1 0-44 44a44.05 44.05 0 0 0 44-44m-44 28a28 28 0 1 1 28-28a28 28 0 0 1-28 28m60 24a44 44 0 1 0 44 44a44.05 44.05 0 0 0-44-44m0 72a28 28 0 1 1 28-28a28 28 0 0 1-28 28M68 128a44 44 0 1 0 44 44a44.05 44.05 0 0 0-44-44m0 72a28 28 0 1 1 28-28a28 28 0 0 1-28 28"
+                        />
+                      </g>
+                    </svg>
+                    <p
+                      class="nui-text nui-content-sm nui-weight-normal nui-lead-normal"
+                    >
+                      <!--[-->10+ Events Volunteered
+                      <!--]-->
+                    </p>
+                  </div>
+                  <div
+                    class="text-muted-400 hidden h-8 items-center gap-1 px-4 sm:flex"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      aria-hidden="true"
+                      role="img"
+                      class="icon size-5"
+                      style=""
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 256 256"
+                      data-v-7663d7ec
+                    >
+                      <g fill="currentColor">
+                        <path
+                          d="M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96"
+                          opacity=".2"
+                        />
+                        <path
+                          d="M173.66 98.34a8 8 0 0 1 0 11.32l-56 56a8 8 0 0 1-11.32 0l-24-24a8 8 0 0 1 11.32-11.32L112 148.69l50.34-50.35a8 8 0 0 1 11.32 0M232 128A104 104 0 1 1 128 24a104.11 104.11 0 0 1 104 104m-16 0a88 88 0 1 0-88 88a88.1 88.1 0 0 0 88-88"
+                        />
+                      </g>
+                    </svg>
+                    <p
+                      class="nui-text nui-content-sm nui-weight-normal nui-lead-normal"
+                    >
+                      <!--[-->59 Events Participation
+                      <!--]-->
+                    </p>
+                  </div>
+                  <div class="flex h-8 items-center gap-2 px-4">
+                    <!--[--><a
+                      href="https://facebook.com"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      class="border-muted-200 hover:border-primary-500 dark:border-muted-700 dark:hover:border-primary-500 dark:bg-muted-800 text-muted-400 hover:text-primary-500 flex size-8 items-center justify-center rounded-full border bg-white transition-colors duration-300"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-3"
+                        style=""
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 320 512"
+                        data-v-7663d7ec
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M80 299.3V512h116V299.3h86.5l18-97.8H196v-34.6c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4.4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8z"
+                        /></svg
+                      ><span class="sr-only">facebook</span></a
+                    >
+                    <a
+                      href="https://twitter.com"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      class="border-muted-200 hover:border-primary-500 dark:border-muted-700 dark:hover:border-primary-500 dark:bg-muted-800 text-muted-400 hover:text-primary-500 flex size-8 items-center justify-center rounded-full border bg-white transition-colors duration-300"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-3"
+                        style=""
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 512 512"
+                        data-v-7663d7ec
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M459.37 151.716c.325 4.548.325 9.097.325 13.645c0 138.72-105.583 298.558-298.558 298.558c-59.452 0-114.68-17.219-161.137-47.106c8.447.974 16.568 1.299 25.34 1.299c49.055 0 94.213-16.568 130.274-44.832c-46.132-.975-84.792-31.188-98.112-72.772c6.498.974 12.995 1.624 19.818 1.624c9.421 0 18.843-1.3 27.614-3.573c-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319c-28.264-18.843-46.781-51.005-46.781-87.391c0-19.492 5.197-37.36 14.294-52.954c51.655 63.675 129.3 105.258 216.365 109.807c-1.624-7.797-2.599-15.918-2.599-24.04c0-57.828 46.782-104.934 104.934-104.934c30.213 0 57.502 12.67 76.67 33.137c23.715-4.548 46.456-13.32 66.599-25.34c-7.798 24.366-24.366 44.833-46.132 57.827c21.117-2.273 41.584-8.122 60.426-16.243c-14.292 20.791-32.161 39.308-52.628 54.253"
+                        />
+                      </svg>
+                      <span class="sr-only">twitter</span> </a
+                    ><a
+                      href="https://linkedin.com"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      class="border-muted-200 hover:border-primary-500 dark:border-muted-700 dark:hover:border-primary-500 dark:bg-muted-800 text-muted-400 hover:text-primary-500 flex size-8 items-center justify-center rounded-full border bg-white transition-colors duration-300"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true"
+                        role="img"
+                        class="icon size-3"
+                        style=""
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 448 512"
+                        data-v-7663d7ec
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3M447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2c-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3c94 0 111.28 61.9 111.28 142.3V448z"
+                        /></svg
+                      ><span class="sr-only">linkedin</span></a
+                    >
+                    <!--]-->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 grid grid-cols-12 gap-6">
+              <div class="col-span-12 sm:col-span-8">
+                <div class="flex flex-col gap-6">
+                  <div class="nui-card nui-card-rounded nui-card-white p-8">
+                    <!--[-->
+                    <div
+                      class="border-muted-200 dark:border-muted-700 border-b pb-8"
+                    >
+                      <div class="mb-4 flex items-center gap-2">
+                        <h4
+                          class="text-muted-400 font-sans text-xs font-semibold uppercase"
+                        >
+                          About me
+                        </h4>
+                      </div>
+                      <div class="relative">
+                        <p
+                          class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-500 dark:text-muted-400"
+                        >
+                          <!--[-->Lorem ipsum dolor sit amet, consectetur
+                          adipiscing elit. Falli igitur possumus. Praeteritis,
+                          inquit, gaudeo. Duo Reges: constructio interrete.
+                          Idemne, quod iucunde? Quis enim redargueret? Non
+                          semper, inquam; Quid nunc honeste dicit? Eam tum
+                          adesse, cum dolor omnis absit; Negat enim summo bono
+                          afferre incrementum diem.
+                          <!--]-->
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="border-muted-200 dark:border-muted-700 border-b py-8"
+                    >
+                      <div class="mb-8 flex items-center gap-2">
+                        <h4
+                          class="text-muted-400 font-sans text-xs font-semibold uppercase"
+                        >
+                          Registered Competitions
+                        </h4>
+                      </div>
+                      <div class="grid gap-x-4 gap-y-8 sm:grid-cols-2">
+                        <!--[-->
+                        {% for event in events %}
+                        <div class="flex w-full items-center gap-2">
+                          <img
+                            src="/img/logos/brands/github.svg"
+                            alt="{{event.name}}"
+                            class="border-muted-200 dark:border-muted-600 dark:bg-muted-700 max-w-[50px] rounded-full border bg-white"
+                          />
+                          <div>
+                            <p
+                              class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
+                              tag="h3"
+                            >
+                            {{event.name}}
+                            </p>
+                            <p
+                              class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
+                            >
+                              <!--[--><span>{{event.date}}</span>
+                              <!--]-->
+                            </p>
+                            <p
+                              class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-primary-500"
+                            >
+                              <!--[--><span>{{event.category}}</span>
+                              <!--]-->
+                            </p>
+                          </div>
+                        </div>
+                      {% endfor %}
+                        <!--]-->
+                      </div>
+                    </div>
+                 
+                    <div class="py-8">
+                      <div class="mb-8 flex items-center gap-2">
+                        <h4
+                          class="text-muted-400 font-sans text-xs font-semibold uppercase"
+                        >
+                          Volunteered
+                        </h4>
+                      </div>
+                      <div class="space-y-8">
+                        <!--[-->
+                        {% for event in volunteered %}
+                        <div class="flex w-full items-center gap-2">
+                          
+                          <div>
+                            <p
+                              class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
+                              tag="h3"
+                            >
+                              <!--[-->{{event.name}}
+                              <!--]-->
+                            </p>
+                            <p
+                              class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
+                            >
+                              <!--[--><span>{{event.completed_tasks}}/{{event.allotted_tasks}}</span>
+                              <!--]-->
+                            </p>
+                          </div>
+                          
+                        </div>
+                       {% endfor %}
+                        <!--]-->
+                      </div>
+                    </div>
+                  
+                    <!--]-->
+                  </div>
+                 
+                </div>
+              </div>
+              <div class="col-span-12 sm:col-span-4">
+                <div class="flex flex-col gap-6">
+                  <div class="nui-card nui-card-rounded nui-card-white p-8">
+                    <!--[-->
+                    <div class="mb-8 flex items-center gap-2">
+                      <h4
+                        class="text-muted-400 font-sans text-xs font-semibold uppercase"
+                      >
+                        Notifications
+                      </h4>
+                      
+                    </div>
+                    <div>
+                      <p
+                        class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
+                      >
+                        <!--[-->Enable or disable this setting to manage if your
+                        network should be notified when you make changes to your
+                        profile.
+                        <!--]-->
+                      </p>
+                    </div>
+                    <!--]-->
+                  </div>
+                  <div class="nui-card nui-card-rounded nui-card-white p-8">
+                    <!--[-->
+                    <div class="mb-8 flex items-center gap-2">
+                      <h4
+                        class="text-muted-400 font-sans text-xs font-semibold uppercase"
+                      >
+                      Details
+                      </h4>
+                    </div>
+                    <div class="space-y-6">
+                      <!--[-->
+                      <div class="flex w-full items-center gap-2">
+                       
+                        <div>
+                          <p
+                            class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
+                            tag="h3"
+                          >
+                          Department: {{dept}}
+                            <!--]-->
+                          </p>
+                          
+                        </div>
+                      </div>
+                      
+                      <!--]-->
+                    </div>
+                    <!--]-->
+                  </div>
+                  <div class="nui-card nui-card-rounded nui-card-white p-8">
+                    <!--[-->
+                    <div class="mb-8 flex items-center gap-2">
+                      <h4
+                        class="text-muted-400 font-sans text-xs font-semibold uppercase"
+                      >
+                      Accomodation and Food
+                      </h4>
+                    </div>
+                    <div class="space-y-6">
+                      <!--[-->
+                      <div class="flex w-full items-center gap-2">
+                        
+                        <div>
+                          <p
+                            class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
+                            tag="h3"
+                          >
+                          Premium Accomodation
+                            <!--]-->
+                          </p>
+                          <p
+                            class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
+                          >
+                            <!--[--><span>3 Nights/4 Days</span>
+                            <!--]-->
+                          </p>
+                        </div>
+                        <div class="ms-auto">
+                          <a
+                            aria-current="page"
+                            href="/layouts/profile#"
+                            class="router-link-active router-link-exact-active nui-button-icon nui-button-full nui-button-small nui-button-default"
+                            rel
+                            data-nui-tooltip="View Profile"
+                          >
+                            <!--[--><svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              aria-hidden="true"
+                              role="img"
+                              class="icon size-4"
+                              style=""
+                              width="1em"
+                              height="1em"
+                              viewBox="0 0 24 24"
+                              data-v-7663d7ec
+                            >
+                              <path
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5 12h14m-7-7l7 7l-7 7"
+                              />
+                            </svg>
+                            <!--]-->
+                          </a>
+                        </div>
+                      </div>
+
+                      <!--]-->
+                    </div>
+                    <!--]-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--]-->
+      <!--]-->
+    </main>
+  </div>
+</div>
+<div>
+  <!---->
+  <div
+    role="button"
+    tabindex="0"
+    class="opacity-0 pointer-events-none bg-muted-800/60 fixed start-0 top-0 z-[99] size-full cursor-pointer transition-opacity duration-300"
+  ></div>
+</div>
+<div
+  class="after:bg-primary-600 after:shadow-primary-500/50 dark:after:shadow-muted-800/10 fixed end-[1em] top-[0.6em] z-[90] transition-transform duration-300 after:absolute after:end-0 after:top-0 after:block after:size-12 after:rounded-full after:shadow-lg after:transition-transform after:duration-300 after:content-[&#39;&#39;] -translate-y-24"
+>
+  <button
+    type="button"
+    class="bg-primary-500 shadow-primary-500/50 dark:shadow-muted-800/10 relative z-30 flex size-12 items-center justify-center rounded-full text-white shadow-lg"
+  >
+    <span class="-top-0.5 relative block size-3 transition-all duration-300"
+      ><span
+        class="top-0.5 bg-muted-50 absolute block h-0.5 w-full transition-all duration-300"
+      ></span
+      ><span
+        class="bg-muted-50 absolute top-1/2 block h-0.5 w-full transition-all duration-300"
+      ></span
+      ><span
+        class="bottom-0 bg-muted-50 absolute block h-0.5 w-full transition-all duration-300"
+      ></span
+    ></span>
+  </button>
+  <div>
+    <!--[-->
+    <!--[-->
+    <div
+      class="translate-x-0 translate-y-0 absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300"
+    >
+      <label class="nui-theme-toggle nui-theme-toggle-inverted ms-auto"
+        ><input type="checkbox" class="nui-theme-toggle-input" /><span
+          class="nui-theme-toggle-inner"
+          ><svg aria-hidden="true" viewbox="0 0 24 24" class="nui-sun">
+            <g fill="currentColor" stroke="currentColor" class="stroke-2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <path
+                d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+              ></path>
+            </g></svg
+          ><svg aria-hidden="true" viewbox="0 0 24 24" class="nui-moon">
+            <path
+              fill="currentColor"
+              stroke="currentColor"
+              d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              class="stroke-2"
+            ></path></svg></span
+      ></label>
+    </div>
+    <!--]-->
+    <!--[-->
+    <div
+      class="translate-x-0 translate-y-0 absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300"
+    >
+      <button
+        type="button"
+        class="bg-primary-700 flex size-9 items-center justify-center rounded-full transition-all duration-300"
+      >
+        <img
+          class="size-7 rounded-full"
+          src="/img/icons/flags/united-states-of-america.svg"
+          alt="flag icon"
+        />
+      </button>
+    </div>
+    <!--]-->
+    <!--[-->
+    <div
+      class="translate-x-0 translate-y-0 absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300"
+    >
+      <a
+        aria-current="page"
+        href="/layouts/profile#"
+        class="router-link-active router-link-exact-active inline-flex size-9 items-center justify-center rounded-full transition-all duration-300"
+        ><span
+          class="bg-primary-700 flex size-9 items-center justify-center rounded-full"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="icon size-5 text-white"
+            style=""
+            width="1em"
+            height="1em"
+            viewBox="0 0 256 256"
+            data-v-7663d7ec
+          >
+            <g fill="currentColor">
+              <path
+                d="M208 192H48a8 8 0 0 1-6.88-12C47.71 168.6 56 139.81 56 104a72 72 0 0 1 144 0c0 35.82 8.3 64.6 14.9 76a8 8 0 0 1-6.9 12"
+                opacity=".2"
+              />
+              <path
+                d="M221.8 175.94c-5.55-9.56-13.8-36.61-13.8-71.94a80 80 0 1 0-160 0c0 35.34-8.26 62.38-13.81 71.94A16 16 0 0 0 48 200h40.81a40 40 0 0 0 78.38 0H208a16 16 0 0 0 13.8-24.06M128 216a24 24 0 0 1-22.62-16h45.24A24 24 0 0 1 128 216m-80-32c7.7-13.24 16-43.92 16-80a64 64 0 1 1 128 0c0 36.05 8.28 66.73 16 80Z"
+              />
+            </g></svg></span
+      ></a>
+    </div>
+    <!--]-->
+    <!--[-->
+    <div
+      class="translate-x-0 translate-y-0 absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300"
+    >
+      <button
+        type="button"
+        class="bg-primary-700 flex size-9 items-center justify-center rounded-full transition-all duration-300"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          aria-hidden="true"
+          role="img"
+          class="icon size-5 text-white"
+          style=""
+          width="1em"
+          height="1em"
+          viewBox="0 0 256 256"
+          data-v-7663d7ec
+        >
+          <g fill="currentColor">
+            <path
+              d="M112 80a32 32 0 1 1-32-32a32 32 0 0 1 32 32m64 32a32 32 0 1 0-32-32a32 32 0 0 0 32 32m-96 32a32 32 0 1 0 32 32a32 32 0 0 0-32-32m96 0a32 32 0 1 0 32 32a32 32 0 0 0-32-32"
+              opacity=".2"
+            />
+            <path
+              d="M80 40a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96 16a40 40 0 1 0-40-40a40 40 0 0 0 40 40m0-64a24 24 0 1 1-24 24a24 24 0 0 1 24-24m-96 80a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24m96-64a40 40 0 1 0 40 40a40 40 0 0 0-40-40m0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24"
+            />
+          </g>
+        </svg>
+      </button>
+    </div>
+    <!--]-->
+    <!--]-->
+  </div>
+</div>
+{% endblock %}

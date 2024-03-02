@@ -1,4 +1,4 @@
-from backend import connection,cursor
+from Event_Management.backend import connection,cursor
 
 def insert_participant(name, college_name, phone_number, email, password):
     try:
