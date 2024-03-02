@@ -1,8 +1,6 @@
-import psycopg2
 from flask import Flask, request, jsonify
-from database import *
-
-app = Flask(__name__)
+import psycopg2
+from Event_Management.Event_Management.database import *
 
 try:
     connection = psycopg2.connect(
@@ -14,6 +12,8 @@ try:
     cursor = connection.cursor()
 except Exception as err:
     print(f"Error: {err}") 
+app = Flask(__name__)
+
 
 @app.route('/create_participant', methods=['POST'])
 def create_participant():
@@ -24,7 +24,6 @@ def create_participant():
         email = info.get('email')
         password = info.get('password')
         success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, password)
-                
         if success:
             return jsonify({"message": "Participant added successfully"}), 201
         else:
@@ -33,12 +32,17 @@ def create_participant():
 
 @app.route('/create_event/<int:o_id>', methods=['POST'])
 def create_event(o_id):
-    info=request.json
-    date_and_time = info.get('date_and_time')
+    info = request.json
+    date_time = info.get('date_and_time')
     name = info.get('name')
+    type = info.get('type_event')
     description = info.get('description')
+    prize = info.get('prize')
     venue = info.get('venue')
-    success, error = insert_event(connection,cursor,date_and_time, name, description, venue,o_id)
+    tags = info.get('tags')
+    tags = tags.split(',')
+
+    success, error = insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags)
     if success:
         return jsonify({"message": "Event added successfully"}), 201
     else:
