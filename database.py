@@ -17,7 +17,7 @@ def insert_event(connection,cursor,date_time,name,description,venue,o_id):
         cursor.execute("SELECT COALESCE(MAX(e_id), 0) + 1 FROM event")
         e_id = cursor.fetchone()[0]
 
-        cursor.execute("INSERT INTO event (e_id, date_and_time, name, description, first, second, third, venue) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+        cursor.execute("INSERT INTO event (e_id, date_and_time, name, description, first, second, third, venue,tags) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                     (e_id, date_time, name, description, None, None, None, venue))
         connection.commit()
         
