@@ -10,6 +10,20 @@ def establish_connection():
         )
     return connection
 
+def sample_data():
+    try:
+        connection = establish_connection()
+        cursor = connection.cursor()
+        if connection:
+            query = "INSERT INTO student (roll_no,dept,name,phone_number,email,password) VALUES (%s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (1, "CSE", "Aman", "1234567890", "hii@gmail.com", "123456"))
+            cursor.execute(query, (2, "MAE", "Suman", "1234897890", "bye@gmail.com", "456789"))
+            cursor.execute(query, (3, "ECE", "Raman", "9765409834", "hello@gmail.com", "789012"))
+
+    except Exception as err:
+        connection.rollback()
+        print(f"Error: {err}")
+
 def main():
     try:
         connection = establish_connection()
