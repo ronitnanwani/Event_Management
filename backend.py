@@ -1,17 +1,16 @@
 import psycopg2
 from flask import Flask, request, jsonify
-from Event_Management.database import *
+from database import *
 
 app = Flask(__name__)
 
 try:
     connection = psycopg2.connect(
-        user = "postgres",
-        password = "pass@1234",
-        host = "localhost",
-        database = "event_management",
-        port = "5435"
-    )
+        user = "21CS30043",
+        password = "21CS30043",
+        host = "10.5.18.71",
+        database = "21CS30043"
+        )
     cursor = connection.cursor()
 except Exception as err:
     print(f"Error: {err}") 
@@ -123,9 +122,17 @@ def create_food():
         return jsonify({"error": error}), 500
 
 
-
+@app.route('/create_task_for_volunteer', methods=['POST'])
 def create_task_for_volunteer():
-    pass
+    info = request.json
+    roll_no = info.get('roll_no')
+    description = info.get('description')
+
+    success, error = insert_task(connection,cursor,roll_no,description)
+    if success:
+        return jsonify({"message": "Task added successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
 
 
 
@@ -135,7 +142,7 @@ def fetch_accomodation_plans():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No accomodation plans Available"}), 201
+            return jsonify({"message": "No accomodation plans Available"}), 402
         
         plan_list = []
         for plan in rows:
@@ -156,7 +163,7 @@ def fetch_accomodation_plans_org():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No accomodation plans Available"}), 201
+            return jsonify({"message": "No accomodation plans Available"}), 402
         
         plan_list = []
         for plan in rows:
@@ -179,7 +186,7 @@ def fetch_food_plans():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No food plans Available"}), 201
+            return jsonify({"message": "No food plans Available"}), 402
         
         plan_list = []
         for plan in rows:
@@ -201,7 +208,7 @@ def fetch_food_plans_org():
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No food plans Available"}), 201
+            return jsonify({"message": "No food plans Available"}), 402
         
         plan_list = []
         for plan in rows:
@@ -226,6 +233,62 @@ def fetch_events():
     if success:
         
         if len(rows)==0:
+            return jsonify({"message": "No events Available"}), 402
+        
+        event_list = []
+        for event in rows:
+            event_dict = {
+                'e_id': event[0],
+                'date_and_time': str(event[1]),
+                'name': event[2],
+                'description': event[3],
+                'first': event[4],
+                'second': event[5],
+                'third': event[6],
+                'venue': event[7],
+                'tags' : event[8]
+            }
+            event_list.append(event_dict)
+        return jsonify({"message": event_list}), 201
+    else:
+        return jsonify({"error": rows}), 500
+    
+
+
+@app.route('/event_volunteers/<int:e_id>', methods=['GET'])
+def fetch_volunteers_of_event(e_id):
+    success, rows = fetch_all_volunteers_of_event(connection,cursor,e_id)
+    
+    if success:
+        
+        if len(rows)==0:
+            return jsonify({"message": "No volunteers for this event"}), 402
+        
+        volunteers_list = []
+        for row in rows:
+            volunteer_dict = {
+                'roll_no': row[0],
+                'name': row[1],
+                'dept': row[2],
+                'phone_number': row[3],
+                'email': row[4]
+            }
+            volunteers_list.append(volunteer_dict)
+
+        return jsonify({"message": volunteers_list}), 201
+    else:
+        return jsonify({"error": rows}), 500
+
+
+# Fetch events with given array of tags from the get request
+@app.route('/fetch_events_by_tags/<string:tags>', methods=['GET'])
+def fetch_events_by_tags(tags):
+    tags = tags.split(',')
+    success, rows = fetch_events_by_tags(connection,cursor,tags)
+    
+    if success:
+        
+        if len(rows)==0:
             return jsonify({"message": "No events Available"}), 201
         
         event_list = []
@@ -244,32 +307,7 @@ def fetch_events():
         return jsonify({"message": event_list}), 201
     else:
         return jsonify({"error": rows}), 500
-    
 
-
-@app.route('/event_volunteers/<int:e_id>', methods=['GET'])
-def fetch_volunteers_of_event(e_id):
-    success, rows = fetch_all_volunteers_of_event(connection,cursor,e_id)
-    
-    if success:
-        
-        if len(rows)==0:
-            return jsonify({"message": "No volunteers for this event"}), 201
-        
-        volunteers_list = []
-        for row in rows:
-            volunteer_dict = {
-                'roll_no': row[0],
-                'name': row[1],
-                'dept': row[2],
-                'phone_number': row[3],
-                'email': row[4]
-            }
-            volunteers_list.append(volunteer_dict)
-
-        return jsonify({"message": volunteers_list}), 201
-    else:
-        return jsonify({"error": rows}), 500
 
 
 @app.route('/organiser_events/<int:o_id>', methods=['GET'])
@@ -279,7 +317,7 @@ def fetch_events_of_organiser(o_id):
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "No events organised by you"}), 201
+            return jsonify({"message": "No events organised by you"}), 402
         
         events_list = []
         for row in rows:
@@ -302,7 +340,7 @@ def fetch_events_of_volunteer(roll_no):
     if success:
         
         if len(rows)==0:
-            return jsonify({"message": "You have not volunteered for any events"}), 201
+            return jsonify({"message": "You have not volunteered for any events"}), 402
         
         events_list = []
         for row in rows:
@@ -326,7 +364,7 @@ def fetch_events_of_participant(type_of_p,id):
         if success:
             
             if len(rows)==0:
-                return jsonify({"message": "You have not registered for any events"}), 201
+                return jsonify({"message": "You have not registered for any events"}), 402
             
             events_list = []
             for row in rows:
@@ -347,7 +385,7 @@ def fetch_events_of_participant(type_of_p,id):
         if success:
             
             if len(rows)==0:
-                return jsonify({"message": "You have not registered for any events"}), 201
+                return jsonify({"message": "You have not registered for any events"}), 402
             
             events_list = []
             for row in rows:
@@ -367,8 +405,23 @@ def fetch_events_of_participant(type_of_p,id):
         return jsonify({'error','No such type of registrant'}), 500
 
 
-def fetch_tasks_for_volunteer():
-    pass
+# Fetch all the tasks given the roll no of the volunteer
+@app.route('/fetch_volunter_tasks/<int:roll_no>', methods=['GET'])
+def fetch_volunter_tasks(roll_no):
+    success, rows = fetch_task_of_volunter(connection,cursor,roll_no)
+    
+    if success:
+        
+        if len(rows)==0:
+            return jsonify({"message": "No tasks assigned"}), 201
+        
+        tasks_list = []
+        for row in rows:
+            tasks_list.append(row[0])
+        return jsonify({"message": tasks_list}), 201
+    
+    else:
+        return jsonify({"error": rows}), 500
 
 
 @app.route('/register_for_event', methods=['POST'])
@@ -440,6 +493,7 @@ def update_event():
         return jsonify({"message": "Event updated"}), 201
     else:
         return jsonify({"error": error}), 500
+
 
 def create_trigger1():
     try:

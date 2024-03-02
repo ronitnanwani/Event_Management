@@ -3,21 +3,34 @@ import psycopg2
 def establish_connection():
     #establishing the connection with the database and returning the connection object
     connection = psycopg2.connect(
-        user = "postgres",
-        password = "pass@1234",
-        host = "localhost",
-        database = "event_management",
-        port = "5435"
+        user = "21CS30043",
+        password = "21CS30043",
+        host = "10.5.18.71",
+        database = "21CS30043"
         )
     return connection
+
+def sample_data():
+    try:
+        connection = establish_connection()
+        cursor = connection.cursor()
+        if connection:
+            query = "INSERT INTO student (roll_no,dept,name,phone_number,email,password) VALUES (%s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (1, "CSE", "Aman", "1234567890", "hii@gmail.com", "123456"))
+            cursor.execute(query, (2, "MAE", "Suman", "1234897890", "bye@gmail.com", "456789"))
+            cursor.execute(query, (3, "ECE", "Raman", "9765409834", "hello@gmail.com", "789012"))
+
+    except Exception as err:
+        connection.rollback()
+        print(f"Error: {err}")
 
 def main():
     try:
         connection = establish_connection()
         cursor = connection.cursor()        
         if connection:
-            # query = "drop table accomodation, food, participant, student, event, event_has_volunteer, event_has_tag, organiser, event_has_organiser, dbadmin, event_has_participant, notifications, tasks;"
-            # cursor.execute(query)
+            query = "drop table accomodation, food, participant, student, event, event_has_volunteer, event_has_tag, organiser, event_has_organiser, dbadmin, event_has_participant, notifications, tasks;"
+            cursor.execute(query)
             
             query = """
                 create table accomodation(
@@ -25,6 +38,7 @@ def main():
                     price int,
                     days int,
                     name varchar(50),
+                    description text,
                     num_of_participants int
                 );
             """
@@ -56,7 +70,7 @@ def main():
                     acc_id int,
                     food_id int,
                     foreign key (acc_id) references accomodation(acc_id),
-                    foreign  key (food_id) references food(food_id)
+                    foreign key (food_id) references food(food_id)
                 );
             """
             cursor.execute(query)
@@ -80,10 +94,12 @@ def main():
                     e_id int primary key,
                     date_and_time timestamp,
                     name varchar(50),
+                    type_event varchar(50),
                     description text,
                     first int,
                     second int,
                     third int,
+                    prize int,
                     venue varchar(100)
                 );
             """
@@ -105,7 +121,7 @@ def main():
                 create table event_has_tag(
                     e_id int references event(e_id),
                     tag varchar(50),
-                    primary key (e_id)
+                    primary key (e_id,tag)
                 );
             """
             
@@ -118,7 +134,8 @@ def main():
                     email varchar(255),
                     password varchar(50),
                     name varchar(50),
-                    phone_number char(10)
+                    phone_number char(10),
+                    can_create int
                 );
             """
             
@@ -172,8 +189,10 @@ def main():
             
             query = """
                 create table tasks(
-                    roll_no int,
-                    task_description text
+                    task_description text,
+                    e_id int references event(e_id), roll_no int references
+                    student(roll_no), primary key (e_id,roll_no,task_description),
+                    is_complete int
                 );
             """
             
