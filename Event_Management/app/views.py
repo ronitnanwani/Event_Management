@@ -94,8 +94,9 @@ def loginParticipant():
         
         # Check if the username and password match
         if True:
+            return jsonify({'success':True,'user':{}})
             # Authentication successful, redirect to a protected page
-            return redirect(url_for('app_views.dashboardParticipant'))
+            # return redirect(url_for('app_views.dashboardParticipant'))
         else:
             # Authentication failed, render the login form with an error message
             return render_template('login.html', error='Invalid username or password')
