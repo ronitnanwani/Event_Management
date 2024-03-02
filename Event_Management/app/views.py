@@ -1,4 +1,8 @@
 from . import *
+from .__init__ import connection,cursor
+
+from Event_Management.database import *
+
 app_views = Blueprint('app_views', __name__)
 
 @app_views.route('/')
@@ -174,21 +178,29 @@ def registerStudent():
 @app_views.route('/register/participant', methods=['POST'])
 def registerParticipant():
     if request.method == 'POST':
-        username = request.form['email']
+        email = request.form['email']
         password = request.form['password']
-        
         # Check if the username already exists
         user_exist=False
         if user_exist:
             return render_template('signup.html', error='User already exists')
+            # If username doesn't exist, add the user to the database
+        info=request.form
+        print(info)
+        name = info.get('name')
+        college_name = info.get('college_name')
+        phone_number = info.get('phone')
+        email = info.get('email')
+        password = info.get('password')
         
-        # If username doesn't exist, add the user to the database
-        
+        success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, password)
         # Registration successful, redirect to login page
-        return redirect(url_for('app_views.loginUser'))
+        print(success,error)
+        if success:
+            return redirect(url_for('app_views.loginUser'))
     
     # If GET request, render the registration form
-    return render_template('signup.html', error=None)   
+    return render_template('signup.html', error=error)   
 
  
 @app_views.route('/add-organiser')
