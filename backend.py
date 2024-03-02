@@ -33,12 +33,17 @@ def create_participant():
 
 @app.route('/create_event/<int:o_id>', methods=['POST'])
 def create_event(o_id):
-    info=request.json
-    date_and_time = info.get('date_and_time')
+    info = request.json
+    date_time = info.get('date_and_time')
     name = info.get('name')
+    type = info.get('type_event')
     description = info.get('description')
+    prize = info.get('prize')
     venue = info.get('venue')
-    success, error = insert_event(connection,cursor,date_and_time, name, description, venue,o_id)
+    tags = info.get('tags')
+    tags = tags.split(',')
+
+    success, error = insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags)
     if success:
         return jsonify({"message": "Event added successfully"}), 201
     else:
