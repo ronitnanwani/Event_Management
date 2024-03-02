@@ -298,4 +298,38 @@ def check_duplicate_username_participant(connection,cursor,email):
         
         return True,exists
     except Exception as e:
+        return False,str(e)     
+   
+def check_duplicate_username_student(connection,cursor,email):
+    try:
+        query = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM student
+                WHERE email = %s
+            );
+        """
+
+        cursor.execute(query, (email,))
+        exists = cursor.fetchone()[0]
+        
+        return True,exists
+    except Exception as e:
+        return False,str(e) 
+       
+def check_duplicate_username_organiser(connection,cursor,email):
+    try:
+        query = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM organiser
+                WHERE email = %s
+            );
+        """
+        
+        cursor.execute(query, (email,))
+        exists = cursor.fetchone()[0]
+        
+        return True,exists
+    except Exception as e:
         return False,str(e)        
