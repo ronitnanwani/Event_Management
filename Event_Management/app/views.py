@@ -42,7 +42,9 @@ def eventDetails(id):
         
         ]
     organiser={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('eventDetails.html', name='events',event=events[0],organiser=organiser)
+    user={"name":"Smarak K.","num_tasks_allotted":50,"num_tasks_completed":20}
+    
+    return render_template('eventDetails.html', name='events',event=events[0],organiser=organiser,user=user)
 
 @app_views.route('/volunteers')
 def getVolunteers():
