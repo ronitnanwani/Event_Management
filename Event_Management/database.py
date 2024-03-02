@@ -12,17 +12,18 @@ def insert_participant(connection,cursor,name, college_name, phone_number, email
         return False, str(e)
     
 
-def insert_event(connection,cursor,date_time,name,description,venue,o_id):
+def insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags):
     try:
         cursor.execute("SELECT COALESCE(MAX(e_id), 0) + 1 FROM event")
         e_id = cursor.fetchone()[0]
 
-        cursor.execute("INSERT INTO event (e_id, date_and_time, name, description, first, second, third, venue,tags) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (e_id, date_time, name, description, None, None, None, venue))
-        connection.commit()
+        cursor.execute("INSERT INTO event (e_id, date_and_time, name, type_event, description, first, second, third, prize, venue) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (e_id, date_time, name,type,description,None,None,None,prize,venue))
         
-        cursor.execute("INSERT INTO event_has_organiser (e_id,o_id) VALUES (%s,%s)",
-                       (e_id,o_id))
+        cursor.execute("INSERT INTO event_has_organiser (e_id, o_id) VALUES (%s, %s)", (e_id, o_id))
+
+        for tag in tags:
+            cursor.execute("INSERT INTO event_has_tag (e_id, tag) VALUES (%s, %s)", (e_id, tag))
         connection.commit()
         
         return True, None
@@ -281,3 +282,54 @@ def fetch_task_of_volunter(connection,cursor,roll_no):
     except Exception as e:
         connection.rollback()
         return False, str(e)
+    
+def check_duplicate_username_participant(connection,cursor,email):
+    try:
+        query = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM participant
+                WHERE email = %s
+            );
+        """
+
+        cursor.execute(query, (email,))
+        exists = cursor.fetchone()[0]
+        
+        return True,exists
+    except Exception as e:
+        return False,str(e)     
+   
+def check_duplicate_username_student(connection,cursor,email):
+    try:
+        query = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM student
+                WHERE email = %s
+            );
+        """
+
+        cursor.execute(query, (email,))
+        exists = cursor.fetchone()[0]
+        
+        return True,exists
+    except Exception as e:
+        return False,str(e) 
+       
+def check_duplicate_username_organiser(connection,cursor,email):
+    try:
+        query = """
+            SELECT EXISTS (
+                SELECT 1
+                FROM organiser
+                WHERE email = %s
+            );
+        """
+        
+        cursor.execute(query, (email,))
+        exists = cursor.fetchone()[0]
+        
+        return True,exists
+    except Exception as e:
+        return False,str(e)        
