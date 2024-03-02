@@ -41,7 +41,7 @@ def eventDetails(id):
         {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
         
         ]
-    organiser={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
+    organiser={"name":"Smarak K.","role":"Events Head","email":"adjahs@g.co","phone":92309123912,"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
     user={"name":"Smarak K.","num_tasks_allotted":50,"num_tasks_completed":20}
     
     return render_template('eventDetails.html', name='events',event=events[0],organiser=organiser,user=user)
@@ -204,7 +204,24 @@ def facilities():
 @app_views.route('/plans')
 def plans():
     profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('plancards.html',events=[])
+    accomodations=[
+        {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+        {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+        {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+        {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+                   ]
+    food=[
+        {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+        {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+        {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+        {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+                   ]
+    facilities=[
+        {"title":"Bus Service","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+        {"title":"Toto Booking","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+        {"title":"Campus Tour","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+                   ]
+    return render_template('plancards.html',accomodations=accomodations,food=food,facilities=facilities)
 
 # Dashboards--------------------------
 @app_views.route('/dashboard/student')
