@@ -1,5 +1,5 @@
 from . import *
-from .__init__ import connection,cursor
+# from .__init__ import connection,cursor
 
 from Event_Management.database import *
 
@@ -20,21 +20,13 @@ def getEvents():
         
         ]
     return render_template('events.html', name='events',events=events)
-@app_views.route('/add-event')
+@app_views.route('/add-event', methods=['GET','POST'])
 def addEvent():
-    events=[
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
+    if request.method == 'POST':
         
-        ]
-    
-    info = request.form
-    print(info)
-    return render_template('addEvent.html', name='events',events=events)
+        # Check if the username already exists
+        return redirect(url_for('app_views.dashboardAdmin'))
+    return render_template('addEvent.html', name='events')
 
 @app_views.route('/event/<int:id>')
 def eventDetails(id):
