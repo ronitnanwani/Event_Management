@@ -283,10 +283,11 @@ def fetch_completed_tasks_of_student(connection,cursor,roll_no):
 def fetch_alloted_tasks_of_student(connection,cursor,roll_no):
     try:
         cursor.execute("""
-            SELECT task_description, is_complete
+            SELECT task_description, is_complete, e_id
             FROM tasks
             WHERE roll_no = %s
         """, (roll_no,))
+        
         rows=cursor.fetchall()
         return True,rows
     except Exception as e:
@@ -553,15 +554,18 @@ def fetch_event_for_filter(connection,cursor,tags):
 
 
 def fetch_organiser_of_event(connection,cursor,e_id):
-        cursor.execute("""
-            SELECT o.name,phone_number
-            FROM event e
-            JOIN event_has_organiser eo ON e.e_id = eo.e_id
-            JOIN organiser o ON eo.o_id = o.o_id
-            WHERE e.e_id = %s
-            LIMIT 1
-        """, (e_id,))
-        
-        organiser_details = cursor.fetchone() if cursor.rowcount > 0 else None
-        print(organiser_details)
-        return True,organiser_details
+    cursor.execute("""
+        SELECT o.name,phone_number
+        FROM event e
+        JOIN event_has_organiser eo ON e.e_id = eo.e_id
+        JOIN organiser o ON eo.o_id = o.o_id
+        WHERE e.e_id = %s
+        LIMIT 1
+    """, (e_id,))
+    
+    organiser_details = cursor.fetchone() if cursor.rowcount > 0 else None
+    print(organiser_details)
+    return True,organiser_details
+    
+# def delete_from_db(connection,cursor,id):
+#     pass
