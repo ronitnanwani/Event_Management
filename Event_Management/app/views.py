@@ -212,7 +212,7 @@ class User(UserMixin):
             return []
         
     @property
-    def num_events_organsied(self):
+    def num_events_organised(self):
         if self.utype=="student":
             return 0
         if self.utype=="participant":

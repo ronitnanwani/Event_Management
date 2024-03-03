@@ -184,15 +184,15 @@
                       class="nui-heading nui-heading-3xl nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
                     >
                       <span>
-                        {{total_tasks}}
-                        <small class="text-base font-medium">Tasks</small></span
+                        {{ user.num_events_organised }}
+                        <small class="text-base font-medium"></small></span
                       >
                     </h3>
                     <p
                       class="nui-paragraph nui-paragraph-md nui-weight-normal nui-lead-normal"
                     >
                       <span class="text-muted-400 text-sm">
-                        Are currently pending
+                        Events needs attention
                       </span>
                     </p>
                   </div>
@@ -263,7 +263,7 @@
                   </a>
                 </div>
                 <div class="space-y-6">
-                  {% for event in myevents %}
+                  {% for event in user.events_organised %}
                   <div class="flex items-center gap-4">
                     <div>
                       <h4
