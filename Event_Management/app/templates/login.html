@@ -87,6 +87,17 @@
                                 <span class="ml-1">Organiser</span>
                             </a>
                             </li>
+                            <li class="z-30 flex-auto text-center">
+                            <a
+                                class="z-30 flex items-center justify-center w-full px-0 py-1 mb-0 transition-all ease-in-out border-0 rounded-lg cursor-pointer text-slate-700 bg-inherit"
+                                data-tab-target=""
+                                role="tab"
+                                aria-selected="false"
+                                aria-controls="admin"
+                            >
+                                <span class="ml-1">Admin</span>
+                            </a>
+                            </li>
                             </ul>
                             <div data-tab-content="" class="p-5">
                             <div class="block opacity-100" id="participant" role="tabpanel">
@@ -143,6 +154,8 @@
                                         <div class="mt-6">
                                             <div class="block w-full rounded-md shadow-sm"><button type="submit" rel target class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary !h-11 w-full"><!--[--> Sign in <!--]--><!----></button></div>
                                         </div>
+                                            <input value="Participant" name="ftype" type="text" class="nui-input h-12" style="display:none" >
+
                                     </form>
                                 </div>
                             </p>
@@ -202,6 +215,8 @@
                                         <div class="mt-6">
                                             <div class="block w-full rounded-md shadow-sm"><button type="submit" rel target class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary !h-11 w-full"><!--[--> Sign in <!--]--><!----></button></div>
                                         </div>
+                                        <input value="Student" name="ftype" type="text" class="nui-input h-12" style="display:none" >
+
                                     </form>
                                 </div>
                             </p>
@@ -261,6 +276,68 @@
                                         <div class="mt-6">
                                             <div class="block w-full rounded-md shadow-sm"><button type="submit" rel target class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary !h-11 w-full"><!--[--> Sign in <!--]--><!----></button></div>
                                         </div>
+                                                    <input value="Organiser" name="ftype" type="text" class="nui-input h-12" style="display:none" >
+
+                                    </form>
+                                </div>
+                            </p>
+                            </div>
+                            <div class="hidden opacity-0" id="admin" role="tabpanel">
+                            <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
+                               <div class="mt-3">
+                                    <p class="text-slate-600">Login to manage the database</p>
+
+                                    <form method="POST" action="/login" class="mt-6" novalidate>
+                                        <div class="space-y-4">
+                                            <!--[-->
+                                            <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved"><label for="ninja-input-8645" class="nui-input-label"><!--[-->Email address<!--]--></label>
+                                                <div class="nui-input-outer">
+                                                    <div><input id="ninja-input-8645" name="email" type="email" class="nui-input h-12" placeholder="Email address" value>
+                                                        <!---->
+                                                        <!---->
+                                                        <!---->
+                                                        <!--[-->
+                                                        <!--]-->
+                                                    </div>
+                                                    <!---->
+                                                </div>
+                                            </div>
+                                            <!--]-->
+                                            <!--[-->
+                                            <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved"><label for="ninja-input-8646" class="nui-input-label"><!--[-->Password<!--]--></label>
+                                                <div class="nui-input-outer">
+                                                    <div><input id="ninja-input-8646" name="password" type="password" class="nui-input h-12" placeholder="Password" value>
+                                                        <!---->
+                                                        <!---->
+                                                        <!---->
+                                                        <!--[-->
+                                                        <!--]-->
+                                                    </div>
+                                                    <!---->
+                                                </div>
+                                            </div>
+                                            <!--]-->
+                                        </div>
+                                        <div class="mt-6 flex items-center justify-between">
+                                            <!--[-->
+                                            <div class="nui-checkbox nui-checkbox-curved nui-checkbox-primary">
+                                                <div class="nui-checkbox-outer"><input id="ninja-input-8647" true-value="true" false-value="false" class="nui-checkbox-input" name="trust" type="checkbox">
+                                                    <div class="nui-checkbox-inner"></div><svg aria-hidden="true" viewbox="0 0 17 12" class="nui-icon-check"><path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path></svg>
+                                                    <svg
+                                                        aria-hidden="true" viewbox="0 0 24 24" class="nui-icon-indeterminate">
+                                                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M2 12h20"></path>
+                                                        </svg>
+                                                </div>
+                                                <div class="nui-checkbox-label-wrapper"><label for="ninja-input-8647" class="nui-checkbox-label-text"><!--[-->Trust for 60 days<!--]--></label>
+                                                    <!---->
+                                                </div>
+                                            </div>
+                                            <!--]-->
+                                        </div>
+                                        <div class="mt-6">
+                                            <div class="block w-full rounded-md shadow-sm"><button type="submit" rel target class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary !h-11 w-full"><!--[--> Sign in <!--]--><!----></button></div>
+                                        </div>
+                                        <input value="Admin" name="ftype" type="text" class="nui-input h-12" style="display:none" >
                                     </form>
                                 </div>
                             </p>

@@ -362,7 +362,7 @@ def eventDetails(id):
     for accomodation in accomodations:
         accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4],"days":accomodation[2],"id":accomodation[0]})
     
-    all_participants = get_participants_of_event(id)
+    all_participants = get_participants_of_event(connection,cursor,id)
     
 
     dt_object = datetime.fromisoformat(str(rows[0][1]))
@@ -384,7 +384,7 @@ def eventDetails(id):
             if(item["e_id"]==rows[0][0]):
                 is_volunteered=True
                 break
-    is_organiser=True
+    is_organiser=False
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
     for item in details:
         if(item[0]==current_user.email):
@@ -516,12 +516,13 @@ def loginUser():
         if request.method == 'POST':
             email = request.form['email']
             password = request.form['password']
+            ftype = request.form['ftype']
             print("cur",current_user)
             # Check if the username and password match
             user_dict=check_user_type(connection,cursor,email)
             utype=user_dict["utype"]
             if utype=="Anonymous":
-                return redirect(url_for("signup"))
+                return redirect(url_for("app_views.registerUser"))
             elif utype=="Participant":
                 success, row = check_participant_login(connection,cursor,email,password)       
             elif utype=="Student":
@@ -529,14 +530,13 @@ def loginUser():
             elif utype=="Organiser":
                 success, row = check_organiser_login(connection,cursor,email,password)
             # elif utype=="Admin":
-                # success, row = check_admin_login(connection,cursor,email,password)
+            #     success, row = check_admin_login(connection,cursor,email,password)
             
                 
             if success:
                 print("here")
                 user = load_user(user_dict["data"]["email"])
                 print("here",user)
- 
                 login_user(user)
                 return redirect(url_for("app_views.dashboard"))
 
