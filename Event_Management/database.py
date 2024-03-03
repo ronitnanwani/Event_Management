@@ -273,7 +273,7 @@ def fetch_completed_tasks_of_student(connection,cursor,roll_no):
         cursor.execute("""
             SELECT task_description,is_complete
             FROM tasks
-            WHERE roll_no = %s && is_complete = 1
+            WHERE roll_no = %s and is_complete = 1
         """, (roll_no,))
         rows=cursor.fetchall()
         return True,rows
