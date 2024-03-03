@@ -136,7 +136,7 @@ def fetch_all_events(connection,cursor):
     
 def fetch_event_details(connection,cursor,e_id):
     try:
-        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue FROM event where e_id = %s",(e_id,))
+        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p FROM event where e_id = %s",(e_id,))
         rows = cursor.fetchall()
         print(rows)
         return True,rows
@@ -409,7 +409,7 @@ def check_user_type(connection,cursor,email):
             "phone_number": student_data[3],
             "email": student_data[4]
         }
-        return {"utype":"Student","data":student_dict}
+        return {"utype":"Student","id":student_data[0],"data":student_dict}
 
     cursor.execute(("SELECT p_id,name,college_name,phone_number,email,acc_id,food_id FROM participant WHERE email=%s"), (email,))
     participant_data = cursor.fetchone()
@@ -423,7 +423,7 @@ def check_user_type(connection,cursor,email):
             "acc_id": participant_data[5],
             "food_id": participant_data[6]
         }
-        return {"utype":"Participant","data":participant_dict}
+        return {"utype":"Participant","id":participant_data[0],"data":participant_dict}
 
     cursor.execute(("SELECT o_id,email,name,phone_number,can_create FROM organiser WHERE email=%s"), (email,))
     organiser_data = cursor.fetchone()
@@ -435,7 +435,7 @@ def check_user_type(connection,cursor,email):
             "phone_number": organiser_data[3],
             "can_create": organiser_data[4]
         }
-        return {"utype":"Organiser","data":organiser_dict}
+        return {"utype":"Organiser","id":organiser_data[0],"data":organiser_dict}
 
     cursor.execute(("SELECT email FROM db_admin WHERE email=%s"), (email,))
     dbadmin_data = cursor.fetchone()
@@ -446,3 +446,21 @@ def check_user_type(connection,cursor,email):
         return {"utype":"Admin","data":dbadmin_dict}
 
     return {"utype":"Anonymous","data":None}
+
+
+def fetch_event_for_filter(connection,cursor,tags):
+    query = """
+        SELECT e.e_id, e.date_and_time, e.name, e.type_event, e.description, e.first,
+               e.second, e.third, e.prize, e.venue, e.num_p
+        FROM event e
+        JOIN event_has_tag t ON e.e_id = t.e_id
+        WHERE t.tag IN %s
+        GROUP BY e.e_id
+        HAVING COUNT(DISTINCT t.tag) = %s
+    """
+
+    # Execute the query
+    cursor.execute(query, (tuple(tags), len(tags)))
+    events_data = cursor.fetchall()
+    
+    return events_data
