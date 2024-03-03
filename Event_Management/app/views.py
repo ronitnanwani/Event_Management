@@ -275,7 +275,7 @@ class User(UserMixin):
 
 @app_views.route('/')
 def index():
-    return render_template('test.html', name='orld')
+            return redirect(url_for("app_views.dashboard"))
 @app_views.route('/events')
 def getEvents():
     # events=[
@@ -1106,7 +1106,7 @@ def dashboardAdmin():
 def participantEvents():
     # profile={"name":"Smarak K.","phone":9323232323,"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
 
-    return render_template('schedule.html',events=current_user.events_registered)
+    return render_template('schedule.html',user=current_user,events=current_user.events_registered)
 
 
 @app_views.route('/add_task/<int:e_id>', methods=['GET','POST'])
