@@ -386,11 +386,11 @@ def registerStudent():
             email = request.form['email']
             password = request.form['password']
             # Check if the username already exists
-            user_dict=check_user_type(connection,cursor,email)
-            utype=user_dict["utype"]
+            # user_dict=check_user_type(connection,cursor,email)
+            # utype=user_dict["utype"]
 
-            if utype!="Anonymous":
-                    return redirect(url_for("app_views.dashboard"))
+            # if utype!="Anonymous":
+            #         return redirect(url_for("app_views.dashboard"))
 
             print(request.form)
             info = request.form
