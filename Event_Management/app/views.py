@@ -10,7 +10,8 @@ class User(UserMixin):
     def __init__(self, email):
         # fetch user
         user=check_user_type(connection,cursor,email)
-        print("user",user,email)
+        
+        # print("user",user,email)
         if(user.get("utype")!="Anonymous"):
             self.authenticated=True
             data=user["data"]
@@ -77,6 +78,7 @@ class User(UserMixin):
             tasks_list=[]
             for task in reg:
                 tasks_list.append({"description":task[0],"is_complete":task[1]})
+            print("List of tasks ",tasks_list)
             return tasks_list
         if self.utype=="participant":
             return []
@@ -428,72 +430,72 @@ def loginUser():
 
     return render_template('login.html',events=[])
 
-@app_views.route('/login/participant', methods=['POST'])
-def loginParticipant():
-    from Event_Management import load_user
-    try:
-        if request.method == 'POST':
-            email = request.form['email']
-            password = request.form['password']
-            print("cur",current_user)
-            # Check if the username and password match
-            user_dict=check_user_type(email)
-            utype=user_dict["utype"]
-            if utype!="Participant":
-                return redirect(url_for("loginUser"))
-            success, row = check_participant_login(connection,cursor,email,password)
-            if success:
-                user_dict={"name":"name","id":row[0],"utype":"participant"}
-                user = load_user(user_dict["data"]["p_id"])
-                # login_user(user)
-                # user={"user":row,"is_active":True}
-                # print(type(row),row,user)
-                login_user(user_dict["data"])
-                return redirect(url_for("app_views.dashboardParticipant"))
+# @app_views.route('/login/participant', methods=['POST'])
+# def loginParticipant():
+#     from Event_Management import load_user
+#     try:
+#         if request.method == 'POST':
+#             email = request.form['email']
+#             password = request.form['password']
+#             print("cur",current_user)
+#             # Check if the username and password match
+#             user_dict=check_user_type(email)
+#             utype=user_dict["utype"]
+#             if utype!="Participant":
+#                 return redirect(url_for("loginUser"))
+#             success, row = check_participant_login(connection,cursor,email,password)
+#             if success:
+#                 user_dict={"name":"name","id":row[0],"utype":"participant"}
+#                 user = load_user(user_dict["data"]["p_id"])
+#                 # login_user(user)
+#                 # user={"user":row,"is_active":True}
+#                 # print(type(row),row,user)
+#                 login_user(user_dict["data"])
+#                 return redirect(url_for("app_views.dashboardParticipant"))
 
-            else:
-                # Authentication failed, render the login form with an error message
-                return render_template('login.html', error='Invalid username or password')
-    except Exception as e:
-            print(str(e))
-            return render_template('login.html', error=str(e))
+#             else:
+#                 # Authentication failed, render the login form with an error message
+#                 return render_template('login.html', error='Invalid username or password')
+#     except Exception as e:
+#             print(str(e))
+#             return render_template('login.html', error=str(e))
 
          
-@app_views.route('/login/student', methods=['POST'])
-def loginStudent():
-    if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
+# @app_views.route('/login/student', methods=['POST'])
+# def loginStudent():
+#     if request.method == 'POST':
+#         username = request.form['email']
+#         password = request.form['password']
         
-        # Check if the username and password match
-        if True:
-            return jsonify({'success':True,'user':{},'utype':'Participant'})
+#         # Check if the username and password match
+#         if True:
+#             return jsonify({'success':True,'user':{},'utype':'Participant'})
 
-        success, row = check_student_login(connection,cursor,username,password)
-        if success:
-            # Authentication successful, redirect to a protected page
-            return redirect(url_for('app_views.dashboardStudent'))
-        else:
-            # Authentication failed, render the login form with an error message
-            return render_template('login.html', error='Invalid username or password')
+#         success, row = check_student_login(connection,cursor,username,password)
+#         if success:
+#             # Authentication successful, redirect to a protected page
+#             return redirect(url_for('app_views.dashboardStudent'))
+#         else:
+#             # Authentication failed, render the login form with an error message
+#             return render_template('login.html', error='Invalid username or password')
     
-@app_views.route('/login/organiser', methods=['POST'])
-def loginOrganiser():
-    if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
+# @app_views.route('/login/organiser', methods=['POST'])
+# def loginOrganiser():
+#     if request.method == 'POST':
+#         username = request.form['email']
+#         password = request.form['password']
 
-        print(request.form)
+#         print(request.form)
 
-        success, row = check_organiser_login(connection,cursor,username,password)
+#         success, row = check_organiser_login(connection,cursor,username,password)
         
-        # Check if the username and password match
-        if success:
-            # Authentication successful, redirect to a protected page
-            return redirect(url_for('app_views.dashboardOrganiser'))
-        else:
-            # Authentication failed, render the login form with an error message
-            return render_template('login.html', error='Invalid username or password')
+#         # Check if the username and password match
+#         if success:
+#             # Authentication successful, redirect to a protected page
+#             return redirect(url_for('app_views.dashboardOrganiser'))
+#         else:
+#             # Authentication failed, render the login form with an error message
+#             return render_template('login.html', error='Invalid username or password')
     
 @app_views.route('/register/organiser', methods=['POST'])
 def registerOrganiser():
@@ -535,13 +537,15 @@ def registerStudent():
             email = request.form['email']
             password = request.form['password']
             # Check if the username already exists
+            print("email:",email)
+            print("password:",password)
             user_dict=check_user_type(connection,cursor,email)
             utype=user_dict["utype"]
 
             if utype!="Anonymous":
                     return redirect(url_for("app_views.dashboard"))
 
-            print(request.form)
+            print("data from form: ",request.form)
             info = request.form
             name = info.get('name')
             email = info.get('email')
@@ -654,6 +658,7 @@ def dashboard():
         elif current_user.utype=="participant":
             return render_template('dashboard_participant.html',user=current_user)
         elif current_user.utype=="student":
+            print("from here ",current_user.tasks)
             return render_template('dashboard_student.html',user=current_user)
         elif current_user.utype=="organiser":
             return render_template('dashboard_organiser.html',user=current_user)
