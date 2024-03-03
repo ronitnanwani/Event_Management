@@ -386,6 +386,8 @@ def registerStudent():
         username = request.form['email']
         password = request.form['password']
         
+        print("username:",username)
+        print("password:",password)
         # Check if the username already exists
         user_exist=False
         if user_exist:
