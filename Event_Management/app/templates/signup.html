@@ -115,7 +115,8 @@
                     <!--[-->Let&#39;s start by creating you account
                     <!--]-->
                   </p> 
-                  
+                    <p id="error_box" class="pb-3 font-semibold text-md text-center text-red-400">{% if error!="None" %}{{error}}{% endif %}</p>
+
                   <div class="w-2/3 ">
                     <div class="relative right-0">
                     <ul
@@ -1027,6 +1028,16 @@
         </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+  $('form').change(function(event){
+    $("#error_box").text("");
+  })
+
+});
+</script>
     <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
   </body>
 </html>
