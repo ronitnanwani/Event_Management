@@ -850,7 +850,7 @@ def plans():
 
     success,accomodations = fetch_all_acc_plans(connection,cursor)
     success,food = fetch_all_food_plans(connection,cursor)
-
+    facilities=[]
 
     # Convert to list of dictionaries
     accomodations_list=[]
@@ -866,7 +866,7 @@ def plans():
     print(food_list)
     
 
-    return render_template('plancards.html',accomodations=accomodations_list,food=food_list,facilities=facilities)
+    return render_template('plancards.html',user=current_user,accomodations=accomodations_list,food=food_list,facilities=facilities)
 
 @app_views.route('/update-winners/<int:e_id>', methods=['POST'])
 def updateWinners(e_id):
@@ -989,7 +989,31 @@ def dashboard():
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
         elif current_user.utype=="participant":
-            return render_template('dashboard_participant.html',user=current_user,trending_events=events_list,notifications=notifications_list)
+            acco=False
+            food=False
+            if(current_user.acc_id is not None):
+                print(current_user.acc_id,type(current_user.acc_id))
+                cursor.execute("""
+                    SELECT acc_id,price,days,name,description
+                    FROM accomodation a
+                    where a.acc_id = %s
+                """, (current_user.acc_id,))
+                acc = cursor.fetchone()
+                # acc=acc[0]
+                print(acc,type(acc))
+                acco={"acc_id":acc[0],"price":acc[1],"days":acc[2],"name":acc[3],"description":acc[4]}
+            if(current_user.food_id is not None):
+                cursor.execute("""
+                    SELECT food_id,price,days,name,description
+                    FROM food a
+                    where a.food_id = %s
+                """, (current_user.food_id,))
+
+                food = cursor.fetchone()
+                # food=food[0]
+                print(food,type(food))
+                food={"food_id":food[0],"price":food[1],"days":food[2],"name":food[3],"description":food[4]}
+            return render_template('dashboard_participant.html',food=food,acco=acco,user=current_user,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="student":
             # print("from here ",current_user.tasks)
             return render_template('dashboard_student.html',user=current_user,trending_events=events_list,notifications=notifications_list)
