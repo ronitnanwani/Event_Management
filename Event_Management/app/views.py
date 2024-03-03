@@ -223,10 +223,24 @@ def getEvents():
     events_list = []
     for event_data in rows:
         dt_object = datetime.fromisoformat(str(event_data[1]))
-        
+        success2,tags = fetch_all_tags_of_event(connection,cursor,event_data[0])
         date = dt_object.date()
         time = dt_object.time()
-        
+        tags_list=[]
+        for tag in tags:
+            tags_list.append(tag[0])
+        print(tags_list,"tags")
+        is_registered=False
+        for item in current_user.events_registered:
+            if(item.e_id==event_data[0]):
+                is_registered=True
+                break
+        is_volunteered=False
+        for item in current_user.events_volunteered:
+            if(item.e_id==event_data[0]):
+                is_volunteered=True
+                break
+            
         event_dict = {
             "e_id": event_data[0],
             "date": str(date),
@@ -239,10 +253,14 @@ def getEvents():
             "third": event_data[7],
             "prize": event_data[8],
             "venue": event_data[9],
-            "num_p": event_data[10]
+            "num_p": event_data[10],
+            "tags":tags_list,
+            "is_registered":is_registered,
+            "is_volunteered":is_volunteered,
         }
+        
         events_list.append(event_dict)
-    return render_template('events.html', name='events',events=events_list)
+    return render_template('events.html', name='events',events=events_list,user=current_user)
 @app_views.route('/add-event', methods=['GET','POST'])
 def addEvent():
     if request.method == 'POST':
@@ -277,7 +295,6 @@ def eventDetails(id):
     tags_list=[]
     for tag in tags:
         tags_list.append(tag[0])
-    
     event_dict = {
         'id': rows[0][0],
         'time': str(time),
