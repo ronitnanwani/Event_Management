@@ -135,7 +135,7 @@ def fetch_all_events(connection,cursor):
     
 def fetch_event_details(connection,cursor,e_id):
     try:
-        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue FROM event where e_id = %s",(e_id,))
+        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p FROM event where e_id = %s",(e_id,))
         rows = cursor.fetchall()
         return True,rows
     
@@ -444,3 +444,21 @@ def check_user_type(connection,cursor,email):
         return {"utype":"Admin","data":dbadmin_dict}
 
     return {"utype":"Anonymous","data":None}
+
+
+def fetch_event_for_filter(connection,cursor,tags):
+    query = """
+        SELECT e.e_id, e.date_and_time, e.name, e.type_event, e.description, e.first,
+               e.second, e.third, e.prize, e.venue, e.num_p
+        FROM event e
+        JOIN event_has_tag t ON e.e_id = t.e_id
+        WHERE t.tag IN %s
+        GROUP BY e.e_id
+        HAVING COUNT(DISTINCT t.tag) = %s
+    """
+
+    # Execute the query
+    cursor.execute(query, (tuple(tags), len(tags)))
+    events_data = cursor.fetchall()
+    
+    return events_data

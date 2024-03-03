@@ -96,7 +96,7 @@ def eventDetails(id):
         'prize': rows[0][8],
         'venue': rows[0][9],
         'tags' : tags_list,
-        'num_p':1000
+        'num_p': rows[0][10]
     }
     
     roll_no=2130015
@@ -434,3 +434,34 @@ def register_for_event():
         return jsonify({"message": "Registered successfully"}), 201
     else:
         return jsonify({"error": error}), 500 
+
+@app_views.route('/filter_event', methods=['POST'])
+def filter_event():
+    info = request.json
+    tags = info.get('tags')
+
+    events_data = fetch_event_for_filter(connection,cursor,tags)
+
+    events_list = []
+    for event_data in events_data:
+        dt_object = datetime.fromisoformat(str(event_data[1]))
+        
+        date = dt_object.date()
+        time = dt_object.time()
+        event_dict = {
+            "e_id": event_data[0],
+            "date": str(date),
+            "time":str(time),
+            "name": event_data[2],
+            "type_event": event_data[3],
+            "description": event_data[4],
+            "first": event_data[5],
+            "second": event_data[6],
+            "third": event_data[7],
+            "prize": event_data[8],
+            "venue": event_data[9],
+            "num_p": event_data[10]
+        }
+        events_list.append(event_dict)
+
+    return events_list
