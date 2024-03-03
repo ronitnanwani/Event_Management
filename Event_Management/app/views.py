@@ -59,14 +59,14 @@ def addEvent():
         venue = info.get('venue')
         prize = info.get('prize')
         type = info.get('type')
-
-        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","))
+        num_p = 0
+        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","),num_p)
         # Check if the username already exists
         if success:
             return redirect(url_for('app_views.dashboardAdmin'))
     return render_template('addEvent.html', name='events')
 
-@app_views.route('/event/<int:id>')
+@app_views.route('/event/<int:id>',methods=['GET'])
 def eventDetails(id):
     # print("Hi ")
     success, rows = fetch_event_details(connection,cursor,id)
@@ -77,8 +77,6 @@ def eventDetails(id):
     date = dt_object.date()
     time = dt_object.time()
     
-    # print(rows)
-    # print(tags)
     tags_list=[]
     for tag in tags:
         tags_list.append(tag[0])
@@ -130,9 +128,7 @@ def eventDetails(id):
     task_list = [{'description': task[0], 'is_complete': bool(task[1])} for task in tasks]
     
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
-    print(event_dict)
-    print(tags_list)
-    print(details)
+
     organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
     return render_template('eventDetails.html', name='events',event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list)
 
@@ -352,6 +348,24 @@ def plans():
         {"title":"Campus Tour","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
                    ]
     return render_template('plancards.html',accomodations=accomodations,food=food,facilities=facilities)
+
+@app_views.route('/update-winners', methods=['POST'])
+def updateWinners():
+    if request.method == 'POST':
+        # print(request.json)
+        # TODO : Request.form
+        info = request.json
+        e_id = info.get('e_id')
+        first = info.get('first')
+        second = info.get('second')
+        third = info.get('third')
+        success, error = update_event_results(connection,cursor,e_id,first,second,third)
+        if success:
+            return jsonify({"message": "Winners updated successfully"}), 201
+        else:
+            return jsonify({"error": error}), 500
+        
+
 
 # Dashboards--------------------------
 @app_views.route('/dashboard/student')
