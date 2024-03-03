@@ -77,7 +77,7 @@ class User(UserMixin):
             # Convert to list of dictionaries
             tasks_list=[]
             for task in reg:
-                tasks_list.append({"description":task[0],"is_complete":task[1]})
+                tasks_list.append({"description":task[0],"is_complete":task[1],"event":{"name":task[2],"type":task[3]}})
             print("List of tasks ",tasks_list)
             return tasks_list
         if self.utype=="participant":
