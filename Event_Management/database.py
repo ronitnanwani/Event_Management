@@ -400,17 +400,34 @@ def update_event_details(connection,cursor,e_id,venue,date_time):
         connection.rollback()
         return False, str(e)
     
-def insert_task(connection,cursor,roll_no,description):
+def insert_task(connection,cursor,roll_no,description,e_id):
     try:
+        cursor.execute("SELECT COALESCE(MAX(task_id), 0) + 1 FROM tasks")
+        task_id = cursor.fetchone()[0]
         cursor.execute("""
-            INSERT INTO tasks (roll_no, task_description)
-            VALUES (%s, %s)
-        """,(roll_no,description))
+            INSERT INTO tasks (task_id, roll_no, task_description, is_complete,e_id)
+            VALUES (%s, %s, %s, 0,%s)
+        """,(task_id,roll_no,description,e_id))
         connection.commit()
         return True, None
     except Exception as e:
         connection.rollback()
         return False, str(e)
+    
+def fetch_volunteers_of_event(connection,cursor,e_id):
+    try:
+        # Natural join to get the details of the student
+        cursor.execute("""
+            SELECT s.roll_no, s.name, s.dept, s.phone_number, s.email
+            FROM student s
+            NATURAL JOIN event_has_volunteer ev
+            WHERE ev.e_id = %s
+        """, (e_id,))
+        rows=cursor.fetchall()
+
+        return True,rows
+    except Exception as e:
+        return False,str(e)
     
 
 def fetch_task_of_volunter(connection,cursor,roll_no):

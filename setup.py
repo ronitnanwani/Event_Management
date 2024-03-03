@@ -444,6 +444,7 @@ def main():
             
             query = """
                 create table tasks(
+                    task_id int primary key,
                     task_description text,
                     e_id int references event(e_id), roll_no int references
                     student(roll_no), primary key (e_id,roll_no,task_description),
