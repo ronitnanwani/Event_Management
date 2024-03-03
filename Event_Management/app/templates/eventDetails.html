@@ -75,13 +75,22 @@
                     
                         {% endif %}
                         
-                        {% if user.utype=="student" and event.is_volunteered %}
+                        {% if user.utype=="student" %} 
+                        {% if event.is_volunteered %}
                         <button type="button" id="do_volunteer"  class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32">
                   <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 24 24" data-v-7663d7ec="">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"></path></svg><span> Volunteer</span>
                   <!--]-->
                   <!---->
                 </button>
+                {% else %}
+                <button type="button" id="do_volunteer"  class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32" disabled>
+                  <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 24 24" data-v-7663d7ec="">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"></path></svg><span> Volunteered</span>
+                  <!--]-->
+                  <!---->
+                </button>
+                
                             {% endif %}
 
                     </div>
@@ -531,8 +540,8 @@
     $.post("/register_for_event", JSON.stringify({ e_id: {{event.id}}}), function(response){
       console.log("POST request successful");
       console.log(response); // Response from the server
-    $(#register_event).text("Registered");
-    $(#register_event).prop("disabled", true);
+    $("#register_event").text("Registered");
+    $("#register_event").prop("disabled", true);
     })
     .fail(function(xhr, status, error) {
       console.error("POST request failed");

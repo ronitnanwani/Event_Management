@@ -246,15 +246,17 @@ def getEvents():
             tags_list.append(tag[0])
         print(tags_list,"tags")
         is_registered=False
-        for item in current_user.events_registered:
-            if(item.e_id==event_data[0]):
-                is_registered=True
-                break
         is_volunteered=False
-        for item in current_user.events_volunteered:
-            if(item.e_id==event_data[0]):
-                is_volunteered=True
-                break
+        if(current_user.is_authenticated):
+            for item in current_user.events_registered:
+                print(item)
+                if(item["e_id"]==event_data[0]):
+                    is_registered=True
+                    break
+            for item in current_user.events_volunteered:
+                if(item["e_id"]==event_data[0]):
+                    is_volunteered=True
+                    break
             
         event_dict = {
             "e_id": event_data[0],
@@ -324,16 +326,17 @@ def eventDetails(id):
     for tag in tags:
         tags_list.append(tag[0])
     is_registered=False
-    for item in current_user.events_registered:
-        if(item.e_id==rows[0][0]):
-            is_registered=True
-            break
     is_volunteered=False
-    for item in current_user.events_volunteered:
-        if(item.e_id==rows[0][0]):
-            is_volunteered=True
-            break
-    
+    if(current_user.is_authenticated):
+        for item in current_user.events_registered:
+            if(item["e_id"]==rows[0][0]):
+                is_registered=True
+                break
+        for item in current_user.events_volunteered:
+            if(item["e_id"]==rows[0][0]):
+                is_volunteered=True
+                break
+        
     event_dict = {
         'id': rows[0][0],
         'time': str(time),
@@ -351,37 +354,40 @@ def eventDetails(id):
         "is_registered":is_registered,
         "is_volunteered":is_volunteered,
     }
-    
-    roll_no=2130015
-    
-    count_allotted_query = """
-        SELECT COUNT(*) FROM tasks
-        WHERE roll_no = %s;
-    """
+    if current_user.utype=="student":
+        roll_no=current_user.roll_no
+        
+        count_allotted_query = """
+            SELECT COUNT(*) FROM tasks
+            WHERE roll_no = %s;
+        """
 
-    count_completed_query = """
-        SELECT COUNT(*) FROM tasks
-        WHERE roll_no = %s AND is_complete = 1;
-    """
+        count_completed_query = """
+            SELECT COUNT(*) FROM tasks
+            WHERE roll_no = %s AND is_complete = 1;
+        """
 
-    cursor.execute(count_allotted_query, (roll_no,))
-    count_allotted = cursor.fetchone()[0]  
+        cursor.execute(count_allotted_query, (roll_no,))
+        count_allotted = cursor.fetchone()[0]  
 
-    cursor.execute(count_completed_query, (roll_no,))
-    count_completed = cursor.fetchone()[0]
-    
-    query = """
-        SELECT task_description, is_complete
-        FROM tasks
-        WHERE roll_no = %s AND e_id = %s;
-    """
+        cursor.execute(count_completed_query, (roll_no,))
+        count_completed = cursor.fetchone()[0]
+        
+        query = """
+            SELECT task_description, is_complete
+            FROM tasks
+            WHERE roll_no = %s AND e_id = %s;
+        """
 
-    cursor.execute(query, (roll_no, id))
-    tasks = cursor.fetchall()
+        cursor.execute(query, (roll_no, id))
+        tasks = cursor.fetchall()
 
 
-    task_list = [{'description': task[0], 'is_complete': bool(task[1])} for task in tasks]
-    
+        task_list = [{'description': task[0], 'is_complete': bool(task[1])} for task in tasks]
+    else:
+        task_list=[]
+        count_allotted=0
+        count_completed=0
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
 
     organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    

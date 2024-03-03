@@ -370,7 +370,7 @@
                         ><!--]--><!---->
                       </button>
                     </a>
-                      <button type="button" id="add_task" data-volunteer="{{item.roll_no}}" data-modal-target="tasks-modal" data-modal-toggle="tasks-modal" class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32">
+                      <button type="button" class="add_task" data-volunteer="{{item.roll_no}}" data-modal-target="tasks-modal" data-modal-toggle="tasks-modal" class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32">
                   <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 24 24" data-v-7663d7ec="">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"></path></svg><span> Task</span>
                   <!--]-->
@@ -538,7 +538,7 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5">
-                <form class="space-y-4" action="/add_task/{{eventid}}">
+                <form class="space-y-4" method="post" action="/add_task/{{eventid}}">
                     <div>
                         <label for="desc"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                         <textarea type="text" rows="10" name="desc" id="desc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Description" required ></textarea>
@@ -556,7 +556,7 @@
 
 <script>
   $(document).ready(function(){
-  $("#add_task").click(function(){
+  $(".add_task").click(function(){
     // Get the value of the data-volunteer attribute
     var volunteer = $(this).data("volunteer");
     // Use the value as needed
