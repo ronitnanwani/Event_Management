@@ -380,7 +380,7 @@
               <h2
                 class="nui-heading nui-heading-sm nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
               >
-                <span>{{user.num_volunteered}}</span>
+                <span>{{user.num_volunteers}}</span>
               </h2>
               <p
                 class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal"
@@ -466,7 +466,7 @@
               <h2
                 class="nui-heading nui-heading-sm nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
               >
-                <span>{{user.num_tasks_allotted}}</span>
+                <span>{{user.num_allotted_tasks}}</span>
               </h2>
               <p
                 class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal"
@@ -509,7 +509,7 @@
               <h2
                 class="nui-heading nui-heading-sm nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"
               >
-                <span>{{user.num_tasks_completed}}</span>
+                <span>{{user.num_completed_tasks}}</span>
               </h2>
               <p
                 class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal"
@@ -846,7 +846,7 @@
           </div>
         </div>
         <div class="flex flex-col gap-4">
-          {% for event in user.events_registered %}
+          {% for event in user.events_volunteered %}
           <div
             class="nui-card nui-card-curved nui-card-white flex items-center gap-3 p-4"
           >
