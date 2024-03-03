@@ -1050,10 +1050,9 @@ def register_for_event():
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
     
-@app_views.route('/do_task', methods=['POST'])
-def do_task():
+@app_views.route('/do_task/<int:task_id>', methods=['POST'])
+def do_task(task_id):
     info = request.form
-    task_id = info.get('task_id')
     success, error = complete_task(connection,cursor,task_id)
     if success:
         return jsonify({"message": "Task completed successfully"}), 201
