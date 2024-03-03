@@ -16,7 +16,7 @@ class User(UserMixin):
             data=user["data"]
             self.id = data.get("email",None)
             self.name=data.get("name",None)
-            self.dept=data.get("dept",None)
+            self.department=data.get("dept",None)
             self.phone_number=data.get("phone_number",None)
             self.email=data.get("email",None)
             if user["utype"]=="Student":
@@ -39,12 +39,12 @@ class User(UserMixin):
         return self.authenticated
     @property       
     def num_registered(self):
-        if self.utype=="student":
-            success,reg=fetch_reg_events_of_student(self.roll_no)
-            return len(reg)
-        if self.utype=="participant":
-            success,reg=fetch_reg_events_of_participant(self.p_id)
-            return len(reg)
+        # if self.utype=="student":
+        #     success,reg=fetch_reg_events_of_student(self.roll_no)
+        #     return len(reg)
+        # if self.utype=="participant":
+        #     success,reg=fetch_reg_events_of_participant(self.p_id)
+        #     return len(reg)
         # if self.utype=="organiser":
         #     fetch_reg_events_of_participant(self.p_id)
     @property       
@@ -54,8 +54,9 @@ class User(UserMixin):
     def num_allotted_tasks(self):
         pass
     @property       
-    def num_volunteered(self):
+    def tasks(self):
         pass
+ 
         
     def __str__(self):
         return self.name+"_"+self.utype
