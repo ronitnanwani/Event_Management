@@ -1,287 +1,287 @@
-from flask import Flask, request, jsonify
-import psycopg2
-from Event_Management.Event_Management.database import *
+# from flask import Flask, request, jsonify
+# import psycopg2
+# from Event_Management.Event_Management.database import *
 
-try:
-    connection = psycopg2.connect(
-        user = "21CS30043",
-        password = "21CS30043",
-        host = "10.5.18.71",
-        database = "21CS30043"
-        )
-    cursor = connection.cursor()
-except Exception as err:
-    print(f"Error: {err}") 
-app = Flask(__name__)
+# try:
+#     connection = psycopg2.connect(
+#         user = "21CS30043",
+#         password = "21CS30043",
+#         host = "10.5.18.71",
+#         database = "21CS30043"
+#         )
+#     cursor = connection.cursor()
+# except Exception as err:
+#     print(f"Error: {err}") 
+# app = Flask(__name__)
 
 
-@app.route('/create_participant', methods=['POST'])
-def create_participant():
-        info=request.json
-        name = info.get('name')
-        college_name = info.get('college_name')
-        phone_number = info.get('phone_number')
-        email = info.get('email')
-        password = info.get('password')
-        success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, password)
-        if success:
-            return jsonify({"message": "Participant added successfully"}), 201
-        else:
-            return jsonify({"error": error}), 500
+# @app.route('/create_participant', methods=['POST'])
+# def create_participant():
+#         info=request.json
+#         name = info.get('name')
+#         college_name = info.get('college_name')
+#         phone_number = info.get('phone_number')
+#         email = info.get('email')
+#         password = info.get('password')
+#         success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, password)
+#         if success:
+#             return jsonify({"message": "Participant added successfully"}), 201
+#         else:
+#             return jsonify({"error": error}), 500
             
 
-@app.route('/create_event/<int:o_id>', methods=['POST'])
-def create_event(o_id):
-    info = request.json
-    date_time = info.get('date_and_time')
-    name = info.get('name')
-    type = info.get('type_event')
-    description = info.get('description')
-    prize = info.get('prize')
-    venue = info.get('venue')
-    tags = info.get('tags')
-    tags = tags.split(',')
+# @app.route('/create_event/<int:o_id>', methods=['POST'])
+# def create_event(o_id):
+#     info = request.json
+#     date_time = info.get('date_and_time')
+#     name = info.get('name')
+#     type = info.get('type_event')
+#     description = info.get('description')
+#     prize = info.get('prize')
+#     venue = info.get('venue')
+#     tags = info.get('tags')
+#     tags = tags.split(',')
 
-    success, error = insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags)
-    if success:
-        return jsonify({"message": "Event added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
+#     success, error = insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags)
+#     if success:
+#         return jsonify({"message": "Event added successfully"}), 201
+#     else:
+#         return jsonify({"error": error}), 500
     
 
-@app.route('/create_student', methods=['POST'])
-def create_student():
-    info=request.json
-    roll_no = info.get('roll_no')
-    dept = info.get('dept')
-    name = info.get('name')
-    phone_number = info.get('phone_number')
-    email = info.get('email')
-    password = info.get('password')
+# @app.route('/create_student', methods=['POST'])
+# def create_student():
+#     info=request.json
+#     roll_no = info.get('roll_no')
+#     dept = info.get('dept')
+#     name = info.get('name')
+#     phone_number = info.get('phone_number')
+#     email = info.get('email')
+#     password = info.get('password')
     
-    success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+#     success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
     
-    if success:
-        return jsonify({"message": "Student added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
+#     if success:
+#         return jsonify({"message": "Student added successfully"}), 201
+#     else:
+#         return jsonify({"error": error}), 500
 
 
-@app.route('/create_organiser', methods=['POST'])
-def create_organiser():
-    info = request.json
-    email = info.get('email')
-    password = info.get('password')
-    name = info.get('name')
-    phone_number = info.get('phone_number')
+# @app.route('/create_organiser', methods=['POST'])
+# def create_organiser():
+#     info = request.json
+#     email = info.get('email')
+#     password = info.get('password')
+#     name = info.get('name')
+#     phone_number = info.get('phone_number')
     
-    success, error = insert_organiser(connection,cursor,email,password,name,phone_number)
+#     success, error = insert_organiser(connection,cursor,email,password,name,phone_number)
 
-    if success:
-        return jsonify({"message": "Organiser added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
+#     if success:
+#         return jsonify({"message": "Organiser added successfully"}), 201
+#     else:
+#         return jsonify({"error": error}), 500
        
 
-@app.route('/create_event_volunteer', methods=['POST'])
-def create_event_volunteer():
-    info = request.json
-    e_id = info.get('e_id')
-    roll_no = info.get('roll_no')
+# @app.route('/create_event_volunteer', methods=['POST'])
+# def create_event_volunteer():
+#     info = request.json
+#     e_id = info.get('e_id')
+#     roll_no = info.get('roll_no')
     
-    success, error = insert_volunteer(connection,cursor,e_id,roll_no)
+#     success, error = insert_volunteer(connection,cursor,e_id,roll_no)
 
-    if success:
-        return jsonify({"message": "Volunteer added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
+#     if success:
+#         return jsonify({"message": "Volunteer added successfully"}), 201
+#     else:
+#         return jsonify({"error": error}), 500
 
         
-@app.route('/create_accomodation', methods=['POST'])
-def create_accomodation():
-    info=request.json
-    price = info.get('price')
-    days = info.get('days')
-    name = info.get('name')
+# @app.route('/create_accomodation', methods=['POST'])
+# def create_accomodation():
+#     info=request.json
+#     price = info.get('price')
+#     days = info.get('days')
+#     name = info.get('name')
     
-    success, error = insert_accomodation(connection,cursor,price,days,name)
+#     success, error = insert_accomodation(connection,cursor,price,days,name)
 
-    if success:
-        return jsonify({"message": "Accomodation added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
+#     if success:
+#         return jsonify({"message": "Accomodation added successfully"}), 201
+#     else:
+#         return jsonify({"error": error}), 500
     
  
-@app.route('/create_food', methods=['POST'])
-def create_food():
-    info = request.json
-    food_type=info.get('food_type')
-    days=info.get('days')
-    description=info.get('description')
+# @app.route('/create_food', methods=['POST'])
+# def create_food():
+#     info = request.json
+#     food_type=info.get('food_type')
+#     days=info.get('days')
+#     description=info.get('description')
 
-    success, error = insert_food(connection,cursor,food_type,days,description)
-    if success:
-        return jsonify({"message": "Food added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
-
-
-@app.route('/create_task_for_volunteer', methods=['POST'])
-def create_task_for_volunteer():
-    info = request.json
-    roll_no = info.get('roll_no')
-    description = info.get('description')
-
-    success, error = insert_task(connection,cursor,roll_no,description)
-    if success:
-        return jsonify({"message": "Task added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
+#     success, error = insert_food(connection,cursor,food_type,days,description)
+#     if success:
+#         return jsonify({"message": "Food added successfully"}), 201
+#     else:
+#         return jsonify({"error": error}), 500
 
 
+# @app.route('/create_task_for_volunteer', methods=['POST'])
+# def create_task_for_volunteer():
+#     info = request.json
+#     roll_no = info.get('roll_no')
+#     description = info.get('description')
 
-@app.route('/fetch_accomodation_plans', methods=['GET'])
-def fetch_accomodation_plans():
-    success, rows = fetch_all_acc_plans(connection,cursor)
-    if success:
+#     success, error = insert_task(connection,cursor,roll_no,description)
+#     if success:
+#         return jsonify({"message": "Task added successfully"}), 201
+#     else:
+#         return jsonify({"error": error}), 500
+
+
+
+# @app.route('/fetch_accomodation_plans', methods=['GET'])
+# def fetch_accomodation_plans():
+#     success, rows = fetch_all_acc_plans(connection,cursor)
+#     if success:
         
-        if len(rows)==0:
-            return jsonify({"message": "No accomodation plans Available"}), 402
+#         if len(rows)==0:
+#             return jsonify({"message": "No accomodation plans Available"}), 402
         
-        plan_list = []
-        for plan in rows:
-            plan_dict = {
-                'acc_id': plan[0],
-                'price': plan[1],
-                'days': plan[2],
-                'name': plan[3]
-            }
-            plan_list.append(plan_dict)
-        return jsonify({"message": plan_list}), 201
-    else:
-        return jsonify({"error": rows}), 500
+#         plan_list = []
+#         for plan in rows:
+#             plan_dict = {
+#                 'acc_id': plan[0],
+#                 'price': plan[1],
+#                 'days': plan[2],
+#                 'name': plan[3]
+#             }
+#             plan_list.append(plan_dict)
+#         return jsonify({"message": plan_list}), 201
+#     else:
+#         return jsonify({"error": rows}), 500
 
-@app.route('/fetch_accomodation_plans_org', methods=['GET'])
-def fetch_accomodation_plans_org():
-    success, rows = fetch_all_acc_plans(connection,cursor)
-    if success:
+# @app.route('/fetch_accomodation_plans_org', methods=['GET'])
+# def fetch_accomodation_plans_org():
+#     success, rows = fetch_all_acc_plans(connection,cursor)
+#     if success:
         
-        if len(rows)==0:
-            return jsonify({"message": "No accomodation plans Available"}), 402
+#         if len(rows)==0:
+#             return jsonify({"message": "No accomodation plans Available"}), 402
         
-        plan_list = []
-        for plan in rows:
-            plan_dict = {
-                'acc_id': plan[0],
-                'price': plan[1],
-                'days': plan[2],
-                'name': plan[3],
-                'num_of_participants': plan[4]
-            }
-            plan_list.append(plan_dict)
-        return jsonify({"message": plan_list}), 201
-    else:
-        return jsonify({"error": rows}), 500
+#         plan_list = []
+#         for plan in rows:
+#             plan_dict = {
+#                 'acc_id': plan[0],
+#                 'price': plan[1],
+#                 'days': plan[2],
+#                 'name': plan[3],
+#                 'num_of_participants': plan[4]
+#             }
+#             plan_list.append(plan_dict)
+#         return jsonify({"message": plan_list}), 201
+#     else:
+#         return jsonify({"error": rows}), 500
         
 
-@app.route('/fetch_food_plans', methods=['GET'])
-def fetch_food_plans():
-    success, rows = fetch_all_food_plans(connection,cursor)
-    if success:
+# @app.route('/fetch_food_plans', methods=['GET'])
+# def fetch_food_plans():
+#     success, rows = fetch_all_food_plans(connection,cursor)
+#     if success:
         
-        if len(rows)==0:
-            return jsonify({"message": "No food plans Available"}), 402
+#         if len(rows)==0:
+#             return jsonify({"message": "No food plans Available"}), 402
         
-        plan_list = []
-        for plan in rows:
-            plan_dict = {
-                'food_id': plan[0],
-                'type': plan[1],
-                'days': plan[2],
-                'description': plan[3]
-            }
-            plan_list.append(plan_dict)
-        return jsonify({"message": plan_list}), 201
-    else:
-        return jsonify({"error": rows}), 500
+#         plan_list = []
+#         for plan in rows:
+#             plan_dict = {
+#                 'food_id': plan[0],
+#                 'type': plan[1],
+#                 'days': plan[2],
+#                 'description': plan[3]
+#             }
+#             plan_list.append(plan_dict)
+#         return jsonify({"message": plan_list}), 201
+#     else:
+#         return jsonify({"error": rows}), 500
 
 
-@app.route('/fetch_food_plans_org', methods=['GET'])
-def fetch_food_plans_org():
-    success, rows = fetch_all_food_plans(connection,cursor)
-    if success:
+# @app.route('/fetch_food_plans_org', methods=['GET'])
+# def fetch_food_plans_org():
+#     success, rows = fetch_all_food_plans(connection,cursor)
+#     if success:
         
-        if len(rows)==0:
-            return jsonify({"message": "No food plans Available"}), 402
+#         if len(rows)==0:
+#             return jsonify({"message": "No food plans Available"}), 402
         
-        plan_list = []
-        for plan in rows:
-            plan_dict = {
-                'food_id': plan[0],
-                'type': plan[1],
-                'days': plan[2],
-                'description': plan[3],
-                'num_of_participants': plan[4]
-            }
-            plan_list.append(plan_dict)
-        return jsonify({"message": plan_list}), 201
-    else:
-        return jsonify({"error": rows}), 500
+#         plan_list = []
+#         for plan in rows:
+#             plan_dict = {
+#                 'food_id': plan[0],
+#                 'type': plan[1],
+#                 'days': plan[2],
+#                 'description': plan[3],
+#                 'num_of_participants': plan[4]
+#             }
+#             plan_list.append(plan_dict)
+#         return jsonify({"message": plan_list}), 201
+#     else:
+#         return jsonify({"error": rows}), 500
 
 
     
-@app.route('/fetch_events',methods=['GET'])
-def fetch_events():
-    success, rows = fetch_all_events(connection,cursor)
+# @app.route('/fetch_events',methods=['GET'])
+# def fetch_events():
+#     success, rows = fetch_all_events(connection,cursor)
     
-    if success:
+#     if success:
         
-        if len(rows)==0:
-            return jsonify({"message": "No events Available"}), 402
+#         if len(rows)==0:
+#             return jsonify({"message": "No events Available"}), 402
         
-        event_list = []
-        for event in rows:
-            event_dict = {
-                'e_id': event[0],
-                'date_and_time': str(event[1]),
-                'name': event[2],
-                'description': event[3],
-                'first': event[4],
-                'second': event[5],
-                'third': event[6],
-                'venue': event[7],
-                'tags' : event[8]
-            }
-            event_list.append(event_dict)
-        return jsonify({"message": event_list}), 201
-    else:
-        return jsonify({"error": rows}), 500
+#         event_list = []
+#         for event in rows:
+#             event_dict = {
+#                 'e_id': event[0],
+#                 'date_and_time': str(event[1]),
+#                 'name': event[2],
+#                 'description': event[3],
+#                 'first': event[4],
+#                 'second': event[5],
+#                 'third': event[6],
+#                 'venue': event[7],
+#                 'tags' : event[8]
+#             }
+#             event_list.append(event_dict)
+#         return jsonify({"message": event_list}), 201
+#     else:
+#         return jsonify({"error": rows}), 500
     
 
 
-@app.route('/event_volunteers/<int:e_id>', methods=['GET'])
-def fetch_volunteers_of_event(e_id):
-    success, rows = fetch_all_volunteers_of_event(connection,cursor,e_id)
+# @app.route('/event_volunteers/<int:e_id>', methods=['GET'])
+# def fetch_volunteers_of_event(e_id):
+#     success, rows = fetch_all_volunteers_of_event(connection,cursor,e_id)
     
-    if success:
+#     if success:
         
-        if len(rows)==0:
-            return jsonify({"message": "No volunteers for this event"}), 402
+#         if len(rows)==0:
+#             return jsonify({"message": "No volunteers for this event"}), 402
         
-        volunteers_list = []
-        for row in rows:
-            volunteer_dict = {
-                'roll_no': row[0],
-                'name': row[1],
-                'dept': row[2],
-                'phone_number': row[3],
-                'email': row[4]
-            }
-            volunteers_list.append(volunteer_dict)
+#         volunteers_list = []
+#         for row in rows:
+#             volunteer_dict = {
+#                 'roll_no': row[0],
+#                 'name': row[1],
+#                 'dept': row[2],
+#                 'phone_number': row[3],
+#                 'email': row[4]
+#             }
+#             volunteers_list.append(volunteer_dict)
 
-        return jsonify({"message": volunteers_list}), 201
-    else:
-        return jsonify({"error": rows}), 500
+#         return jsonify({"message": volunteers_list}), 201
+#     else:
+#         return jsonify({"error": rows}), 500
 
 
 # Fetch events with given array of tags from the get request
