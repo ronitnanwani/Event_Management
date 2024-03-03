@@ -102,9 +102,9 @@ def check_participant_login(connection,cursor,email,password):
     except Exception as e:
         return False, str(e)
 
-def check_student_login(connection,cursor,roll_no,password):
+def check_student_login(connection,cursor,email,password):
     try:
-        cursor.execute("SELECT * FROM student WHERE roll_no = %s AND password = %s", (roll_no, password))
+        cursor.execute("SELECT * FROM student WHERE email = %s AND password = %s", (email, password))
         row = cursor.fetchone()
         if row:
             return True, row
@@ -228,7 +228,7 @@ def fetch_all_events_of_volunteer(connection,cursor,roll_no):
 def fetch_reg_events_of_student(connection,cursor,id):
     try:
         cursor.execute("""
-            SELECT e.e_id, e.name, e.date_and_time, e.venue
+            SELECT e.e_id,e.date_and_time,e.name,e.type_event, e.description, e.first, e.second, e.third, e.prize,e.venue, e.num_p
             FROM event e
             JOIN event_has_participant ep ON e.e_id = ep.e_id
             WHERE ep.type = 'Student' AND ep.id = %s
@@ -242,7 +242,7 @@ def fetch_reg_events_of_student(connection,cursor,id):
 def fetch_reg_events_of_participant(connection,cursor,id):
     try:
         cursor.execute("""
-            SELECT e.e_id, e.name, e.date_and_time, e.venue
+            SELECT e.e_id,e.date_and_time,e.name,e.type_event, e.description, e.first, e.second, e.third, e.prize,e.venue, e.num_p
             FROM event e
             JOIN event_has_participant ep ON e.e_id = ep.e_id
             WHERE ep.type = 'Participant' AND ep.id = %s
@@ -250,6 +250,57 @@ def fetch_reg_events_of_participant(connection,cursor,id):
         rows=cursor.fetchall()
         return True,rows
 
+    except Exception as e:
+        return False,str(e)
+    
+def fetch_reg_events_of_organiser(connection,cursor,id):
+    try:
+        cursor.execute("""
+            SELECT e.e_id,e.date_and_time,e.name,e.type_event, e.description, e.first, e.second, e.third, e.prize,e.venue, e.num_p
+            FROM event e
+            JOIN event_has_organiser eo ON e.e_id = eo.e_id
+            WHERE eo.o_id = %s
+        """, (id,))
+        rows=cursor.fetchall()
+        return True,rows
+
+    except Exception as e:
+        return False,str(e)
+    
+def fetch_completed_tasks_of_student(connection,cursor,roll_no):
+    try:
+        cursor.execute("""
+            SELECT task_description,is_completed
+            FROM tasks
+            WHERE roll_no = %s && is_completed = 1
+        """, (roll_no,))
+        rows=cursor.fetchall()
+        return True,rows
+    except Exception as e:
+        return False,str(e)
+    
+def fetch_alloted_tasks_of_student(connection,cursor,roll_no):
+    try:
+        cursor.execute("""
+            SELECT task_description, is_completed
+            FROM tasks
+            WHERE roll_no = %s
+        """, (roll_no,))
+        rows=cursor.fetchall()
+        return True,rows
+    except Exception as e:
+        return False,str(e)
+    
+def fetch_events_volunteered_by_student(connection,cursor,roll_no):
+    try:
+        cursor.execute("""
+            SELECT e.e_id,e.date_and_time,e.name,e.type_event, e.description, e.first, e.second, e.third, e.prize,e.venue, e.num_p
+            FROM event e
+            JOIN event_has_volunteer ev ON e.e_id = ev.e_id
+            WHERE ev.roll_no = %s
+        """, (roll_no,))
+        rows=cursor.fetchall()
+        return True,rows
     except Exception as e:
         return False,str(e)
     

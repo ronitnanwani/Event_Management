@@ -28,7 +28,7 @@ class User(UserMixin):
                 self.acc_id=data.get("acc_id",None)
                 self.college_name=data.get("college_name",None)
             if user["utype"]=="Organiser":
-                self.p_id=data.get("o_id",None)
+                self.o_id=data.get("o_id",None)
                 self.is_admin=data.get("can_create",None)
             self.utype=str(user["utype"]).lower()
         else:
@@ -39,23 +39,162 @@ class User(UserMixin):
         return self.authenticated
     @property       
     def num_registered(self):
-        # if self.utype=="student":
-        #     success,reg=fetch_reg_events_of_student(self.roll_no)
-        #     return len(reg)
-        # if self.utype=="participant":
-        #     success,reg=fetch_reg_events_of_participant(self.p_id)
-        #     return len(reg)
-        # if self.utype=="organiser":
-        #     fetch_reg_events_of_participant(self.p_id)
+        if self.utype=="student":
+            success,reg=fetch_reg_events_of_student(connection,cursor,self.roll_no)
+            return len(reg)
+        if self.utype=="participant":
+            success,reg=fetch_reg_events_of_participant(connection,cursor,self.p_id)
+            return len(reg)
+        if self.utype=="organiser":
+            success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
+            return len(reg)
+
     @property       
     def num_completed_tasks(self):
-        pass
+        if self.utype=="student":
+            success,reg=fetch_completed_tasks_of_student(connection,cursor,self.roll_no)
+            return len(reg)
+        if self.utype=="participant":
+            return 0
+        if self.utype=="organiser":
+            return 0
+
     @property       
     def num_allotted_tasks(self):
-        pass
+        if self.utype=="student":
+            success,reg=fetch_alloted_tasks_of_student(connection,cursor,self.roll_no)
+            return len(reg)
+        if self.utype=="participant":
+            return 0
+        if self.utype=="organiser":
+            return 0
     @property       
     def tasks(self):
-        pass
+        if self.utype=="student":
+            success,reg=fetch_alloted_tasks_of_student(connection,cursor,self.roll_no)
+            # Convert to list of dictionaries
+            tasks_list=[]
+            for task in reg:
+                tasks_list.append({"description":task[0],"is_complete":task[1]})
+            return tasks_list
+        if self.utype=="participant":
+            return []
+        if self.utype=="organiser":
+            return []
+    @property
+    def num_volunteers(self):
+        if self.utype=="student":
+            success,reg=fetch_events_volunteered_by_student(connection,cursor,self.roll_no)
+            return len(reg)
+        if self.utype=="participant":
+            return 0
+        if self.utype=="organiser":
+            return 0
+        
+    @property
+    def events_registered(self):
+        if self.utype=="student":
+            success,reg=fetch_reg_events_of_student(connection,cursor,self.roll_no)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+        if self.utype=="participant":
+            success,reg=fetch_reg_events_of_participant(connection,cursor,self.p_id)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+        if self.utype=="organiser":
+            success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+
+        return events_list
+    @property
+    def events_volunteered(self):
+        if self.utype=="student":
+            success,reg=fetch_events_volunteered_by_student(connection,cursor,self.roll_no)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+            
+            return events_list
+        if self.utype=="participant":
+            return []
+        if self.utype=="organiser":
+            return []
  
         
     def __str__(self):
