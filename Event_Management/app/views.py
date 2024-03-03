@@ -876,9 +876,9 @@ def updateWinners(e_id):
         third = info.get('third')
         success, error = update_event_results(connection,cursor,e_id,first,second,third)
         if success:
-            return jsonify({"message": "Winners updated successfully"}), 201
+            return redirect(url_for('app_views.dashboard'))
         else:
-            return jsonify({"error": error}), 500
+            return redirect(url_for('app_views.dashboard'))
 
 
 # Dashboards--------------------------
@@ -962,7 +962,7 @@ def dashboard():
 
     participant_list = []
     cursor.execute("""
-        SELECT p_id, name, email, phone_number
+        SELECT p_id, name, email, phone_number, college_name
         FROM participant
     """)
     participants = cursor.fetchall()
@@ -971,7 +971,8 @@ def dashboard():
             "id": participant[0],
             "name": participant[1],
             "email": participant[2],
-            "phone": participant[3]
+            "phone": participant[3],
+            "college_name":participant[4]
         }
         participant_list.append(participant_dict)
 
@@ -1043,7 +1044,7 @@ def addTask(e_id):
             description = request.form['desc']
             success, error = insert_task(connection,cursor,roll_no,description,e_id)
             if success:
-                return redirect(request.url)
+                return redirect(url_for('app_views.dashboard'))
             else:
                 return redirect(url_for('app_views.dashboard'))
         else:
@@ -1168,6 +1169,6 @@ def delete_user():
     id = info.get('id')
     success, error = delete_from_db(connection,cursor,utype,id)
     if success:
-        return redirect(request.url)
+        return redirect(url_for('app_views.dashboard'))
     else:
         return redirect(url_for('app_views.dashboard'))
