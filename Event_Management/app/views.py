@@ -28,7 +28,7 @@ class User(UserMixin):
                 self.acc_id=data.get("acc_id",None)
                 self.college_name=data.get("college_name",None)
             if user["utype"]=="Organiser":
-                self.p_id=data.get("o_id",None)
+                self.o_id=data.get("o_id",None)
                 self.is_admin=data.get("can_create",None)
             self.utype=str(user["utype"]).lower()
         else:
@@ -109,9 +109,8 @@ def getEvents():
         events_list.append(event_dict)
     return render_template('events.html', name='events',events=events_list)
 @app_views.route('/add-event', methods=['GET','POST'])
-def addEvent():
+def addEvent():        
     if request.method == 'POST':
-        
         info = request.form
         name = info.get('name')
         date = info.get('date')
@@ -122,10 +121,24 @@ def addEvent():
         prize = info.get('prize')
         type = info.get('type')
         num_p = 0
-        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","),num_p)
-        # Check if the username already exists
-        if success:
-            return redirect(url_for('app_views.dashboardAdmin'))
+        try:
+            print(current_user.is_authenticated)
+            if not current_user.is_authenticated:
+                return redirect(url_for("app_views.loginUser"))
+            elif current_user.utype=="participant":
+                return redirect(url_for("app_views.dashboard"))
+            elif current_user.utype=="student":
+                return redirect(url_for("app_views.dashboard"))
+            elif current_user.utype=="organiser":
+                success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,current_user.o_id,tags.split(","),num_p)
+                if success:
+                    return redirect(url_for('app_views.dashboard'))
+            elif current_user.utype=="admin":
+                return redirect(url_for("app_views.dashboard"))
+        except Exception as e:
+                print(str(e))
+                return redirect(url_for("app_views.loginUser"))
+    
     return render_template('addEvent.html', name='events')
 
 @app_views.route('/event/<int:id>',methods=['GET'])
@@ -583,15 +596,33 @@ def create_task_for_volunteer():
 def register_for_event():
     info = request.json
     e_id = info.get('e_id')
-    participant_id = info.get('id')
-    participant_type = info.get('type')
-
-    success,error=register_participant(connection,cursor,e_id, participant_id, participant_type)
-
-    if success:
-        return jsonify({"message": "Registered successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500 
+    try:
+        print(current_user.is_authenticated)
+        if not current_user.is_authenticated:
+            return redirect(url_for("app_views.loginUser"))
+        elif current_user.utype=="participant":
+            participant_id = current_user.p_id
+            participant_type="Participant"
+            success,error=register_participant(connection,cursor,e_id, participant_id, participant_type)
+            if success:
+                return jsonify({"message": "Registered successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500 
+        elif current_user.utype=="student":
+            participant_id = current_user.roll_no
+            participant_type="Student"
+            success,error=register_participant(connection,cursor,e_id, participant_id, participant_type)
+            if success:
+                return jsonify({"message": "Registered successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500 
+        elif current_user.utype=="organiser":
+            return redirect(url_for("app_views.dashboard"))
+        elif current_user.utype=="admin":
+            return redirect(url_for("app_views.dashboard"))
+    except Exception as e:
+            print(str(e))
+            return redirect(url_for("app_views.loginUser"))
 
 @app_views.route('/filter_event', methods=['POST'])
 def filter_event():
