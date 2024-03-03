@@ -4,10 +4,10 @@ from argparse import ArgumentParser
 def establish_connection():
     #establishing the connection with the database and returning the connection object
     connection = psycopg2.connect(
-        user = "21CS30043",
-        password = "21CS30043",
-        host = "10.5.18.71",
-        database = "21CS30043"
+        user = "postgres",
+        password = "pass@1234",
+        host = "localhost",
+        database = "event_management"
         )
     return connection
 
@@ -447,7 +447,7 @@ def main():
                     task_id int primary key,
                     task_description text,
                     e_id int references event(e_id), roll_no int references
-                    student(roll_no), primary key (e_id,roll_no,task_description),
+                    student(roll_no),
                     is_complete int
                 );
             """
