@@ -54,6 +54,7 @@ class User(UserMixin):
         if self.utype=="organiser":
             success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
             return len(reg)
+        return 0
 
     @property       
     def num_completed_tasks(self):
@@ -64,6 +65,7 @@ class User(UserMixin):
             return 0
         if self.utype=="organiser":
             return 0
+        return 0
 
     @property       
     def num_allotted_tasks(self):
@@ -74,6 +76,7 @@ class User(UserMixin):
             return 0
         if self.utype=="organiser":
             return 0
+        return 0
     @property       
     def tasks(self):
         if self.utype=="student":
@@ -88,6 +91,7 @@ class User(UserMixin):
             return []
         if self.utype=="organiser":
             return []
+        return []
     @property
     def num_volunteers(self):
         if self.utype=="student":
@@ -97,6 +101,7 @@ class User(UserMixin):
             return 0
         if self.utype=="organiser":
             return 0
+        return 0
     
         
     @property
@@ -187,6 +192,7 @@ class User(UserMixin):
         return events_list
     @property
     def events_volunteered(self):
+        events_list=[]
         if self.utype=="student":
             success,reg=fetch_events_volunteered_by_student(connection,cursor,self.roll_no)
             # Convert to list of dictionaries
@@ -259,7 +265,7 @@ class User(UserMixin):
                 }
                 events_list.append(event_dict)
             return events_list
-        return 0
+        return []
         
     def __str__(self):
         return self.name+"_"+self.utype
@@ -473,6 +479,7 @@ def getVolunteers(id):
 
     volunteers_list = []
     for volunteer in rows:
+        # print(volunteer,"vol")
         user = User(volunteer[4])
         num_tasks_allotted = user.num_allotted_tasks
         num_tasks_completed = user.num_completed_tasks
@@ -504,7 +511,7 @@ def getProfile():
 @app_views.route('/organiser-events')
 def getOrganiserEvents():
     profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('organiser-events.html',events=[])
+    return render_template('organiser-events.html',events=current_user.events_organised)
 
 @app_views.route('/edit-profile')
 def EditProfile():
@@ -539,6 +546,9 @@ def loginUser():
             user_dict=check_user_type(connection,cursor,email)
             utype=user_dict["utype"]
             print(user_dict)
+            if(ftype!=utype):
+                return render_template('login.html', error="Incorrect user credentials")
+            
             if utype=="Anonymous":
                 return redirect(url_for("app_views.registerUser"))
             elif utype=="Participant":
