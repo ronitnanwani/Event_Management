@@ -435,4 +435,12 @@ def check_user_type(connection,cursor,email):
         }
         return {"utype":"Organiser","data":organiser_dict}
 
+    cursor.execute(("SELECT email FROM db_admin WHERE email=%s"), (email,))
+    dbadmin_data = cursor.fetchone()
+    if dbadmin_data:
+        dbadmin_dict = {
+            "email": dbadmin_data[1],
+        }
+        return {"utype":"Admin","data":dbadmin_dict}
+
     return {"utype":"Anonymous","data":None}
