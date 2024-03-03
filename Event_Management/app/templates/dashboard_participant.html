@@ -568,6 +568,46 @@
             </div>
           </div>
         </div>
+        <div>
+           <div class="nui-card nui-card-rounded nui-card-white p-8">
+                <!--[-->
+                <h4 class="text-muted-400 mb-6 font-sans text-xs font-semibold uppercase"> Book Accomodation</h4>
+                <div class="space-y-8">
+                    <!--[-->
+                {% for acco in accomodations %}
+
+                    <div class="flex items-center gap-2 py-2">
+
+                        <div class="nui-avatar nui-avatar-xs nui-avatar-full bg-muted-100 dark:bg-muted-700" data-nui-tooltip="Sketch">
+                            <div class="nui-avatar-inner">
+                                <!--[--><img src="{{ url_for('static', filename='img/home.jpg') }}" class="nui-avatar-full nui-avatar-img">
+                                <!---->
+                                <!---->
+                                <!--]-->
+                            </div>
+                            <!---->
+                            <!---->
+                        </div>
+                        <div>
+                            <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-none line-clamp-1"
+                                tag="h5">
+                                {{acco.title}}
+                    
+                            </p>
+                            <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400">
+                                ${{acco.price}}
+                              
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <!--]-->
+                    <a href="/plans"><button type="button" rel="" target="" class="nui-button nui-button-medium nui-button-rounded nui-button-solid nui-button-primary w-full sm:w-28"><!--[--><span>More</span><!--]--><!----></button></a>
+                </div>
+                <!--]-->
+            </div>
+        </div>
 
         <div>
           <div class="nui-card nui-card-curved nui-card-white p-6">

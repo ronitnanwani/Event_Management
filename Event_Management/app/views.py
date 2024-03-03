@@ -483,8 +483,9 @@ def getVolunteers(id):
 
 @app_views.route('/profile')
 def getProfile():
-    profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('profile.html',events=[])
+    if not current_user.is_authenticated:
+        return redirect(url_for("app_views.loginUser"))
+    return render_template('profile.html',user=current_user)
 
 @app_views.route('/organiser-events')
 def getOrganiserEvents():
