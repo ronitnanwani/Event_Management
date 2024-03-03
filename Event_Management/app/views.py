@@ -396,16 +396,34 @@ def eventDetails(id):
 @app_views.route('/event/<int:id>/volunteers')
 def getVolunteers(id):
     
-    volunteers=[
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        ]
+    # volunteers=[
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     ]
+
+    success,rows = fetch_volunteers_of_event(connection,cursor,id)
+
+    volunteers_list = []
+    for volunteer in rows:
+        user = User(volunteer[4])
+        num_tasks_allotted = user.num_allotted_tasks
+        num_tasks_completed = user.num_completed_tasks
+        volunteer_dict = {
+            "roll_no": volunteer[0],
+            "name": volunteer[1],
+            "department": volunteer[2],
+            "phone": volunteer[3],
+            "email": volunteer[4],
+            "num_tasks_allotted": num_tasks_allotted,
+            "num_tasks_completed": num_tasks_completed
+        }
+        volunteers_list.append(volunteer_dict)
     organiser={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('volunteers.html',volunteers=volunteers,eventid=id)
+    return render_template('volunteers.html',volunteers=volunteers_list,eventid=id)
 
 @app_views.route('/profile')
 def getProfile():
@@ -897,13 +915,12 @@ def addTask(e_id):
     if request.method == 'POST':
 
         if current_user.utype=="organiser":
-            print(request.form)
             roll_no = int(request.form['student_id'])
             
             description = request.form['desc']
             success, error = insert_task(connection,cursor,roll_no,description,e_id)
             if success:
-                return redirect(url_for('app_views.getVolunteers'))
+                return jsonify({"message": "Task added successfully"}), 201
             else:
                 return jsonify({"error": error}), 500
         else:

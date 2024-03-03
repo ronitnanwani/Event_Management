@@ -273,7 +273,7 @@ def fetch_completed_tasks_of_student(connection,cursor,roll_no):
         cursor.execute("""
             SELECT task_description,is_complete
             FROM tasks
-            WHERE roll_no = %s && is_complete = 1
+            WHERE roll_no = %s and is_complete = 1
         """, (roll_no,))
         rows=cursor.fetchall()
         return True,rows
@@ -412,6 +412,21 @@ def insert_task(connection,cursor,roll_no,description,e_id):
     except Exception as e:
         connection.rollback()
         return False, str(e)
+    
+def fetch_volunteers_of_event(connection,cursor,e_id):
+    try:
+        # Natural join to get the details of the student
+        cursor.execute("""
+            SELECT s.roll_no, s.name, s.dept, s.phone_number, s.email
+            FROM student s
+            NATURAL JOIN event_has_volunteer ev
+            WHERE ev.e_id = %s
+        """, (e_id,))
+        rows=cursor.fetchall()
+
+        return True,rows
+    except Exception as e:
+        return False,str(e)
     
 
 def fetch_task_of_volunter(connection,cursor,roll_no):
