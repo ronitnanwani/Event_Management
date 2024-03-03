@@ -126,7 +126,7 @@ def check_organiser_login(connection,cursor,email,password):
         
 def fetch_all_events(connection,cursor):
     try:
-        cursor.execute("SELECT * FROM event;")
+        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p FROM event;")
         rows = cursor.fetchall()
         print(rows)
         return True,rows
@@ -396,3 +396,45 @@ def check_duplicate_username_organiser(connection,cursor,email):
         return True,exists
     except Exception as e:
         return False,str(e)        
+
+def check_user_type(connection,cursor,email):
+
+    cursor.execute(("SELECT roll_no,dept,name,phone_number,email FROM student WHERE email=%s"), (email,))
+    student_data = cursor.fetchone()
+    if student_data:
+        student_dict = {
+            "roll_no": student_data[0],
+            "dept": student_data[1],
+            "name": student_data[2],
+            "phone_number": student_data[3],
+            "email": student_data[4]
+        }
+        return {"utype":"Student","data":student_dict}
+
+    cursor.execute(("SELECT p_id,name,college_name,phone_number,email,acc_id,food_id FROM participant WHERE email=%s"), (email,))
+    participant_data = cursor.fetchone()
+    if participant_data:
+        participant_dict = {
+            "p_id": participant_data[0],
+            "name": participant_data[1],
+            "college_name": participant_data[2],
+            "phone_number": participant_data[3],
+            "email": participant_data[4],
+            "acc_id": participant_data[5],
+            "food_id": participant_data[6]
+        }
+        return {"utype":"Participant","data":participant_dict}
+
+    cursor.execute(("SELECT o_id,email,name,phone_number,can_create FROM organiser WHERE email=%s"), (email,))
+    organiser_data = cursor.fetchone()
+    if organiser_data:
+        organiser_dict = {
+            "o_id": organiser_data[0],
+            "email": organiser_data[1],
+            "name": organiser_data[2],
+            "phone_number": organiser_data[3],
+            "can_create": organiser_data[4]
+        }
+        return {"utype":"Organiser","data":organiser_dict}
+
+    return {"utype":"Anonymous","data":None}
