@@ -350,9 +350,9 @@ def main():
                     name varchar(50),
                     type_event varchar(50),
                     description text,
-                    first int,
-                    second int,
-                    third int,
+                    first varchar(50),
+                    second varchar(50),
+                    third varchar(50),
                     prize int,
                     venue varchar(100),
                     num_p int

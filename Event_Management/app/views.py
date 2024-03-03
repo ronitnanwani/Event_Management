@@ -850,13 +850,10 @@ def plans():
 
     return render_template('plancards.html',accomodations=accomodations_list,food=food_list,facilities=facilities)
 
-@app_views.route('/update-winners', methods=['POST'])
-def updateWinners():
+@app_views.route('/update-winners/<int:e_id>', methods=['POST'])
+def updateWinners(e_id):
     if request.method == 'POST':
-        # print(request.json)
-        # TODO : Request.form
-        info = request.json
-        e_id = info.get('e_id')
+        info = request.form
         first = info.get('first')
         second = info.get('second')
         third = info.get('third')
