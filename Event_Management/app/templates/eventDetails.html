@@ -674,22 +674,34 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5">
-                <form class="space-y-4" method="post" action="/add_accomodation">
+                <form class="space-y-4" method="post" action="/update_winner">
                     <div>
-                        <label for="name"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                        <input type="text" rows="10" name="name" id="winner_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Name" required />
+                        <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First</label>
+                        <select  name="first" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                            {% for user in participants %}
+                            <option value="{{user.name}}">{{user.name}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div>
-                        <label for="winner_price"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                        <input type="text" name="price" id="winner_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Price per day ($)" required />
+                        <label for="second_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Second</label>
+                        <select  name="second" id="second_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                            {% for user in participants %}
+                            <option value="{{user.name}}">{{user.name}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div>
-                        <label for="winner_days"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Days</label>
-                        <input type="text" rows="10" name="days" id="winner_days" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Days" required />
+                        <label for="third_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Third</label>
+                        <select  name="third" id="third_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                            {% for user in participants %}
+                            <option value="{{user.name}}">{{user.name}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
+                    
                     <div>
-                        <label for="desc"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                        <textarea type="text" rows="10" name="desc" id="desc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Description" required ></textarea>
+                       
                     </div>
                    
                     <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Confirm</button>
