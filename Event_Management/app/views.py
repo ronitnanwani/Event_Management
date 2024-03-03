@@ -1093,3 +1093,13 @@ def filter_event():
 
     return events_list
 
+@app_views.route('/delete_from_db', methods=['POST'])
+def delete_from_db():
+    info = request.json
+    utype = info.get('utype')
+    id = info.get('id')
+    success, error = delete_from_db(connection,cursor,utype,id)
+    if success:
+        return jsonify({"message": "id deleted successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
