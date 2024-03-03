@@ -577,8 +577,29 @@ def registerParticipant():
             return redirect(url_for('app_views.loginUser'))
     
     # If GET request, render the registration form
-    return render_template('signup.html', error=error)   
+    return render_template('signup.html', error=error)
 
+
+@app_views.route('/add_accomodation', methods=['POST'])
+def addAccomodation():
+    if request.method == 'POST':
+
+        info = request.form
+        print(info)
+
+        name = info.get('name')
+        price = info.get('price')
+        days = info.get('days')
+        desc = info.get('desc')
+        price = int(price)
+        days = int(days)
+
+        print(name,price,days,desc)
+        success, error = insert_accomodation(connection,cursor,price,days,name,desc)
+        if success:
+            return jsonify({"message": "Accomodation added successfully"}), 201
+        else:
+            return jsonify({"error": error}), 500
  
 @app_views.route('/add-organiser')
 def AddOrganiser():
@@ -593,24 +614,42 @@ def facilities():
 @app_views.route('/plans')
 def plans():
     profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    accomodations=[
-        {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-                   ]
-    food=[
-        {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-                   ]
+    # accomodations=[
+    #     {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #                ]
+    # food=[
+    #     {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #                ]
     facilities=[
         {"title":"Bus Service","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
         {"title":"Toto Booking","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
         {"title":"Campus Tour","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
                    ]
-    return render_template('plancards.html',accomodations=accomodations,food=food,facilities=facilities)
+
+    success,accomodations = fetch_all_acc_plans(connection,cursor)
+    success,food = fetch_all_food_plans(connection,cursor)
+
+    # Convert to list of dictionaries
+    accomodations_list=[]
+    for accomodation in accomodations:
+        accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4]})
+
+    print(accomodations_list)
+
+    food_list=[]
+    for f in food:
+        food_list.append({"title":f[0],"price":f[1],"desc":f[2]})
+
+    print(food_list)
+    
+
+    return render_template('plancards.html',accomodations=accomodations_list,food=food_list,facilities=facilities)
 
 @app_views.route('/update-winners', methods=['POST'])
 def updateWinners():

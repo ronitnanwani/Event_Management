@@ -65,12 +65,12 @@ def insert_volunteer(connection,cursor,e_id,roll_no):
         connection.rollback()
         return False, str(e)
 
-def insert_accomodation(connection,cursor,price,days,name):
+def insert_accomodation(connection,cursor,price,days,name,description):
     try:
         cursor.execute("SELECT COALESCE(MAX(acc_id), 0) + 1 FROM accomodation")
         acc_id = cursor.fetchone()[0]
-        cursor.execute("""INSERT INTO accomodation (acc_id, price, days, name, num_of_participants) 
-                       VALUES (%s, %s, %s, %s, %s)""",(acc_id, price, days, name, 0))
+        cursor.execute("""INSERT INTO accomodation (acc_id, price, days, name, num_of_participants,description) 
+                       VALUES (%s, %s, %s, %s, %s,%s)""",(acc_id, price, days, name, 0, description))
         connection.commit()
         return True, None
     except Exception as e:
@@ -167,6 +167,7 @@ def fetch_all_acc_plans(connection,cursor):
     try:
         cursor.execute("SELECT * FROM accomodation")
         rows=cursor.fetchall()
+        print(rows)
         return True,rows
     
     except Exception as e:
