@@ -605,3 +605,28 @@ def delete_from_db(connection,cursor,utype,id):
     except Exception as e:
         print("Error deleting user:", e)
         return False
+    
+def get_participants_of_event(connection,cursor,e_id):
+        cursor.execute("""
+            SELECT p.email, p.name
+            FROM participant p
+            JOIN event_has_participant ep ON p.p_id = ep.id AND ep.type="Participant"
+            WHERE ep.e_id = %s
+        """, (e_id,))
+        
+        participants = cursor.fetchall()
+        
+        participant_details = [{"email": participant[0], "name": participant[1]} for participant in participants]
+        
+        cursor.execute("""
+            SELECT p.email, p.name
+            FROM student p
+            JOIN event_has_participant ep ON p.roll_no = ep.id AND ep.type="Student"
+            WHERE ep.e_id = %s
+        """, (e_id,))
+        
+        participants = cursor.fetchall()
+        
+        participant_details.append([{"email": participant[0], "name": participant[1]} for participant in participants])
+        
+        return participant_details

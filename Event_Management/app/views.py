@@ -317,6 +317,9 @@ def eventDetails(id):
     success, rows = fetch_event_details(connection,cursor,id)
     success2,tags = fetch_all_tags_of_event(connection,cursor,id)
     
+    all_participants = get_participants_of_event(id)
+    
+    
     dt_object = datetime.fromisoformat(str(rows[0][1]))
     
     date = dt_object.date()
@@ -391,7 +394,7 @@ def eventDetails(id):
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
 
     organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
-    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list)
+    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list,participants=all_participants)
 
 @app_views.route('/event/<int:id>/volunteers')
 def getVolunteers(id):
@@ -1028,3 +1031,4 @@ def filter_event():
         events_list.append(event_dict)
 
     return events_list
+
