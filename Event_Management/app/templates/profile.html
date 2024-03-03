@@ -233,14 +233,13 @@
                   class="nui-heading nui-heading-xl nui-weight-medium nui-lead-normal mt-4"
                   tag="h2"
                 >
-                  <!--[-->Chinmay Rocks
+                  <!--[-->{{user.name}}
                   <!--]-->
                 </p>
                 <p
                   class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-400 mb-3 mt-1"
                 >
-                  <!--[-->I am a bla bla bl, i doi dsa dasdas dasd sad saf
-                  fdsgfassjasjklcxcvhjcsdn fsdj f fedsfbsadohifyasd
+                  <!--[-->{{user.email}}
                   <!--]-->
                 </p>
                 <div
@@ -272,7 +271,7 @@
                     <p
                       class="nui-text nui-content-sm nui-weight-normal nui-lead-normal"
                     >
-                      <!--[-->10+ Events Volunteered
+                      <!--[-->{{user.num_volunteers}} Events Volunteered
                       <!--]-->
                     </p>
                   </div>
@@ -304,7 +303,7 @@
                     <p
                       class="nui-text nui-content-sm nui-weight-normal nui-lead-normal"
                     >
-                      <!--[-->59 Events Participation
+                      <!--[-->{{user.num_registered}} Events Participation
                       <!--]-->
                     </p>
                   </div>
@@ -402,13 +401,9 @@
                         <p
                           class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-500 dark:text-muted-400"
                         >
-                          <!--[-->Lorem ipsum dolor sit amet, consectetur
-                          adipiscing elit. Falli igitur possumus. Praeteritis,
-                          inquit, gaudeo. Duo Reges: constructio interrete.
-                          Idemne, quod iucunde? Quis enim redargueret? Non
-                          semper, inquam; Quid nunc honeste dicit? Eam tum
-                          adesse, cum dolor omnis absit; Negat enim summo bono
-                          afferre incrementum diem.
+                          <!--[-->
+                          <p>College Name: {{user.college_name}}</p>
+                          <p>Department: {{user.department}}</p>
                           <!--]-->
                         </p>
                       </div>
@@ -499,8 +494,7 @@
               </div>
               <div class="col-span-12 sm:col-span-4">
                 <div class="flex flex-col gap-6">
-                  <div class="nui-card nui-card-rounded nui-card-white p-8">
-                    <!--[-->
+                  <!--<div class="nui-card nui-card-rounded nui-card-white p-8">
                     <div class="mb-8 flex items-center gap-2">
                       <h4
                         class="text-muted-400 font-sans text-xs font-semibold uppercase"
@@ -512,14 +506,14 @@
                       <p
                         class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
                       >
-                        <!--[-->Enable or disable this setting to manage if your
+                       Enable or disable this setting to manage if your
                         network should be notified when you make changes to your
                         profile.
-                        <!--]-->
+                        
                       </p>
                     </div>
-                    <!--]-->
-                  </div>
+                 
+                  </div>-->
                   <div class="nui-card nui-card-rounded nui-card-white p-8">
                     <!--[-->
                     <div class="mb-8 flex items-center gap-2">
@@ -537,7 +531,7 @@
                             class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
                             tag="h3"
                           >
-                            Department: {{dept}}
+                            Department: {{user.department}}
                             <!--]-->
                           </p>
                         </div>
@@ -556,60 +550,7 @@
                         Accomodation and Food
                       </h4>
                     </div>
-                    <div class="space-y-6">
-                      <!--[-->
-                      <div class="flex w-full items-center gap-2">
-                        <div>
-                          <p
-                            class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
-                            tag="h3"
-                          >
-                            Premium Accomodation
-                            <!--]-->
-                          </p>
-                          <p
-                            class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
-                          >
-                            <!--[--><span>3 Nights/4 Days</span>
-                            <!--]-->
-                          </p>
-                        </div>
-                        <div class="ms-auto">
-                          <a
-                            aria-current="page"
-                            href="/layouts/profile#"
-                            class="router-link-active router-link-exact-active nui-button-icon nui-button-full nui-button-small nui-button-default"
-                            rel
-                            data-nui-tooltip="View Profile"
-                          >
-                            <!--[--><svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink"
-                              aria-hidden="true"
-                              role="img"
-                              class="icon size-4"
-                              style=""
-                              width="1em"
-                              height="1em"
-                              viewBox="0 0 24 24"
-                              data-v-7663d7ec
-                            >
-                              <path
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 12h14m-7-7l7 7l-7 7"
-                              />
-                            </svg>
-                            <!--]-->
-                          </a>
-                        </div>
-                      </div>
-
-                      <!--]-->
-                    </div>
+                    
                     <!--]-->
                   </div>
                 </div>
