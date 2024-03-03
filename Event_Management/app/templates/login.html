@@ -47,6 +47,7 @@
                             </div>
                             <div class="mt-6">
                             <div class="w-full">
+                                <p id="error_box" class="pb-3 font-semibold text-md text-center text-red-400">{% if error!="None" %}{{error}}{% endif %}</p>
                             <div class="relative right-0">
                             <ul
                             class="relative flex flex-wrap p-1 list-none rounded-xl bg-slate-200"
@@ -363,6 +364,12 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
 <script>
+    $(document).ready(function(){
+  $('form').change(function(event){
+    $("#error_box").text("");
+  })
+
+});
  /*   $(document).ready(function(){
   $('form').submit(function(event){
     event.preventDefault(); // Prevent the default form submission
