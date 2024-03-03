@@ -10,26 +10,30 @@ class User(UserMixin):
     def __init__(self, email):
         # fetch user
         user=check_user_type(connection,cursor,email)
-        
+        self.name=""
         # print("user",user,email)
         if(user.get("utype")!="Anonymous"):
             self.authenticated=True
             data=user["data"]
             self.id = data.get("email",None)
-            self.name=data.get("name",None)
             self.department=data.get("dept",None)
             self.phone_number=data.get("phone_number",None)
             self.email=data.get("email",None)
             if user["utype"]=="Student":
                 self.roll_no=data.get("roll_no",None)
                 self.college_name="IITKGP"
+                self.name=data.get("name",None)
+
             if user["utype"]=="Participant":
                 self.p_id=data.get("p_id",None)
                 self.food_id=data.get("food_id",None)
                 self.acc_id=data.get("acc_id",None)
                 self.college_name=data.get("college_name",None)
+                self.name=data.get("name",None)
+
             if user["utype"]=="Organiser":
 
+                self.name=data.get("name",None)
                 self.o_id=data.get("o_id",None)
                 self.is_admin=data.get("can_create",None)
             self.utype=str(user["utype"]).lower()
@@ -93,9 +97,11 @@ class User(UserMixin):
             return 0
         if self.utype=="organiser":
             return 0
+    
         
     @property
     def events_registered(self):
+        events_list=[]
         if self.utype=="student":
             success,reg=fetch_reg_events_of_student(connection,cursor,self.roll_no)
             # Convert to list of dictionaries
@@ -210,7 +216,8 @@ class User(UserMixin):
             return []
         if self.utype=="organiser":
             return []
-        
+        else:
+            return []
     @property
     def num_events_organised(self):
         if self.utype=="student":
@@ -220,6 +227,7 @@ class User(UserMixin):
         if self.utype=="organiser":
             success,reg=fetch_events_organised_by_organiser(connection,cursor,self.o_id)
             return len(reg)
+        return 0
         
     @property
     def events_organised(self):
@@ -251,7 +259,7 @@ class User(UserMixin):
                 }
                 events_list.append(event_dict)
             return events_list
- 
+        return 0
         
     def __str__(self):
         return self.name+"_"+self.utype
@@ -524,6 +532,7 @@ def loginUser():
             # Check if the username and password match
             user_dict=check_user_type(connection,cursor,email)
             utype=user_dict["utype"]
+            print(user_dict)
             if utype=="Anonymous":
                 return redirect(url_for("app_views.registerUser"))
             elif utype=="Participant":
@@ -532,8 +541,8 @@ def loginUser():
                 success, row = check_student_login(connection,cursor,email,password)          
             elif utype=="Organiser":
                 success, row = check_organiser_login(connection,cursor,email,password)
-            # elif utype=="Admin":
-            #     success, row = check_admin_login(connection,cursor,email,password)
+            elif utype=="Admin":
+                success, row = check_admin_login(connection,cursor,email,password)
             
                 
             if success:
@@ -638,8 +647,9 @@ def registerOrganiser():
         password = info.get('password')
         name = info.get('name')
         # TODO : Add phone number to the form
-        phone_number = 9876543210
-        can_create = 0
+        # phone_number = 9876543210
+        phone_number = info.get('phone_number')
+        can_create = 1
         success, error = insert_organiser(connection,cursor,email,password,name,phone_number,can_create)
 
         if success:
@@ -783,7 +793,7 @@ def subscribeFood():
 def addFood():
     if request.method == 'POST':
         info = request.form
-        print(info)
+        print("Info printed from here ",info)
         name = info.get('name')
         days = info.get('days')
         price = info.get('price')
@@ -792,10 +802,11 @@ def addFood():
         if type == "on":
             type = "Veg"
         else:
-            type = "Non-Veg"
+            type = "NonVeg"
         price = int(price)
         days = int(days)
         success, error = insert_food(connection,cursor,type,price,days,name,desc)
+        print("Success from here ",success)
         if success:
             return redirect(url_for('app_views.facilities'))
         else:
@@ -809,8 +820,12 @@ def AddOrganiser():
 @app_views.route('/facilities')
 def facilities():
     # fetch acco , food
-    profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('logistics_admin.html',events=[])
+    accomodation_list = get_all_accomodation(connection,cursor)
+    food_list = get_all_food(connection,cursor)
+    
+    print(food_list)
+    # profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
+    return render_template('logistics_admin.html',events=[],accomodation=accomodation_list,food=food_list)
 
 @app_views.route('/plans')
 def plans():
@@ -916,10 +931,60 @@ def dashboard():
         }
         notifications_list.append(notification_dict)
     
+    organiser_list = []
+    cursor.execute("""
+        SELECT o_id, name, email, phone_number
+        FROM organiser
+    """)
+    organisers = cursor.fetchall()
+    for organiser in organisers:
+        organiser_dict = {
+            "id": organiser[0],
+            "name": organiser[1],
+            "email": organiser[2],
+            "phone": organiser[3]
+        }
+        organiser_list.append(organiser_dict)
+
+    student_list = []
+    cursor.execute("""
+        SELECT roll_no, name, email, phone_number
+        FROM student
+    """)
+    students = cursor.fetchall()
+    for student in students:
+        student_dict = {
+            "id": student[0],
+            "name": student[1],
+            "email": student[2],
+            "phone": student[3]
+        }
+        student_list.append(student_dict)
+
+    participant_list = []
+    cursor.execute("""
+        SELECT p_id, name, email, phone_number
+        FROM participant
+    """)
+    participants = cursor.fetchall()
+    for participant in participants:
+        participant_dict = {
+            "id": participant[0],
+            "name": participant[1],
+            "email": participant[2],
+            "phone": participant[3]
+        }
+        participant_list.append(participant_dict)
+
+    
+    print("Student list ",student_list)
+    print("Organiser list ",organiser_list)
+    print("Participant list ",participant_list)
 
     
     print("List of events ",events_list)
     try:
+        
         print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
@@ -935,7 +1000,7 @@ def dashboard():
             
             return render_template('dashboard_organiser.html',user=current_user,total_reg=total_reg,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="admin":
-            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list)
+            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list,organisers=organiser_list,students=student_list,participants=participant_list)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))

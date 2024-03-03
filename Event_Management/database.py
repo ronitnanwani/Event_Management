@@ -123,6 +123,18 @@ def check_organiser_login(connection,cursor,email,password):
             return False, None
     except Exception as e:
         return False, str(e)
+
+def check_admin_login(connection,cursor,email,password):
+    print("here in adminlogin")
+    try:
+        cursor.execute("SELECT * FROM dbadmin WHERE email = %s AND password = %s", (email, password))
+        row = cursor.fetchone()
+        if row:
+            return True, row
+        else:
+            return False, None
+    except Exception as e:
+        return False, str(e)
         
 def fetch_all_events(connection,cursor):
     try:
@@ -570,8 +582,10 @@ def check_user_type(connection,cursor,email):
         dbadmin_data = cursor.fetchone()
         if dbadmin_data:
             dbadmin_dict = {
-                "email": dbadmin_data[1],
+                "email": dbadmin_data[0],
             }
+            print(dbadmin_dict,"in check user")
+            
             return {"utype":"Admin","data":dbadmin_dict}
 
         return {"utype":"Anonymous","data":None}
@@ -658,3 +672,51 @@ def get_participants_of_event(connection,cursor,e_id):
         participant_details+=[{"email": participant[0], "name": participant[1]} for participant in participants]
         
         return participant_details
+    
+def get_all_accomodation(connection,cursor):
+        query = """
+            SELECT acc_id,price,days,name,description,num_of_participants FROM accomodation;
+        """
+
+        cursor.execute(query)
+
+        accomodation_data = cursor.fetchall()
+
+
+        accomodation_list = []
+        for row in accomodation_data:
+            accomodation_dict = {
+                'acc_id': row[0],
+                'price': row[1],
+                'days': row[2],
+                'name': row[3],
+                'description': row[4],
+                'num_of_participants': row[5]
+            }
+            accomodation_list.append(accomodation_dict)
+
+        return accomodation_list
+
+def get_all_food(connection,cursor):
+        query = """
+            SELECT food_id,name,type,price,days,description,num_of_participants FROM food;
+        """
+
+        cursor.execute(query)
+        
+        food_data = cursor.fetchall()
+
+        food_list = []
+        for row in food_data:
+            food_dict = {
+                'food_id': row[0],
+                'name': row[1],
+                'type': row[2],
+                'price': row[3],
+                'days': row[4],
+                'description': row[5],
+                'num_of_participants': row[6]
+            }
+            food_list.append(food_dict)
+
+        return food_list
