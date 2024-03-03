@@ -47,15 +47,19 @@ class User(UserMixin):
         #     return len(reg)
         # if self.utype=="organiser":
         #     fetch_reg_events_of_participant(self.p_id)
+        return 0
     @property       
     def num_completed_tasks(self):
-        pass
+        return 0
+
     @property       
     def num_allotted_tasks(self):
-        pass
+        return 0
+
     @property       
     def tasks(self):
-        pass
+        return []
+
  
         
     def __str__(self):
@@ -483,6 +487,7 @@ def dashboard():
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
         elif current_user.utype=="participant":
+            print(current_user,"dashboard")
             return render_template('dashboard_student.html',user=current_user)
         elif current_user.utype=="student":
             return render_template('dashboard_student.html',user=current_user)
