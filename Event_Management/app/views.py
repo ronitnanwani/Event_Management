@@ -443,7 +443,7 @@ def eventDetails(id):
         task_list=[]
         count_allotted=0
         count_completed=0
-
+    print("participants",all_participants)
     organiser={"name":org_detail[1],"role":"Events Head","email":org_detail[0],"phone":org_detail[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
     return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list,accomodations=accomodations_list,participants=all_participants)
 
@@ -850,13 +850,10 @@ def plans():
 
     return render_template('plancards.html',accomodations=accomodations_list,food=food_list,facilities=facilities)
 
-@app_views.route('/update-winners', methods=['POST'])
-def updateWinners():
+@app_views.route('/update-winners/<int:e_id>', methods=['POST'])
+def updateWinners(e_id):
     if request.method == 'POST':
-        # print(request.json)
-        # TODO : Request.form
-        info = request.json
-        e_id = info.get('e_id')
+        info = request.form
         first = info.get('first')
         second = info.get('second')
         third = info.get('third')
@@ -1095,4 +1092,11 @@ def filter_event():
 
 @app_views.route('/delete_user', methods=['POST'])
 def delete_user():
-    pass
+    info = request.json
+    utype = info.get('utype')
+    id = info.get('id')
+    success, error = delete_from_db(connection,cursor,utype,id)
+    if success:
+        return jsonify({"message": "id deleted successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
