@@ -321,6 +321,17 @@ def eventDetails(id):
     tags_list=[]
     for tag in tags:
         tags_list.append(tag[0])
+    is_registered=False
+    for item in current_user.events_registered:
+        if(item.e_id==rows[0][0]):
+            is_registered=True
+            break
+    is_volunteered=False
+    for item in current_user.events_volunteered:
+        if(item.e_id==rows[0][0]):
+            is_volunteered=True
+            break
+    
     event_dict = {
         'id': rows[0][0],
         'time': str(time),
@@ -334,7 +345,9 @@ def eventDetails(id):
         'prize': rows[0][8],
         'venue': rows[0][9],
         'tags' : tags_list,
-        'num_p': rows[0][10]
+        'num_p': rows[0][10],
+        "is_registered":is_registered,
+        "is_volunteered":is_volunteered,
     }
     
     roll_no=2130015

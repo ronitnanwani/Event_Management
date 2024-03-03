@@ -531,8 +531,8 @@
     $.post("/register_for_event", JSON.stringify({ e_id: {{event.id}}}), function(response){
       console.log("POST request successful");
       console.log(response); // Response from the server
-    $(this).text("Registered");
-    $(this).prop("disabled", true);
+    $(#register_event).text("Registered");
+    $(#register_event).prop("disabled", true);
     })
     .fail(function(xhr, status, error) {
       console.error("POST request failed");
@@ -547,8 +547,8 @@
     $.post("/create_event_volunteer", JSON.stringify({id: pid, e_id: {{event.id}}}), function(response){
       console.log("POST request successful");
       console.log(response); // Response from the server
-          $(this).text("Volunteered");
-    $(this).prop("disabled", true);
+          $("#do_volunteer").text("Volunteered");
+    $("#do_volunteer").prop("disabled", true);
     })
     .fail(function(xhr, status, error) {
       console.error("POST request failed");
