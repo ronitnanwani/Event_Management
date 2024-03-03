@@ -91,8 +91,17 @@
                   <!---->
                 </button>
                 {% endif %}
-                            {% endif %}
-{% endif %}
+                {% endif %}
+                <!--button for winner-->
+                {% if event.type=="Competition" %}
+                {% if user.utype=="admin" or event.is_organiser %}
+                <button type="button" id="set_winner"  class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32">
+                <span> Set Winners</span>
+                  <!--]-->
+                  <!---->
+                </button>                
+                {% endif %}
+                {% endif %}
                     </div>
                     <div class="absolute end-0 top-2 z-20">
                         <div class="nui-dropdown z-20" data-v-84945349>
@@ -497,6 +506,7 @@
                                                 </div>
                                                 <!--]-->
                                             </div>
+                                            {% if user.utype=="participant" %}
                                             <div class="nui-card nui-card-rounded nui-card-white p-8">
                                                 <!--[-->
                                                 <h4 class="text-muted-400 mb-6 font-sans text-xs font-semibold uppercase"> Book Accomodation</h4>
@@ -504,7 +514,7 @@
                                                     <!--[-->
                                                 {% for acco in accomodations %}
 
-                                                    <div class="flex items-center gap-2">
+                                                    <div class="flex items-center gap-2 py-2">
 
                                                         <div class="nui-avatar nui-avatar-xs nui-avatar-full bg-muted-100 dark:bg-muted-700" data-nui-tooltip="Sketch">
                                                             <div class="nui-avatar-inner">
@@ -535,6 +545,7 @@
                                                 </div>
                                                 <!--]-->
                                             </div>
+                                            {% endif %}
                                             <div class="nui-card nui-card-rounded nui-card-white p-8">
                                                 <h4 class="text-muted-400 mb-6 font-sans text-xs font-semibold uppercase"> Tags </h4>
                                                 <div class="flex gap-2">

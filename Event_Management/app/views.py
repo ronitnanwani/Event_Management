@@ -316,7 +316,11 @@ def eventDetails(id):
     # print("Hi ")
     success, rows = fetch_event_details(connection,cursor,id)
     success2,tags = fetch_all_tags_of_event(connection,cursor,id)
-    
+    success,accomodations = fetch_all_acc_plans(connection,cursor)
+    accomodations_list=[]
+    for accomodation in accomodations:
+        accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4],"days":accomodation[2],"id":accomodation[0]})
+
     dt_object = datetime.fromisoformat(str(rows[0][1]))
     
     date = dt_object.date()
@@ -336,7 +340,13 @@ def eventDetails(id):
             if(item["e_id"]==rows[0][0]):
                 is_volunteered=True
                 break
-        
+    is_organiser=True
+    success3,details = fetch_all_organisers_of_event(connection,cursor,id)
+    for item in details:
+        if(item[0]==current_user.email):
+            is_organiser=True
+            break
+    org_detail=details[0]
     event_dict = {
         'id': rows[0][0],
         'time': str(time),
@@ -353,6 +363,7 @@ def eventDetails(id):
         'num_p': rows[0][10],
         "is_registered":is_registered,
         "is_volunteered":is_volunteered,
+        "is_organiser":is_organiser
     }
     if current_user.utype=="student":
         roll_no=current_user.roll_no
@@ -388,10 +399,9 @@ def eventDetails(id):
         task_list=[]
         count_allotted=0
         count_completed=0
-    success3,details = fetch_all_organisers_of_event(connection,cursor,id)
 
-    organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
-    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list)
+    organiser={"name":org_detail[1],"role":"Events Head","email":org_detail[0],"phone":org_detail[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
+    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list,accomodations=accomodations_list)
 
 @app_views.route('/event/<int:id>/volunteers')
 def getVolunteers(id):
@@ -470,6 +480,7 @@ def loginUser():
 
 
             else:
+                print("login error")
                 # Authentication failed, render the login form with an error message
                 return render_template('login.html', error='Invalid username or password')
     except Exception as e:

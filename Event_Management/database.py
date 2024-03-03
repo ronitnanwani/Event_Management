@@ -156,7 +156,7 @@ def fetch_all_organisers_of_event(connection,cursor,id):
     try:
         cursor.execute("SELECT email,name,phone_number FROM event_has_organiser NATURAL JOIN organiser where e_id=%s",(id,))
         rows=cursor.fetchall()
-        return True,rows[0]
+        return True,rows
     except Exception as e:
         return False,str(e)
     
