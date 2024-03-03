@@ -251,7 +251,7 @@
                             >
                               <!--[-->
                               <!--[-->
-                              {% for item in accomodation %}
+                              {% for acco in accomodation %}
                               <tr
                                 class="hover:bg-muted-50 dark:hover:bg-muted-900 transition-colors duration-300"
                               >
@@ -260,13 +260,13 @@
                                 <td
                                   class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                 >
-                                  <!--[-->{{acco.title}}
+                                  <!--[-->{{acco.name}}
                                   <!--]-->
                                 </td>
                                 <td
                                   class="font-alt whitespace-nowrap text-sm text-muted-500 dark:text-white p-4"
                                 >
-                                  <!--[-->{{acco.desc| slice(0, 100)}}
+                                  <!--[-->{{acco.description[:100]}}
                                   <!--]-->
                                 </td>
                                 <td
@@ -390,7 +390,7 @@
                             >
                               <!--[-->
                               <!--[-->
-                              {% for item in accomodation %}
+                              {% for item in food %}
                               <tr
                                 class="hover:bg-muted-50 dark:hover:bg-muted-900 transition-colors duration-300"
                               >
@@ -399,20 +399,20 @@
                                 <td
                                   class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                 >
-                                  <!--[-->{{acco.title}}
+                                  <!--[-->{{item.name}}
                                   <!--]-->
                                 </td>
                                 <td
                                   class="font-alt whitespace-nowrap text-sm text-muted-500 dark:text-white p-4"
                                 >
-                                  <!--[-->{{acco.desc| slice(0, 100)}}
+                                  <!--[-->{{item.description[:100]}}
                                   <!--]-->
                                 </td>
                                 <td
                                   class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                 >
                                   <!--[--><span class="font-semibold"
-                                    >${{acco.price}}</span
+                                    >${{item.price}}</span
                                   >
                                   <!--]-->
                                 </td>
@@ -529,7 +529,7 @@
                             >
                               <!--[-->
                               <!--[-->
-                              {% for item in accomodation %}
+                              {% for item in facility %}
                               <tr
                                 class="hover:bg-muted-50 dark:hover:bg-muted-900 transition-colors duration-300"
                               >
@@ -538,20 +538,20 @@
                                 <td
                                   class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                 >
-                                  <!--[-->{{acco.title}}
+                                  <!--[-->{{item.name}}
                                   <!--]-->
                                 </td>
                                 <td
                                   class="font-alt whitespace-nowrap text-sm text-muted-500 dark:text-white p-4"
                                 >
-                                  <!--[-->{{acco.desc| slice(0, 100)}}
+                                  <!--[-->{{item.description[:100]}}
                                   <!--]-->
                                 </td>
                                 <td
                                   class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                 >
                                   <!--[--><span class="font-semibold"
-                                    >${{acco.price}}</span
+                                    >${{item.price}}</span
                                   >
                                   <!--]-->
                                 </td>

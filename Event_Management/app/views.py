@@ -646,8 +646,9 @@ def registerOrganiser():
         password = info.get('password')
         name = info.get('name')
         # TODO : Add phone number to the form
-        phone_number = 9876543210
-        can_create = 0
+        # phone_number = 9876543210
+        phone_number = info.get('phone_number')
+        can_create = 1
         success, error = insert_organiser(connection,cursor,email,password,name,phone_number,can_create)
 
         if success:
@@ -791,7 +792,7 @@ def subscribeFood():
 def addFood():
     if request.method == 'POST':
         info = request.form
-        print(info)
+        print("Info printed from here ",info)
         name = info.get('name')
         days = info.get('days')
         price = info.get('price')
@@ -800,10 +801,11 @@ def addFood():
         if type == "on":
             type = "Veg"
         else:
-            type = "Non-Veg"
+            type = "NonVeg"
         price = int(price)
         days = int(days)
         success, error = insert_food(connection,cursor,type,price,days,name,desc)
+        print("Success from here ",success)
         if success:
             return redirect(url_for('app_views.facilities'))
         else:
@@ -817,8 +819,12 @@ def AddOrganiser():
 @app_views.route('/facilities')
 def facilities():
     # fetch acco , food
-    profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('logistics_admin.html',events=[])
+    accomodation_list = get_all_accomodation(connection,cursor)
+    food_list = get_all_food(connection,cursor)
+    
+    print(food_list)
+    # profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
+    return render_template('logistics_admin.html',events=[],accomodation=accomodation_list,food=food_list)
 
 @app_views.route('/plans')
 def plans():
