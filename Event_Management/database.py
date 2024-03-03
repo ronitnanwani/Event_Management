@@ -525,7 +525,7 @@ def fetch_event_for_filter(connection,cursor,tags):
 
 def fetch_organiser_of_event(connection,cursor,e_id):
         cursor.execute("""
-            SELECT o.name
+            SELECT o.name,phone_number
             FROM event e
             JOIN event_has_organiser eo ON e.e_id = eo.e_id
             JOIN organiser o ON eo.o_id = o.o_id
@@ -533,5 +533,6 @@ def fetch_organiser_of_event(connection,cursor,e_id):
             LIMIT 1
         """, (e_id,))
         
-        organiser_name = cursor.fetchone()[0] if cursor.rowcount > 0 else None
-        return True,organiser_name
+        organiser_details = cursor.fetchone() if cursor.rowcount > 0 else None
+        print(organiser_details)
+        return True,organiser_details

@@ -120,8 +120,9 @@ class User(UserMixin):
                     "num_p": event[10]
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                event_dict["organiser"]=org
-                print(event_dict["organiser"])
+                # success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                print("Hehe ",org[0],org[1])
+                event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
         if self.utype=="participant":
             success,reg=fetch_reg_events_of_participant(connection,cursor,self.p_id)
@@ -146,8 +147,9 @@ class User(UserMixin):
                     "num_p": event[10]
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                event_dict["organiser"]=org
-                print(event_dict["organiser"])
+                # success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                print("Hehe ",org[0],org[1])
+                event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
         if self.utype=="organiser":
             success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
@@ -172,10 +174,10 @@ class User(UserMixin):
                     "num_p": event[10]
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                event_dict["organiser"]=org
-                print(event_dict["organiser"])
+                # success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                print("Hehe ",org[0],org[1])
+                event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
-
         return events_list
     @property
     def events_volunteered(self):
