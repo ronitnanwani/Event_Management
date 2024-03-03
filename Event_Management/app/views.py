@@ -28,6 +28,7 @@ class User(UserMixin):
                 self.acc_id=data.get("acc_id",None)
                 self.college_name=data.get("college_name",None)
             if user["utype"]=="Organiser":
+
                 self.o_id=data.get("o_id",None)
                 self.is_admin=data.get("can_create",None)
             self.utype=str(user["utype"]).lower()
@@ -39,27 +40,162 @@ class User(UserMixin):
         return self.authenticated
     @property       
     def num_registered(self):
-        # if self.utype=="student":
-        #     success,reg=fetch_reg_events_of_student(self.roll_no)
-        #     return len(reg)
-        # if self.utype=="participant":
-        #     success,reg=fetch_reg_events_of_participant(self.p_id)
-        #     return len(reg)
-        # if self.utype=="organiser":
-        #     fetch_reg_events_of_participant(self.p_id)
-        return 0
+        if self.utype=="student":
+            success,reg=fetch_reg_events_of_student(connection,cursor,self.roll_no)
+            return len(reg)
+        if self.utype=="participant":
+            success,reg=fetch_reg_events_of_participant(connection,cursor,self.p_id)
+            return len(reg)
+        if self.utype=="organiser":
+            success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
+            return len(reg)
+
     @property       
     def num_completed_tasks(self):
-        return 0
+        if self.utype=="student":
+            success,reg=fetch_completed_tasks_of_student(connection,cursor,self.roll_no)
+            return len(reg)
+        if self.utype=="participant":
+            return 0
+        if self.utype=="organiser":
+            return 0
 
     @property       
     def num_allotted_tasks(self):
-        return 0
-
+        if self.utype=="student":
+            success,reg=fetch_alloted_tasks_of_student(connection,cursor,self.roll_no)
+            return len(reg)
+        if self.utype=="participant":
+            return 0
+        if self.utype=="organiser":
+            return 0
     @property       
     def tasks(self):
-        return []
+        if self.utype=="student":
+            success,reg=fetch_alloted_tasks_of_student(connection,cursor,self.roll_no)
+            # Convert to list of dictionaries
+            tasks_list=[]
+            for task in reg:
+                tasks_list.append({"description":task[0],"is_complete":task[1]})
+            return tasks_list
+        if self.utype=="participant":
+            return []
+        if self.utype=="organiser":
+            return []
+    @property
+    def num_volunteers(self):
+        if self.utype=="student":
+            success,reg=fetch_events_volunteered_by_student(connection,cursor,self.roll_no)
+            return len(reg)
+        if self.utype=="participant":
+            return 0
+        if self.utype=="organiser":
+            return 0
+        
+    @property
+    def events_registered(self):
+        if self.utype=="student":
+            success,reg=fetch_reg_events_of_student(connection,cursor,self.roll_no)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+        if self.utype=="participant":
+            success,reg=fetch_reg_events_of_participant(connection,cursor,self.p_id)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+        if self.utype=="organiser":
+            success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
 
+        return events_list
+    @property
+    def events_volunteered(self):
+        if self.utype=="student":
+            success,reg=fetch_events_volunteered_by_student(connection,cursor,self.roll_no)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+            
+            return events_list
+        if self.utype=="participant":
+            return []
+        if self.utype=="organiser":
+            return []
  
         
     def __str__(self):
@@ -238,8 +374,17 @@ def EditProfile():
 
 @app_views.route('/register')
 def registerUser():
-    profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('signup.html',events=[])
+    try:
+        # pass
+        # if current_user.is_authenticated:
+        return render_template('signup.html')   
+        #     return redirect(url_for("app_views.dashboard"))
+    except Exception as e:
+            print(str(e))
+            return render_template('signup.html',error=str(e))   
+        
+
+     
 
 
 @app_views.route('/login',methods=["POST","GET"])
@@ -382,35 +527,39 @@ def registerOrganiser():
     
 @app_views.route('/register/student', methods=['POST'])
 def registerStudent():
-    if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
-        
-        print("username:",username)
-        print("password:",password)
-        # Check if the username already exists
-        user_exist=False
-        if user_exist:
-            return render_template('signup.html', error='User already exists')
-        
-        # If username doesn't exist, add the user to the database
+    try:
+            
+        if request.method == 'POST':
+            from Event_Management import load_user
 
-        print(request.form)
-        info = request.form
-        name = info.get('name')
-        email = info.get('email')
-        dept = info.get('department')
-        roll_no = info.get('rollno')
-        phone_number = info.get('phone')
-        password = info.get('password')
+            email = request.form['email']
+            password = request.form['password']
+            # Check if the username already exists
+            user_dict=check_user_type(connection,cursor,email)
+            utype=user_dict["utype"]
 
-        success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+            if utype!="Anonymous":
+                    return redirect(url_for("app_views.dashboard"))
 
-        # Registration successful, redirect to login page
-        if success:
-            return redirect(url_for('app_views.loginUser'))
+            print(request.form)
+            info = request.form
+            name = info.get('name')
+            email = info.get('email')
+            dept = info.get('department')
+            roll_no = info.get('rollno')
+            phone_number = info.get('phone')
+            password = info.get('password')
+
+            success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+            print(success,error,"in register")
+            # Registration successful, redirect to login page
+            if success:
+                return redirect(url_for('app_views.loginUser'))
+    except Exception as e:
+        print(str(e))
+        return render_template('signup.html', error=str(e))   
+           
         
-    
     # If GET request, render the registration form
     return render_template('signup.html', error=None)   
 
@@ -436,8 +585,9 @@ def registerParticipant():
         
         success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, password)
         # Registration successful, redirect to login page
-        print(success,error)
+        print(success,error,"signup")
         if success:
+            
             return redirect(url_for('app_views.loginUser'))
     
     # If GET request, render the registration form
