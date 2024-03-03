@@ -177,7 +177,7 @@ def fetch_all_organisers_of_event(connection,cursor,id):
     
 def fetch_all_acc_plans(connection,cursor):
     try:
-        cursor.execute("SELECT * FROM accomodation")
+        cursor.execute("SELECT acc_id,price,days,name,description FROM accomodation")
         rows=cursor.fetchall()
         print(rows)
         return True,rows
@@ -187,7 +187,7 @@ def fetch_all_acc_plans(connection,cursor):
     
 def fetch_all_food_plans(connection,cursor):
     try:
-        cursor.execute("SELECT * FROM food")
+        cursor.execute("SELECT food_id,type,days,description,num_of_participants,price,name FROM food")
         rows=cursor.fetchall()
         return True,rows
     
