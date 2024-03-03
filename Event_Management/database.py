@@ -283,7 +283,7 @@ def fetch_completed_tasks_of_student(connection,cursor,roll_no):
 def fetch_alloted_tasks_of_student(connection,cursor,roll_no):
     try:
         cursor.execute("""
-            SELECT t.task_description, t.is_complete, e.name, e.type_event
+            SELECT t.task_description, t.is_complete,t.id, e.name, e.type_event
             FROM tasks t
             JOIN event e ON t.e_id = e.e_id
             WHERE t.roll_no = %s
