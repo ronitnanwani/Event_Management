@@ -59,8 +59,8 @@ def addEvent():
         venue = info.get('venue')
         prize = info.get('prize')
         type = info.get('type')
-
-        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","))
+        num_p = 0
+        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","),num_p)
         # Check if the username already exists
         if success:
             return redirect(url_for('app_views.dashboardAdmin'))

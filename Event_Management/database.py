@@ -12,13 +12,13 @@ def insert_participant(connection,cursor,name, college_name, phone_number, email
         return False, str(e)
     
 
-def insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags):
+def insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags,num_p):
     try:
         cursor.execute("SELECT COALESCE(MAX(e_id), 0) + 1 FROM event")
         e_id = cursor.fetchone()[0]
 
-        cursor.execute("INSERT INTO event (e_id, date_and_time, name, type_event, description, first, second, third, prize, venue) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (e_id, date_time, name,type,description,None,None,None,prize,venue))
+        cursor.execute("INSERT INTO event (e_id, date_and_time, name, type_event, description, first, second, third, prize, venue,num_p) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
+                    (e_id, date_time, name,type,description,None,None,None,prize,venue,num_p))
         
         cursor.execute("INSERT INTO event_has_organiser (e_id, o_id) VALUES (%s, %s)", (e_id, o_id))
 
