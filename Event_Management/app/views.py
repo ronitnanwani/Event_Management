@@ -247,12 +247,12 @@ def getEvents():
         print(tags_list,"tags")
         is_registered=False
         for item in current_user.events_registered:
-            if(item.e_id==event_data[0]):
+            if(item["e_id"]==event_data[0]):
                 is_registered=True
                 break
         is_volunteered=False
         for item in current_user.events_volunteered:
-            if(item.e_id==event_data[0]):
+            if(item["e_id"]==event_data[0]):
                 is_volunteered=True
                 break
             
@@ -787,7 +787,7 @@ def dashboard():
     """)
     
     events_data = cursor.fetchall()
-
+    
     events_list = []
     for event_data in events_data:
         event_dict = {
@@ -805,20 +805,42 @@ def dashboard():
         }
         events_list.append(event_dict)
     
+    cursor.execute("""
+        SELECT time_t, description
+        FROM notifications
+        ORDER BY time_t DESC
+        LIMIT 5
+    """)
+    
+    # Fetch all rows from the result set
+    notifications = cursor.fetchall()
+    
+    
+    
+    notifications_list = []
+    for notification_data in notifications:
+        notification_dict = {
+            "timestamp": str(notification_data[0]),
+            "description": notification_data[1]
+        }
+        notifications_list.append(notification_dict)
+    
+
+    
     print("List of events ",events_list)
     try:
         print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
         elif current_user.utype=="participant":
-            return render_template('dashboard_participant.html',user=current_user,trending_events=events_list)
+            return render_template('dashboard_participant.html',user=current_user,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="student":
             # print("from here ",current_user.tasks)
-            return render_template('dashboard_student.html',user=current_user,trending_events=events_list)
+            return render_template('dashboard_student.html',user=current_user,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="organiser":
-            return render_template('dashboard_organiser.html',user=current_user,trending_events=events_list)
+            return render_template('dashboard_organiser.html',user=current_user,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="admin":
-            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list)
+            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
