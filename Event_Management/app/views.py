@@ -210,6 +210,47 @@ class User(UserMixin):
             return []
         if self.utype=="organiser":
             return []
+        
+    @property
+    def num_events_organsied(self):
+        if self.utype=="student":
+            return 0
+        if self.utype=="participant":
+            return 0
+        if self.utype=="organiser":
+            success,reg=fetch_events_organised_by_organiser(connection,cursor,self.o_id)
+            return len(reg)
+        
+    @property
+    def events_organised(self):
+        if self.utype=="student":
+            return []
+        if self.utype=="participant":
+            return []
+        if self.utype=="organiser":
+            success,reg=fetch_events_organised_by_organiser(connection,cursor,self.o_id)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+            return events_list
  
         
     def __str__(self):
@@ -343,7 +384,7 @@ def eventDetails(id):
             if(item["e_id"]==rows[0][0]):
                 is_volunteered=True
                 break
-    is_organiser=True
+    is_organiser=False
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
     for item in details:
         if(item[0]==current_user.email):
@@ -475,12 +516,13 @@ def loginUser():
         if request.method == 'POST':
             email = request.form['email']
             password = request.form['password']
+            ftype = request.form['ftype']
             print("cur",current_user)
             # Check if the username and password match
             user_dict=check_user_type(connection,cursor,email)
             utype=user_dict["utype"]
             if utype=="Anonymous":
-                return redirect(url_for("signup"))
+                return redirect(url_for("app_views.registerUser"))
             elif utype=="Participant":
                 success, row = check_participant_login(connection,cursor,email,password)       
             elif utype=="Student":
@@ -488,14 +530,13 @@ def loginUser():
             elif utype=="Organiser":
                 success, row = check_organiser_login(connection,cursor,email,password)
             # elif utype=="Admin":
-                # success, row = check_admin_login(connection,cursor,email,password)
+            #     success, row = check_admin_login(connection,cursor,email,password)
             
                 
             if success:
                 print("here")
                 user = load_user(user_dict["data"]["email"])
                 print("here",user)
- 
                 login_user(user)
                 return redirect(url_for("app_views.dashboard"))
 
@@ -1011,6 +1052,15 @@ def register_for_event():
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
+    
+@app_views.route('/do_task/<int:task_id>', methods=['POST'])
+def do_task(task_id):
+    info = request.form
+    success, error = complete_task(connection,cursor,task_id)
+    if success:
+        return jsonify({"message": "Task completed successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
 
 @app_views.route('/filter_event', methods=['POST'])
 def filter_event():
