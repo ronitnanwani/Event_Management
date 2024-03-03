@@ -972,11 +972,11 @@ def addTask(e_id):
             description = request.form['desc']
             success, error = insert_task(connection,cursor,roll_no,description,e_id)
             if success:
-                return jsonify({"message": "Task added successfully"}), 201
+                return redirect(request.url)
             else:
-                return jsonify({"error": error}), 500
+                return redirect(url_for('app_views.dashboard'))
         else:
-            return jsonify({"error": "You are not a student"}), 500
+            return redirect(url_for('app_views.dashboard'))
 
     # return redirect(url_for('app_views.getVolunteers'))
         
@@ -1097,6 +1097,6 @@ def delete_user():
     id = info.get('id')
     success, error = delete_from_db(connection,cursor,utype,id)
     if success:
-        return jsonify({"message": "id deleted successfully"}), 201
+        return redirect(request.url)
     else:
-        return jsonify({"error": error}), 500
+        return redirect(url_for('app_views.dashboard'))

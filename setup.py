@@ -29,9 +29,9 @@ def sample_data():
             cursor.execute(query, ("admin@gmail.com","admin"))
 
             query = "INSERT INTO event (e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(query, (1, "2021-10-10 10:00:00", "KTJ", "Technical", "This is a technical event", None, None, None, 1000, "LHC", 0))
-            cursor.execute(query, (2, "2021-10-11 10:00:00", "KTH", "Technical", "This is a technical event", None, None, None, 1000, "LBS", 0))
-            cursor.execute(query, (3, "2021-10-12 10:00:00", "KTP", "Cultural", "This is a cultural event", None, None, None, 1000, "Pro", 0))
+            cursor.execute(query, (6, "2021-10-10 10:00:00", "KTJ", "Technical", "This is a technical event", None, None, None, 1000, "LHC", 0))
+            cursor.execute(query, (7, "2021-10-11 10:00:00", "KTH", "Technical", "This is a technical event", None, None, None, 1000, "LBS", 0))
+            cursor.execute(query, (8, "2021-10-12 10:00:00", "KTP", "Cultural", "This is a cultural event", None, None, None, 1000, "Pro", 0))
 
             connection.commit()
             cursor.close()

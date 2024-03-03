@@ -256,14 +256,14 @@
                   </h3>
                   <a
                     aria-current="page"
-                    href="/organiser/events/{{user.id}}"
+                    href="/dashboard/events"
                     class="router-link-active router-link-exact-active bg-muted-100 hover:bg-muted-200 dark:bg-muted-700 dark:hover:bg-muted-900 text-primary-500 rounded-lg px-4 py-2 font-sans text-sm font-medium underline-offset-4 transition-colors duration-300 hover:underline"
                   >
                     View All
                   </a>
                 </div>
                 <div class="space-y-6">
-                  {% for event in myevents %}
+                  {% for event in user.events_organised %}
                   <div class="flex items-center gap-4">
                     <div>
                       <h4
@@ -722,7 +722,7 @@
                           ></path>
                         </g></svg
                       ><span class="text-muted-400 text-xs"
-                        >{{user.phone}}</span
+                        >{{user.phone_number}}</span
                       >
                     </div>
                   </div>
