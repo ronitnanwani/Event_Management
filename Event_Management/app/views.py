@@ -736,9 +736,9 @@ def addAccomodation():
         print(name,price,days,desc)
         success, error = insert_accomodation(connection,cursor,price,days,name,desc)
         if success:
-            return jsonify({"message": "Accomodation added successfully"}), 201
+            return redirect(url_for('app_views.facilities'))
         else:
-            return jsonify({"error": error}), 500
+            return redirect(url_for('app_views.dashboard'))
         
 
 @app_views.route('/subcribe_accomodation', methods=['POST'])
@@ -751,14 +751,13 @@ def subscribeAccomodation():
             p_id = current_user.p_id
             acc_id = info.get('acco-1')
 
-
             success, error = subscribe_accomodation(connection,cursor,p_id,acc_id)
             if success:
-                return jsonify({"message": "Accomodation subscribed successfully"}), 201
+                return redirect(url_for('app_views.dashboard'))
             else:
-                return jsonify({"error": error}), 500
+                return redirect(url_for('app_views.dashboard'))
         else:
-            return jsonify({"error": "You are not a participant"}), 500       
+            return redirect(url_for('app_views.dashboard'))
 
 @app_views.route('/subcribe_food', methods=['POST'])
 def subscribeFood():
@@ -773,11 +772,11 @@ def subscribeFood():
             print(p_id,food_id)
             success, error = subscribe_food(connection,cursor,p_id,food_id)
             if success:
-                return jsonify({"message": "Food subscribed successfully"}), 201
+                return redirect(url_for('app_views.dashboard'))
             else:
-                return jsonify({"error": error}), 500
+                return redirect(url_for('app_views.dashboard'))
         else:
-            return jsonify({"error": "You are not a participant"}), 500
+            return redirect(url_for('app_views.dashboard'))
  
 @app_views.route('/add_food', methods=['POST'])
 def addFood():
@@ -797,9 +796,9 @@ def addFood():
         days = int(days)
         success, error = insert_food(connection,cursor,type,price,days,name,desc)
         if success:
-            return jsonify({"message": "Food added successfully"}), 201
+            return redirect(url_for('app_views.facilities'))
         else:
-            return jsonify({"error": error}), 500
+            return redirect(url_for('app_views.dashboard'))
  
 @app_views.route('/add-organiser')
 def AddOrganiser():
@@ -808,6 +807,7 @@ def AddOrganiser():
 
 @app_views.route('/facilities')
 def facilities():
+    # fetch acco , food
     profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
     return render_template('logistics_admin.html',events=[])
 
@@ -852,13 +852,10 @@ def plans():
 
     return render_template('plancards.html',accomodations=accomodations_list,food=food_list,facilities=facilities)
 
-@app_views.route('/update-winners', methods=['POST'])
-def updateWinners():
+@app_views.route('/update-winners/<int:e_id>', methods=['POST'])
+def updateWinners(e_id):
     if request.method == 'POST':
-        # print(request.json)
-        # TODO : Request.form
-        info = request.json
-        e_id = info.get('e_id')
+        info = request.form
         first = info.get('first')
         second = info.get('second')
         third = info.get('third')
