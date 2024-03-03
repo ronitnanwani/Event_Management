@@ -343,23 +343,20 @@
                             <th
                               class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase bg-muted-50 dark:bg-muted-800 py-3"
                             >
-                              Role
-                            </th>
-                            <th
-                              class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase bg-muted-50 dark:bg-muted-800 py-3"
-                            >
-                              Event
+                              Phone
                             </th>
                             <th
                               class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase bg-muted-50 dark:bg-muted-800 py-3"
                             >
                               Status
                             </th>
+                            
                             <th
-                              class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase bg-muted-50 dark:bg-muted-800 py-3 px-4 py-6"
+                              class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase bg-muted-50 dark:bg-muted-800 py-3"
                             >
-                              <span class="sr-only">View</span>
+                              Action
                             </th>
+                            
                           </tr>
                         </thead>
                         <tbody
@@ -367,6 +364,7 @@
                         >
                           {% for organiser in organisers %}
                           <tr
+                          id="org-{{organiser.id}}"
                             class="hover:bg-muted-50 dark:hover:bg-muted-900 transition-colors duration-300"
                           >
                             <td
@@ -428,7 +426,7 @@
                                     {{organiser.name}}
                                   </h4>
                                   <p class="text-muted-400 font-sans text-xs">
-                                    {{organiser.role}}
+                                    {{organiser.email}}
                                   </p>
                                 </div>
                               </div>
@@ -436,31 +434,30 @@
                             <td
                               class="font-alt whitespace-nowrap text-sm text-muted-500 dark:text-white py-4"
                             >
-                              {{organiser.role}}
+                              {{organiser.phone}}
                             </td>
-                            <td
-                              class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white py-4"
-                            >
-                              {{organiser.event}}
-                            </td>
+                            
                             <td
                               class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white py-4"
                             >
                               <span
-                                class="nui-tag nui-tag-md nui-tag-full nui-tag-pastel {% if organiser.available %}nui-tag-success {% else %}nui-tag-danger {% endif %} font-medium"
-                                >{% if organiser.available %}Available {% else
-                                %} Unavailable {% endif %}</span
+                                class="nui-tag nui-tag-md nui-tag-full nui-tag-pastel nui-tag-success nui-tag-danger font-medium"
+                                >Available </span
                               >
                             </td>
                             <td
                               class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white py-4"
                             >
-                              <a
+                            
+                            <button type="button" data-organiser="{{organiser.id}}" class="deleteOrganiser mx-3 nui-button-action nui-button-default nui-button-rounded" muted="">
+                                        Delete
+                                </button>
+                              <!--<a
                                 href="/profile/organiser/{{organiser.id}}"
                                 class="text-violet-500 transition-opacity duration-300 hover:opacity-75 dark:text-violet-400"
                               >
                                 View
-                              </a>
+                              </a>-->
                             </td>
                           </tr>
                           {% endfor %}
@@ -550,12 +547,12 @@
                                     <th
                                       class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase border-muted-200 dark:border-muted-700 last:border-e-none dark:bg-muted-800 border-r bg-white px-4 py-5"
                                     >
-                                      Event
+                                      Email
                                     </th>
                                     <th
                                       class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase border-muted-200 dark:border-muted-700 last:border-e-none dark:bg-muted-800 border-r bg-white px-4 py-5"
                                     >
-                                      Volunteer
+                                      Phone
                                     </th>
 
                                     <th
@@ -570,6 +567,7 @@
                                 >
                                   {% for student in students %}
                                   <tr
+                                  id="student-{{student.id}}"
                                     class="hover:bg-muted-50 dark:hover:bg-muted-900 transition-colors duration-300"
                                   >
                                     <td
@@ -580,42 +578,34 @@
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-500 dark:text-white p-4"
                                     >
-                                      {{student.rollno}}
+                                      {{student.id}}
                                     </td>
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
                                       <span class="font-semibold"
-                                        >{{student.events}}</span
+                                        >{{student.email}}</span
                                       >
                                     </td>
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
                                       <span class="font-semibold"
-                                        >{% if student.is_volunteer %}Yes{% else
-                                        %} No{% endif %}</span
+                                        >phone</span
                                       >
                                     </td>
-                                    <td
-                                      class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
-                                    >
-                                      <span class="font-semibold"
-                                        >{{student.events}}</span
-                                      >
-                                    </td>
+                                    
 
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
                                       <button
                                         type="button"
-                                        rel=""
-                                        target=""
-                                        class="nui-button-action nui-button-default nui-button-rounded"
+                                        data-student="{{student.id}}"
+                                        class="deleteStudent nui-button-action nui-button-default nui-button-rounded"
                                         muted=""
                                       >
-                                        Manage
+                                        Delete
                                       </button>
                                     </td>
                                   </tr>
@@ -714,6 +704,11 @@
                                     <th
                                       class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase border-muted-200 dark:border-muted-700 last:border-e-none dark:bg-muted-800 border-r bg-white px-4 py-5"
                                     >
+                                      Email
+                                    </th>
+                                    <th
+                                      class="text-muted-700 dark:text-muted-400 text-left font-sans font-semibold tracking-wider text-xs uppercase border-muted-200 dark:border-muted-700 last:border-e-none dark:bg-muted-800 border-r bg-white px-4 py-5"
+                                    >
                                       Action
                                     </th>
                                   </tr>
@@ -723,6 +718,7 @@
                                 >
                                   {% for participant in participants %}
                                   <tr
+                                  id="participant-{{participant.id}}"
                                     class="hover:bg-muted-50 dark:hover:bg-muted-900 transition-colors duration-300"
                                   >
                                     <td
@@ -733,7 +729,7 @@
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-500 dark:text-white p-4"
                                     >
-                                      {{participant.college}}
+                                      {{participant.college_name}}
                                     </td>
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
@@ -742,18 +738,24 @@
                                         >{{participant.id}}</span
                                       >
                                     </td>
+                                    <td
+                                      class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
+                                    >
+                                      <span class="font-semibold"
+                                        >{{participant.email}}</span
+                                      >
+                                    </td>
 
                                     <td
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
                                       <button
                                         type="button"
-                                        rel=""
-                                        target=""
-                                        class="nui-button-action nui-button-default nui-button-rounded"
+                                        data-participant="{{participant.id}}"
+                                        class="deleteParticipant nui-button-action nui-button-default nui-button-rounded"
                                         muted=""
                                       >
-                                        Manage
+                                        Delete
                                       </button>
                                     </td>
                                   </tr>
@@ -776,4 +778,50 @@
     </main>
   </div>
 </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+           $.ajaxSetup({
+  contentType: "application/json; charset=utf-8"
+});
+  $(".deleteOrganiser").click(function(){
+    var id=$(this).data("organiser")
+    $.post("/delete_user", JSON.stringify({ id:id,utype:"organiser" }), function(response){
+      console.log("POST request successful");
+      console.log(response); // Response from the server
+    $("#org-"+id).remove();
+    })
+    .fail(function(xhr, status, error) {
+      console.error("POST request failed");
+      console.error(error); // Error message
+    });
+  });
+  $(".deleteStudent").click(function(){
+    var id=$(this).data("student")
+    $.post("/delete_user", JSON.stringify({ id:id,utype:"student" }), function(response){
+      console.log("POST request successful");
+      console.log(response); // Response from the server
+    $("#student-"+id).remove();
+    })
+    .fail(function(xhr, status, error) {
+      console.error("POST request failed");
+      console.error(error); // Error message
+    });
+  });
+  $(".deleteParticipant").click(function(){
+    var id=$(this).data("participant")
+    $.post("/delete_user", JSON.stringify({ id:id,utype:"participant" }), function(response){
+      console.log("POST request successful");
+      console.log(response); // Response from the server
+    $("#participant-"+id).remove();
+    })
+    .fail(function(xhr, status, error) {
+      console.error("POST request failed");
+      console.error(error); // Error message
+    });
+  });
+});
+
+
 {% endblock %}

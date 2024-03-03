@@ -422,6 +422,7 @@
       </div>
       <div class="divide-muted-200 dark:divide-muted-700 space-y-6 divide-y">
         {% for task in current_user.tasks %}
+        {% if not task.is_complete %}
          <div class="flex flex-col gap-4 sm:flex-row" id="task-{{task.id}}">
             <div class="nui-avatar nui-avatar-lg nui-avatar-full" data-nui-tooltip="Anna Vrinkof">
                <div class="nui-avatar-inner">
@@ -448,6 +449,7 @@
                </button>
             </div>
          </div>
+         {% endif %}
          {% endfor %}
         
       </div>

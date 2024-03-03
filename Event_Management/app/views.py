@@ -494,6 +494,12 @@ def getProfile():
     if not current_user.is_authenticated:
         return redirect(url_for("app_views.loginUser"))
     return render_template('profile.html',user=current_user)
+# @app_views.route('/profile/organiser/<int:oid>')
+# def getOrganiser(oid):
+#     if not current_user.is_authenticated:
+#         return redirect(url_for("app_views.loginUser"))
+#     user=User(oid)
+#     return render_template('profile.html',user=user)
 
 @app_views.route('/organiser-events')
 def getOrganiserEvents():
@@ -963,7 +969,7 @@ def dashboard():
 
     participant_list = []
     cursor.execute("""
-        SELECT p_id, name, email, phone_number
+        SELECT p_id, name, email, phone_number,college_name
         FROM participant
     """)
     participants = cursor.fetchall()
@@ -972,7 +978,8 @@ def dashboard():
             "id": participant[0],
             "name": participant[1],
             "email": participant[2],
-            "phone": participant[3]
+            "phone": participant[3],
+            "college_name":participant[4]
         }
         participant_list.append(participant_dict)
 
@@ -1024,7 +1031,44 @@ def dashboard():
             
             return render_template('dashboard_organiser.html',user=current_user,total_reg=total_reg,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="admin":
-            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list,organisers=organiser_list,students=student_list,participants=participant_list)
+            cursor.execute("""
+                    SELECT count(email)
+                    FROM participant
+                """)
+
+            num_participant = cursor.fetchone()[0]
+            cursor.execute("""
+                    SELECT count(email)
+                    FROM student
+                """)
+
+            num_student = cursor.fetchone()[0]
+            cursor.execute("""
+                    SELECT count(email)
+                    FROM organiser
+                """)
+
+            num_organiser = cursor.fetchone()[0]
+            cursor.execute("""
+                    SELECT count(email)
+                    FROM participant
+                    WHERE acc_id IS NOT NULL
+                """)
+
+            num_subscriber = cursor.fetchone()[0]
+            cursor.execute("""
+                    SELECT count(e_id)
+                    FROM event
+                """)
+
+            num_events = cursor.fetchone()[0]
+            cursor.execute("""
+                    SELECT count(e_id)
+                    FROM event_has_volunteer
+                """)
+
+            num_volunteers = cursor.fetchone()[0]
+            return render_template('dashboard_admin.html',num_volunteers=num_volunteers,num_events=num_events,total_subscribers=num_subscriber,num_users=(num_student+num_participant+num_organiser),user=current_user,trending_events=events_list,notifications=notifications_list,organisers=organiser_list,students=student_list,participants=participant_list)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
@@ -1047,7 +1091,6 @@ def dashboardParticipant():
 
 @app_views.route('/dashboard/admin')
 def dashboardAdmin():
-    profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
     return render_template('dashboard_admin.html',events=[])
 
 @app_views.route('/dashboard/events')
