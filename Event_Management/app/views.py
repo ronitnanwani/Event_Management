@@ -361,6 +361,9 @@ def eventDetails(id):
     accomodations_list=[]
     for accomodation in accomodations:
         accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4],"days":accomodation[2],"id":accomodation[0]})
+    
+    all_participants = get_participants_of_event(id)
+    
 
     dt_object = datetime.fromisoformat(str(rows[0][1]))
     
@@ -442,7 +445,7 @@ def eventDetails(id):
         count_completed=0
 
     organiser={"name":org_detail[1],"role":"Events Head","email":org_detail[0],"phone":org_detail[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
-    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list,accomodations=accomodations_list)
+    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list,accomodations=accomodations_list,participants=all_participants)
 
 @app_views.route('/event/<int:id>/volunteers')
 def getVolunteers(id):
@@ -1089,3 +1092,4 @@ def filter_event():
         events_list.append(event_dict)
 
     return events_list
+
