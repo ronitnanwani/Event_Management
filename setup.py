@@ -4,10 +4,11 @@ from argparse import ArgumentParser
 def establish_connection():
     #establishing the connection with the database and returning the connection object
     connection = psycopg2.connect(
-        user = "21CS30043",
-        password = "21CS30043",
-        host = "10.5.18.71",
-        database = "21CS30043"
+        user = "postgres",
+        password = "pass@1234",
+        host = "localhost",
+        database = "event_management",
+        port = "5432"
         )
     return connection
 
@@ -22,8 +23,8 @@ def sample_data():
             cursor.execute(query, (3, "ECE", "Raman", "9765409834", "hello@gmail.com", "789012"))
 
             query = "INSERT INTO organiser (o_id,email,password,name,phone_number,can_create) VALUES (%s, %s, %s, %s, %s, %s)"
-            cursor.execute(query, (1, "org@gmail.com", "123456", "Suresh", "1234567890", 1))
-            cursor.execute(query, (2, "org2@gmail.com", "456789", "Ramesh", "1234567890", 0))
+            cursor.execute(query, (2, "org@gmail.com", "123456", "Suresh", "1234567890", 1))
+            cursor.execute(query, (3, "org2@gmail.com", "456789", "Ramesh", "1234567890", 1))
 
             query = "INSERT INTO dbadmin (email,password) VALUES (%s, %s)"
             cursor.execute(query, ("admin@gmail.com","admin"))
@@ -323,8 +324,8 @@ def main():
                     password varchar(50),
                     acc_id int,
                     food_id int,
-                    foreign key (acc_id) references accomodation(acc_id),
-                    foreign key (food_id) references food(food_id)
+                    foreign key (acc_id) references accomodation(acc_id) on delete set null,
+                    foreign key (food_id) references food(food_id) on delete set null
                 );
             """
             cursor.execute(query)
@@ -364,8 +365,8 @@ def main():
             
             query = """
                 create table event_has_volunteer(
-                    e_id int references event(e_id), roll_no int references
-                    student(roll_no), primary key (e_id,roll_no)
+                    e_id int references event(e_id) on delete cascade, roll_no int references
+                    student(roll_no) on delete cascade, primary key (e_id,roll_no)
                 );
             """
             
@@ -374,7 +375,7 @@ def main():
             
             query = """
                 create table event_has_tag(
-                    e_id int references event(e_id),
+                    e_id int references event(e_id) on delete cascade,
                     tag varchar(50),
                     primary key (e_id,tag)
                 );
@@ -400,8 +401,8 @@ def main():
             
             query = """
                 create table event_has_organiser(
-                    e_id int references event(e_id), o_id int references
-                    organiser(o_id), primary key (e_id,o_id)
+                    e_id int references event(e_id) on delete cascade, o_id int references
+                    organiser(o_id) on delete cascade, primary key (e_id,o_id)
                 );
             """
             
@@ -420,7 +421,7 @@ def main():
             
             query = """
                 create table event_has_participant(
-                    e_id int references event(e_id),
+                    e_id int references event(e_id) on delete cascade,
                     type varchar(50),
                     id int,
                     CONSTRAINT type_check CHECK (type IN ('Student', 'Participant')),
@@ -446,8 +447,8 @@ def main():
                 create table tasks(
                     task_id int primary key,
                     task_description text,
-                    e_id int references event(e_id), roll_no int references
-                    student(roll_no), primary key (e_id,roll_no,task_description),
+                    e_id int references event(e_id) on delete cascade, roll_no int references
+                    student(roll_no) on delete cascade,
                     is_complete int
                 );
             """

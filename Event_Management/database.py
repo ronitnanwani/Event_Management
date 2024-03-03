@@ -642,11 +642,11 @@ def delete_from_db(connection,cursor,utype,id):
         connection.commit()
         
         print("User deleted successfully.")
-        return True
+        return True,None
 
     except Exception as e:
         print("Error deleting user:", e)
-        return False
+        return False,str(e)
     
 def get_participants_of_event(connection,cursor,e_id):
         cursor.execute("""

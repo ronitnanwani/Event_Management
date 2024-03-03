@@ -295,7 +295,7 @@
                                                     <div>
                                                         <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal" tag="h3">
                                                             <!--[-->
-                                                            {% if event.first=="None" %}
+                                                            {% if event.first!="None" %}
                                                             {{event.first}}
                                                             {% else %}
                                                             Not Declared
@@ -313,7 +313,7 @@
                                                     <img src="{{ url_for('static', filename='img/trophy_silver.png') }}" class="h-32 m-auto"></img>
                                                     <div>
                                                         <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal" tag="h3">
-                                                            <!--[-->{% if event.second=="None" %}
+                                                            <!--[-->{% if event.second!="None" %}
                                                             {{event.second}}
                                                             {% else %}
                                                             Not Declared
@@ -332,7 +332,7 @@
                                                     <img src="{{ url_for('static', filename='img/trophy_bronze.png') }}" class="h-32 m-auto"></img>
                                                     <div>
                                                         <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal" tag="h3">
-                                                            <!--[-->{% if event.third=="None" %}
+                                                            <!--[-->{% if event.third!="None" %}
                                                             {{event.third}}
                                                             {% else %}
                                                             Not Declared
