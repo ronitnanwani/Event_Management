@@ -212,7 +212,7 @@ class User(UserMixin):
             return []
         
     @property
-    def num_events_organsied(self):
+    def num_events_organised(self):
         if self.utype=="student":
             return 0
         if self.utype=="participant":
@@ -928,7 +928,11 @@ def dashboard():
             # print("from here ",current_user.tasks)
             return render_template('dashboard_student.html',user=current_user,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="organiser":
-            return render_template('dashboard_organiser.html',user=current_user,trending_events=events_list,notifications=notifications_list)
+            # volunteers=
+            total_reg=sum([item["num_p"] for item in current_user.events_organised])
+            print("events:",current_user.events_organised)
+            
+            return render_template('dashboard_organiser.html',user=current_user,total_reg=total_reg,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="admin":
             return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list)
     except Exception as e:
