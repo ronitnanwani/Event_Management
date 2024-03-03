@@ -488,7 +488,7 @@ def check_user_type(connection,cursor,email):
         }
         return {"utype":"Organiser","id":organiser_data[0],"data":organiser_dict}
 
-    cursor.execute(("SELECT email FROM db_admin WHERE email=%s"), (email,))
+    cursor.execute(("SELECT email FROM dbadmin WHERE email=%s"), (email,))
     dbadmin_data = cursor.fetchone()
     if dbadmin_data:
         dbadmin_dict = {

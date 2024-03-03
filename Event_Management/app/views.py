@@ -327,7 +327,7 @@ def eventDetails(id):
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
 
     organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
-    return render_template('eventDetails.html', name='events',event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list)
+    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list)
 
 @app_views.route('/event/<int:id>/volunteers')
 def getVolunteers(id):
@@ -360,8 +360,17 @@ def EditProfile():
 
 @app_views.route('/register')
 def registerUser():
-    profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('signup.html',events=[])
+    try:
+        # pass
+        # if current_user.is_authenticated:
+        return render_template('signup.html')   
+        #     return redirect(url_for("app_views.dashboard"))
+    except Exception as e:
+            print(str(e))
+            return render_template('signup.html',error=str(e))   
+        
+
+     
 
 
 @app_views.route('/login',methods=["POST","GET"])
@@ -504,33 +513,39 @@ def registerOrganiser():
     
 @app_views.route('/register/student', methods=['POST'])
 def registerStudent():
-    if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
-        
-        # Check if the username already exists
-        user_exist=False
-        if user_exist:
-            return render_template('signup.html', error='User already exists')
-        
-        # If username doesn't exist, add the user to the database
+    try:
+            
+        if request.method == 'POST':
+            from Event_Management import load_user
 
-        print(request.form)
-        info = request.form
-        name = info.get('name')
-        email = info.get('email')
-        dept = info.get('department')
-        roll_no = info.get('rollno')
-        phone_number = info.get('phone')
-        password = info.get('password')
+            email = request.form['email']
+            password = request.form['password']
+            # Check if the username already exists
+            user_dict=check_user_type(connection,cursor,email)
+            utype=user_dict["utype"]
 
-        success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+            if utype!="Anonymous":
+                    return redirect(url_for("app_views.dashboard"))
 
-        # Registration successful, redirect to login page
-        if success:
-            return redirect(url_for('app_views.loginUser'))
+            print(request.form)
+            info = request.form
+            name = info.get('name')
+            email = info.get('email')
+            dept = info.get('department')
+            roll_no = info.get('rollno')
+            phone_number = info.get('phone')
+            password = info.get('password')
+
+            success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+            print(success,error,"in register")
+            # Registration successful, redirect to login page
+            if success:
+                return redirect(url_for('app_views.loginUser'))
+    except Exception as e:
+        print(str(e))
+        return render_template('signup.html', error=str(e))   
+           
         
-    
     # If GET request, render the registration form
     return render_template('signup.html', error=None)   
 
@@ -556,8 +571,9 @@ def registerParticipant():
         
         success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, password)
         # Registration successful, redirect to login page
-        print(success,error)
+        print(success,error,"signup")
         if success:
+            
             return redirect(url_for('app_views.loginUser'))
     
     # If GET request, render the registration form
@@ -622,13 +638,13 @@ def dashboard():
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
         elif current_user.utype=="participant":
-            return render_template('dashboard_student.html',user=current_user)
+            return render_template('dashboard_participant.html',user=current_user)
         elif current_user.utype=="student":
             return render_template('dashboard_student.html',user=current_user)
         elif current_user.utype=="organiser":
-            return render_template('dashboard_student.html',user=current_user)
+            return render_template('dashboard_organiser.html',user=current_user)
         elif current_user.utype=="admin":
-            return render_template('dashboard_student.html',user=current_user)
+            return render_template('dashboard_admin.html',user=current_user)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
@@ -676,18 +692,31 @@ def addTask(e_id):
         return redirect(url_for('app_views.getVolunteers'))
     return redirect(url_for('app_views.getVolunteers'))
 @app_views.route('/create_event_volunteer', methods=['POST'])
+
 def create_event_volunteer():
     info = request.json
     print(request.json)
     e_id = info.get('e_id')
-    print(info,"volunteer")
-    success, error = insert_volunteer(connection,cursor,e_id,roll_no)
+    try:
+        print(current_user.is_authenticated)
+        if not current_user.is_authenticated:
+            return redirect(url_for("app_views.loginUser"))
+        elif current_user.utype=="participant":
+            return redirect(url_for("app_views.dashboard"))
+        elif current_user.utype=="student":
+            success, error = insert_volunteer(connection,cursor,e_id,current_user.roll_no)
+            if success:
+                return jsonify({"message": "Volunteer added successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        elif current_user.utype=="organiser":
+            return redirect(url_for("app_views.dashboard"))
+        elif current_user.utype=="admin":
+            return redirect(url_for("app_views.dashboard"))
+    except Exception as e:
+            print(str(e))
+            return redirect(url_for("app_views.loginUser"))
 
-    if success:
-        return jsonify({"message": "Volunteer added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
-    
     
 @app_views.route('/create_task_for_volunteer', methods=['POST'])
 def create_task_for_volunteer():
