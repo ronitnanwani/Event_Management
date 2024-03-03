@@ -9,7 +9,8 @@ try:
         user = "postgres",
         password = "pass@1234",
         host = "localhost",
-        database = "event_management"
+        database = "event_management",
+        port = "5435"
         )
     cursor = connection.cursor()
 except Exception as err:

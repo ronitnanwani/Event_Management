@@ -930,6 +930,55 @@ def dashboard():
         }
         notifications_list.append(notification_dict)
     
+    organiser_list = []
+    cursor.execute("""
+        SELECT o_id, name, email, phone_number
+        FROM organiser
+    """)
+    organisers = cursor.fetchall()
+    for organiser in organisers:
+        organiser_dict = {
+            "id": organiser[0],
+            "name": organiser[1],
+            "email": organiser[2],
+            "phone": organiser[3]
+        }
+        organiser_list.append(organiser_dict)
+
+    student_list = []
+    cursor.execute("""
+        SELECT roll_no, name, email, phone_number
+        FROM student
+    """)
+    students = cursor.fetchall()
+    for student in students:
+        student_dict = {
+            "id": student[0],
+            "name": student[1],
+            "email": student[2],
+            "phone": student[3]
+        }
+        student_list.append(student_dict)
+
+    participant_list = []
+    cursor.execute("""
+        SELECT p_id, name, email, phone_number
+        FROM participant
+    """)
+    participants = cursor.fetchall()
+    for participant in participants:
+        participant_dict = {
+            "id": participant[0],
+            "name": participant[1],
+            "email": participant[2],
+            "phone": participant[3]
+        }
+        participant_list.append(participant_dict)
+
+    
+    print("Student list ",student_list)
+    print("Organiser list ",organiser_list)
+    print("Participant list ",participant_list)
 
     
     print("List of events ",events_list)
@@ -950,8 +999,7 @@ def dashboard():
             
             return render_template('dashboard_organiser.html',user=current_user,total_reg=total_reg,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="admin":
-            print("admin")
-            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list)
+            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list,organisers=organiser_list,students=student_list,participants=participant_list)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
