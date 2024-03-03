@@ -77,14 +77,14 @@ def insert_accomodation(connection,cursor,price,days,name,description):
         connection.rollback()
         return False, str(e)
     
-def insert_food(connection,cursor,food_type,days,description):
+def insert_food(connection,cursor,food_type,price,days,name,description):
     try:
         cursor.execute("SELECT COALESCE(MAX(food_id), 0) + 1 FROM food")
         food_id = cursor.fetchone()[0]
         cursor.execute("""
-        INSERT INTO food (food_id, type, days, description, num_of_participants)
-        VALUES (%s, %s, %s, %s, %s)
-        """,(food_id, food_type, days, description, 0))
+        INSERT INTO food (food_id,type,price,days,name, description, num_of_participants)
+        VALUES (%s, %s, %s, %s, %s,%s,%s)
+        """,(food_id, food_type,price, days,name, description, 0))
         connection.commit()
         return True, None
     except Exception as e:
@@ -311,6 +311,34 @@ def register_participant(connection,cursor,e_id,participant_id,participant_type)
             INSERT INTO event_has_participant (e_id, type, id)
             VALUES (%s, %s, %s)
         """, (e_id, participant_type, participant_id))
+
+        connection.commit()
+        return True, None
+    except Exception as e:
+        connection.rollback()
+        return False, str(e)
+    
+def subscribe_accomodation(connection,cursor,p_id,acc_id):
+    try:
+        cursor.execute("""
+            UPDATE participant
+            SET acc_id = %s
+            WHERE p_id = %s
+        """, (acc_id, p_id))
+
+        connection.commit()
+        return True, None
+    except Exception as e:
+        connection.rollback()
+        return False, str(e)
+    
+def subscribe_food(connection,cursor,p_id,food_id):
+    try:
+        cursor.execute("""
+            UPDATE participant
+            SET food_id = %s
+            WHERE p_id = %s
+        """, (food_id, p_id))
 
         connection.commit()
         return True, None

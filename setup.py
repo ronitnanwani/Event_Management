@@ -300,6 +300,7 @@ def main():
             query = """
                 create table food(
                     food_id int primary key,
+                    name varchar(50),
                     type varchar(10),
                     price int,
                     days int,

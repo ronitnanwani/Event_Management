@@ -616,6 +616,67 @@ def addAccomodation():
             return jsonify({"message": "Accomodation added successfully"}), 201
         else:
             return jsonify({"error": error}), 500
+        
+
+@app_views.route('/subcribe_accomodation', methods=['POST'])
+def subscribeAccomodation():
+    if request.method == 'POST':
+        print(request.form)
+        info = request.form
+
+        if current_user.utype=="participant":
+            p_id = current_user.p_id
+            acc_id = info.get('acco-1')
+
+
+            success, error = subscribe_accomodation(connection,cursor,p_id,acc_id)
+            if success:
+                return jsonify({"message": "Accomodation subscribed successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        else:
+            return jsonify({"error": "You are not a participant"}), 500       
+
+@app_views.route('/subcribe_food', methods=['POST'])
+def subscribeFood():
+    if request.method == 'POST':
+        info = request.form
+        # print(info)
+        print(current_user.utype)
+        if current_user.utype=="participant":
+            p_id = current_user.p_id
+            food_id = info.get('food-1')
+
+            print(p_id,food_id)
+            success, error = subscribe_food(connection,cursor,p_id,food_id)
+            if success:
+                return jsonify({"message": "Food subscribed successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        else:
+            return jsonify({"error": "You are not a participant"}), 500
+ 
+@app_views.route('/add_food', methods=['POST'])
+def addFood():
+    if request.method == 'POST':
+        info = request.form
+        print(info)
+        name = info.get('name')
+        days = info.get('days')
+        price = info.get('price')
+        desc = info.get('desc')
+        type = info.get('table-1-main')
+        if type == "on":
+            type = "Veg"
+        else:
+            type = "Non-Veg"
+        price = int(price)
+        days = int(days)
+        success, error = insert_food(connection,cursor,type,price,days,name,desc)
+        if success:
+            return jsonify({"message": "Food added successfully"}), 201
+        else:
+            return jsonify({"error": error}), 500
  
 @app_views.route('/add-organiser')
 def AddOrganiser():
@@ -651,16 +712,17 @@ def plans():
     success,accomodations = fetch_all_acc_plans(connection,cursor)
     success,food = fetch_all_food_plans(connection,cursor)
 
+
     # Convert to list of dictionaries
     accomodations_list=[]
     for accomodation in accomodations:
-        accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4]})
+        accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4],"days":accomodation[2],"id":accomodation[0]})
 
     print(accomodations_list)
 
     food_list=[]
     for f in food:
-        food_list.append({"title":f[0],"price":f[1],"desc":f[2]})
+        food_list.append({"title":f[6],"price":f[5],"desc":f[3],"days":f[2],"id":f[0]})
 
     print(food_list)
     
