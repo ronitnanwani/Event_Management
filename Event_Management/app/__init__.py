@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for,Blueprint,j
 import psycopg2
 from Event_Management.database import *
 
+
 try:
     connection = psycopg2.connect(
         user = "21CS30043",

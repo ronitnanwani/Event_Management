@@ -3,8 +3,20 @@ from . import *
 from flask import jsonify
 from Event_Management.database import *
 from datetime import datetime
-
+from flask_login import login_user,UserMixin, logout_user, login_required,current_user
 app_views = Blueprint('app_views', __name__)
+# User class
+class User(UserMixin):
+    def __init__(self, uid):
+        # fetch user
+        self.id = uid
+        self.name="sk"
+        self.utype="participant"
+    def __str__(self):
+        return self.name+"_"+self.utype
+
+
+
 
 @app_views.route('/')
 def index():
@@ -153,21 +165,32 @@ def loginUser():
 
 @app_views.route('/login/participant', methods=['POST'])
 def loginParticipant():
-    if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
-        
-        # Check if the username and password match
-        if True:
-            return jsonify({'success':True,'user':{},'utype':'Participant'})
-        success, row = check_participant_login(connection,cursor,username,password)
-        if success:
-            # Authentication successful, redirect to a protected page
-            return redirect(url_for('app_views.dashboardParticipant'))
-        else:
-            # Authentication failed, render the login form with an error message
-            return render_template('login.html', error='Invalid username or password')
-    
+    from Event_Management import load_user
+    try:
+        if request.method == 'POST':
+            email = request.form['email']
+            password = request.form['password']
+            print("cur",current_user)
+            # Check if the username and password match
+            success, row = check_participant_login(connection,cursor,email,password)
+            
+            if success:
+                user_dict={"name":"name","id":row[0],"utype":"participant"}
+                user = load_user(user_dict["id"])
+                # login_user(user)
+                # user={"user":row,"is_active":True}
+                # print(type(row),row,user)
+                login_user(user)
+                return redirect(url_for("app_views.dashboardParticipant"))
+
+            else:
+                # Authentication failed, render the login form with an error message
+                return render_template('login.html', error='Invalid username or password')
+    except Exception as e:
+            print(str(e))
+            return render_template('login.html', error=str(e))
+
+         
 @app_views.route('/login/student', methods=['POST'])
 def loginStudent():
     if request.method == 'POST':
@@ -373,9 +396,9 @@ def addTask(e_id):
 @app_views.route('/create_event_volunteer', methods=['POST'])
 def create_event_volunteer():
     info = request.json
+    print(request.json)
     e_id = info.get('e_id')
-    roll_no = info.get('roll_no')
-    
+    print(info,"volunteer")
     success, error = insert_volunteer(connection,cursor,e_id,roll_no)
 
     if success:
