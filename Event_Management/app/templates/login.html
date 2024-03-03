@@ -93,7 +93,7 @@
                             <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
                                 <div class="mt-3">
                                     <p class="text-slate-600">Login to access exciting events and funfilled activities!</p>
-                                    <form method="POST" action="/login/participant" class="mt-6" novalidate onsubmit="handleSubmit">
+                                    <form method="POST" action="/login" class="mt-6" novalidate >
                                         <div class="space-y-4">
                                             <!--[-->
                                             <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved"><label for="ninja-input-8645" class="nui-input-label"><!--[-->Email address<!--]--></label>
@@ -152,7 +152,7 @@
                                 <div class="mt-3">
                                 <p class="text-slate-600">Login to register or volunteer for events!</p>
 
-                                    <form method="POST" action="/login/student" class="mt-6" novalidate onsubmit="handleSubmit">
+                                    <form method="POST" action="/login" class="mt-6" novalidate >
                                         <div class="space-y-4">
                                             <!--[-->
                                             <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved"><label for="ninja-input-8645" class="nui-input-label"><!--[-->Email address<!--]--></label>
@@ -211,7 +211,7 @@
                                <div class="mt-3">
                                     <p class="text-slate-600">Login to manage your events</p>
 
-                                    <form method="POST" action="/login/organiser" class="mt-6" novalidate onsubmit="handleSubmit">
+                                    <form method="POST" action="/login" class="mt-6" novalidate>
                                         <div class="space-y-4">
                                             <!--[-->
                                             <div class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved"><label for="ninja-input-8645" class="nui-input-label"><!--[-->Email address<!--]--></label>
@@ -286,7 +286,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
 <script>
-    $(document).ready(function(){
+ /*   $(document).ready(function(){
   $('form').submit(function(event){
     event.preventDefault(); // Prevent the default form submission
 
@@ -307,7 +307,7 @@
         localStorage.setItem('token', JSON.stringify(response.token));
         localStorage.setItem('utype':utype);
         // Optionally, you can redirect the user to another page
-        window.location.href = "/dashboard/"+utype;
+        window.location.href = "/dashboard";
       },
       error: function(xhr, status, error) {
         console.error("Form submission failed");
@@ -316,6 +316,7 @@
     });
   });
 });
+*/
 
 </script>
     </body>

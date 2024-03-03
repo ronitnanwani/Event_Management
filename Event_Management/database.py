@@ -407,7 +407,7 @@ def check_user_type(connection,cursor,email):
             "phone_number": student_data[3],
             "email": student_data[4]
         }
-        return {"utype":"Student","data":student_dict}
+        return {"utype":"Student","id":student_data[0],"data":student_dict}
 
     cursor.execute(("SELECT p_id,name,college_name,phone_number,email,acc_id,food_id FROM participant WHERE email=%s"), (email,))
     participant_data = cursor.fetchone()
@@ -421,7 +421,7 @@ def check_user_type(connection,cursor,email):
             "acc_id": participant_data[5],
             "food_id": participant_data[6]
         }
-        return {"utype":"Participant","data":participant_dict}
+        return {"utype":"Participant","id":participant_data[0],"data":participant_dict}
 
     cursor.execute(("SELECT o_id,email,name,phone_number,can_create FROM organiser WHERE email=%s"), (email,))
     organiser_data = cursor.fetchone()
@@ -433,6 +433,6 @@ def check_user_type(connection,cursor,email):
             "phone_number": organiser_data[3],
             "can_create": organiser_data[4]
         }
-        return {"utype":"Organiser","data":organiser_dict}
+        return {"utype":"Organiser","id":organiser_data[0],"data":organiser_dict}
 
-    return {"utype":"Anonymous","data":None}
+    return {"utype":"Anonymous","id":None,"data":None}
