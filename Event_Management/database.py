@@ -305,6 +305,19 @@ def fetch_events_volunteered_by_student(connection,cursor,roll_no):
     except Exception as e:
         return False,str(e)
     
+def fetch_events_organised_by_organiser(connection,cursor,o_id):
+    try:
+        cursor.execute("""
+            SELECT e.e_id,e.date_and_time,e.name,e.type_event, e.description, e.first, e.second, e.third, e.prize,e.venue, e.num_p
+            FROM event e
+            JOIN event_has_organiser eo ON e.e_id = eo.e_id
+            WHERE eo.o_id = %s
+        """, (o_id,))
+        rows=cursor.fetchall()
+        return True,rows
+    except Exception as e:
+        return False,str(e)
+    
 def register_participant(connection,cursor,e_id,participant_id,participant_type):
     try:
         cursor.execute("""
@@ -492,7 +505,22 @@ def check_duplicate_username_organiser(connection,cursor,email):
         
         return True,exists
     except Exception as e:
-        return False,str(e)        
+        return False,str(e) 
+
+
+def complete_task(connection,cursor,task_id):
+    try:
+        print(task_id)
+        cursor.execute("""
+            UPDATE tasks
+            SET is_complete = 1
+            WHERE task_id = %s
+        """,(task_id,))
+        connection.commit()
+        return True, None
+    except Exception as e:
+        connection.rollback()
+        return False, str(e)
 
 def check_user_type(connection,cursor,email):
     try:
