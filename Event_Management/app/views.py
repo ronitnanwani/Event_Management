@@ -238,10 +238,24 @@ def getEvents():
     events_list = []
     for event_data in rows:
         dt_object = datetime.fromisoformat(str(event_data[1]))
-        
+        success2,tags = fetch_all_tags_of_event(connection,cursor,event_data[0])
         date = dt_object.date()
         time = dt_object.time()
-        
+        tags_list=[]
+        for tag in tags:
+            tags_list.append(tag[0])
+        print(tags_list,"tags")
+        is_registered=False
+        for item in current_user.events_registered:
+            if(item.e_id==event_data[0]):
+                is_registered=True
+                break
+        is_volunteered=False
+        for item in current_user.events_volunteered:
+            if(item.e_id==event_data[0]):
+                is_volunteered=True
+                break
+            
         event_dict = {
             "e_id": event_data[0],
             "date": str(date),
@@ -254,10 +268,14 @@ def getEvents():
             "third": event_data[7],
             "prize": event_data[8],
             "venue": event_data[9],
-            "num_p": event_data[10]
+            "num_p": event_data[10],
+            "tags":tags_list,
+            "is_registered":is_registered,
+            "is_volunteered":is_volunteered,
         }
+        
         events_list.append(event_dict)
-    return render_template('events.html', name='events',events=events_list)
+    return render_template('events.html', name='events',events=events_list,user=current_user)
 @app_views.route('/add-event', methods=['GET','POST'])
 def addEvent():        
     if request.method == 'POST':
@@ -305,7 +323,6 @@ def eventDetails(id):
     tags_list=[]
     for tag in tags:
         tags_list.append(tag[0])
-    
     event_dict = {
         'id': rows[0][0],
         'time': str(time),
@@ -605,8 +622,90 @@ def registerParticipant():
             return redirect(url_for('app_views.loginUser'))
     
     # If GET request, render the registration form
-    return render_template('signup.html', error=error)   
+    return render_template('signup.html', error=error)
 
+
+@app_views.route('/add_accomodation', methods=['POST'])
+def addAccomodation():
+    if request.method == 'POST':
+
+        info = request.form
+        print(info)
+
+        name = info.get('name')
+        price = info.get('price')
+        days = info.get('days')
+        desc = info.get('desc')
+        price = int(price)
+        days = int(days)
+
+        print(name,price,days,desc)
+        success, error = insert_accomodation(connection,cursor,price,days,name,desc)
+        if success:
+            return jsonify({"message": "Accomodation added successfully"}), 201
+        else:
+            return jsonify({"error": error}), 500
+        
+
+@app_views.route('/subcribe_accomodation', methods=['POST'])
+def subscribeAccomodation():
+    if request.method == 'POST':
+        print(request.form)
+        info = request.form
+
+        if current_user.utype=="participant":
+            p_id = current_user.p_id
+            acc_id = info.get('acco-1')
+
+
+            success, error = subscribe_accomodation(connection,cursor,p_id,acc_id)
+            if success:
+                return jsonify({"message": "Accomodation subscribed successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        else:
+            return jsonify({"error": "You are not a participant"}), 500       
+
+@app_views.route('/subcribe_food', methods=['POST'])
+def subscribeFood():
+    if request.method == 'POST':
+        info = request.form
+        # print(info)
+        print(current_user.utype)
+        if current_user.utype=="participant":
+            p_id = current_user.p_id
+            food_id = info.get('food-1')
+
+            print(p_id,food_id)
+            success, error = subscribe_food(connection,cursor,p_id,food_id)
+            if success:
+                return jsonify({"message": "Food subscribed successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        else:
+            return jsonify({"error": "You are not a participant"}), 500
+ 
+@app_views.route('/add_food', methods=['POST'])
+def addFood():
+    if request.method == 'POST':
+        info = request.form
+        print(info)
+        name = info.get('name')
+        days = info.get('days')
+        price = info.get('price')
+        desc = info.get('desc')
+        type = info.get('table-1-main')
+        if type == "on":
+            type = "Veg"
+        else:
+            type = "Non-Veg"
+        price = int(price)
+        days = int(days)
+        success, error = insert_food(connection,cursor,type,price,days,name,desc)
+        if success:
+            return jsonify({"message": "Food added successfully"}), 201
+        else:
+            return jsonify({"error": error}), 500
  
 @app_views.route('/add-organiser')
 def AddOrganiser():
@@ -621,24 +720,43 @@ def facilities():
 @app_views.route('/plans')
 def plans():
     profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    accomodations=[
-        {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-                   ]
-    food=[
-        {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-                   ]
+    # accomodations=[
+    #     {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #                ]
+    # food=[
+    #     {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #                ]
     facilities=[
         {"title":"Bus Service","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
         {"title":"Toto Booking","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
         {"title":"Campus Tour","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
                    ]
-    return render_template('plancards.html',accomodations=accomodations,food=food,facilities=facilities)
+
+    success,accomodations = fetch_all_acc_plans(connection,cursor)
+    success,food = fetch_all_food_plans(connection,cursor)
+
+
+    # Convert to list of dictionaries
+    accomodations_list=[]
+    for accomodation in accomodations:
+        accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4],"days":accomodation[2],"id":accomodation[0]})
+
+    print(accomodations_list)
+
+    food_list=[]
+    for f in food:
+        food_list.append({"title":f[6],"price":f[5],"desc":f[3],"days":f[2],"id":f[0]})
+
+    print(food_list)
+    
+
+    return render_template('plancards.html',accomodations=accomodations_list,food=food_list,facilities=facilities)
 
 @app_views.route('/update-winners', methods=['POST'])
 def updateWinners():
