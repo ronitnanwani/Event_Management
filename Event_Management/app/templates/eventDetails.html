@@ -92,7 +92,7 @@
                 </button>
                 
                             {% endif %}
-
+{% endif %}
                     </div>
                     <div class="absolute end-0 top-2 z-20">
                         <div class="nui-dropdown z-20" data-v-84945349>
@@ -221,7 +221,7 @@
                                                     {% endif %}
                                                 </div>
                                             </div>
-                                            {% if event.type=="competition" %}
+                                            {% if event.type=="Competition" %}
                                             <div class="border-muted-200 dark:border-muted-700 grid gap-4 border-b pb-12 sm:grid-cols-4">
                                                 <div><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
                                                         role="img" class="icon text-primary-500 mb-2 size-6" style="" width="1em" height="1em"
@@ -275,6 +275,64 @@
                                                         </p>
                                                         <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-tight text-muted-400">
                                                             <!--[-->  Prize Pool
+                                                            <!--]-->
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="w-full justify-between border-muted-200 dark:border-muted-700 grid gap-4 border-b pb-12 sm:grid-cols-3">
+                                                <div class="text-center">
+                                                    <img src="{{ url_for('static', filename='img/trophy_gold.png') }}" class="h-32 m-auto"></img>
+                                                    <div>
+                                                        <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal" tag="h3">
+                                                            <!--[-->
+                                                            {% if event.first=="None" %}
+                                                            {{event.first}}
+                                                            {% else %}
+                                                            Not Declared
+                                                            {% endif %}
+                                                            <!--]-->
+                                                        </p>
+                                                        <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-tight text-muted-400">
+                                                            <!--[text to be filled in-->
+                                                            First Position
+                                                            <!--]-->
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                  <div class="text-center">
+                                                    <img src="{{ url_for('static', filename='img/trophy_silver.png') }}" class="h-32 m-auto"></img>
+                                                    <div>
+                                                        <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal" tag="h3">
+                                                            <!--[-->{% if event.second=="None" %}
+                                                            {{event.second}}
+                                                            {% else %}
+                                                            Not Declared
+                                                            {% endif %}
+                                                            <!--]-->
+                                                        </p>
+                                                        <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-tight text-muted-400">
+                                                            <!--[text to be filled in-->
+                                                            Second Position
+                                                            <!--]-->
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                              
+                                                 <div class="text-center">
+                                                    <img src="{{ url_for('static', filename='img/trophy_bronze.png') }}" class="h-32 m-auto"></img>
+                                                    <div>
+                                                        <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal" tag="h3">
+                                                            <!--[-->{% if event.third=="None" %}
+                                                            {{event.third}}
+                                                            {% else %}
+                                                            Not Declared
+                                                            {% endif %}
+                                                            <!--]-->
+                                                        </p>
+                                                        <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-tight text-muted-400">
+                                                            <!--[text to be filled in-->
+                                                            Third Position
                                                             <!--]-->
                                                         </p>
                                                     </div>
@@ -461,11 +519,11 @@
                                                         <div>
                                                             <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-none line-clamp-1"
                                                                 tag="h5">
-                                                               Standard
+                                                               {{acco.title}}
                                                    
                                                             </p>
                                                             <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400">
-                                                               $1000
+                                                               ${{acco.price}}
                                                               
                                                             </p>
                                                         </div>
@@ -473,7 +531,7 @@
                                                     {% endfor %}
                                                     
                                                     <!--]-->
-                                                    <button type="button" rel="" target="" class="nui-button nui-button-medium nui-button-rounded nui-button-solid nui-button-primary w-full sm:w-28"><!--[--><span>Book Now</span><!--]--><!----></button>
+                                                    <a href="/plans"><button type="button" rel="" target="" class="nui-button nui-button-medium nui-button-rounded nui-button-solid nui-button-primary w-full sm:w-28"><!--[--><span>Book Now</span><!--]--><!----></button></a>
                                                 </div>
                                                 <!--]-->
                                             </div>
