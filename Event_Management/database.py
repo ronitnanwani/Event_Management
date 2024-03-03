@@ -283,10 +283,12 @@ def fetch_completed_tasks_of_student(connection,cursor,roll_no):
 def fetch_alloted_tasks_of_student(connection,cursor,roll_no):
     try:
         cursor.execute("""
-            SELECT task_description, is_complete
-            FROM tasks
-            WHERE roll_no = %s
+            SELECT t.task_description, t.is_complete, e.name, e.type_event
+            FROM tasks t
+            JOIN event e ON t.e_id = e.e_id
+            WHERE t.roll_no = %s
         """, (roll_no,))
+        
         rows=cursor.fetchall()
         return True,rows
     except Exception as e:
@@ -399,17 +401,34 @@ def update_event_details(connection,cursor,e_id,venue,date_time):
         connection.rollback()
         return False, str(e)
     
-def insert_task(connection,cursor,roll_no,description):
+def insert_task(connection,cursor,roll_no,description,e_id):
     try:
+        cursor.execute("SELECT COALESCE(MAX(task_id), 0) + 1 FROM tasks")
+        task_id = cursor.fetchone()[0]
         cursor.execute("""
-            INSERT INTO tasks (roll_no, task_description)
-            VALUES (%s, %s)
-        """,(roll_no,description))
+            INSERT INTO tasks (task_id, roll_no, task_description, is_complete,e_id)
+            VALUES (%s, %s, %s, 0,%s)
+        """,(task_id,roll_no,description,e_id))
         connection.commit()
         return True, None
     except Exception as e:
         connection.rollback()
         return False, str(e)
+    
+def fetch_volunteers_of_event(connection,cursor,e_id):
+    try:
+        # Natural join to get the details of the student
+        cursor.execute("""
+            SELECT s.roll_no, s.name, s.dept, s.phone_number, s.email
+            FROM student s
+            NATURAL JOIN event_has_volunteer ev
+            WHERE ev.e_id = %s
+        """, (e_id,))
+        rows=cursor.fetchall()
+
+        return True,rows
+    except Exception as e:
+        return False,str(e)
     
 
 def fetch_task_of_volunter(connection,cursor,roll_no):
@@ -553,15 +572,36 @@ def fetch_event_for_filter(connection,cursor,tags):
 
 
 def fetch_organiser_of_event(connection,cursor,e_id):
-        cursor.execute("""
-            SELECT o.name,phone_number
-            FROM event e
-            JOIN event_has_organiser eo ON e.e_id = eo.e_id
-            JOIN organiser o ON eo.o_id = o.o_id
-            WHERE e.e_id = %s
-            LIMIT 1
-        """, (e_id,))
+    cursor.execute("""
+        SELECT o.name,phone_number
+        FROM event e
+        JOIN event_has_organiser eo ON e.e_id = eo.e_id
+        JOIN organiser o ON eo.o_id = o.o_id
+        WHERE e.e_id = %s
+        LIMIT 1
+    """, (e_id,))
+    
+    organiser_details = cursor.fetchone() if cursor.rowcount > 0 else None
+    print(organiser_details)
+    return True,organiser_details
+    
+def delete_from_db(connection,cursor,utype,id):
+    try:
+        if utype == "student":
+            cursor.execute("DELETE FROM student WHERE roll_no = %s", (id,))
+        elif utype == "participant":
+            cursor.execute("DELETE FROM participant WHERE p_id = %s", (id,))
+        elif utype == "organiser":
+            cursor.execute("DELETE FROM organiser WHERE o_id = %s", (id,))
+        else:
+            print("Invalid user type:", utype)
+            return False
         
-        organiser_details = cursor.fetchone() if cursor.rowcount > 0 else None
-        print(organiser_details)
-        return True,organiser_details
+        connection.commit()
+        
+        print("User deleted successfully.")
+        return True
+
+    except Exception as e:
+        print("Error deleting user:", e)
+        return False

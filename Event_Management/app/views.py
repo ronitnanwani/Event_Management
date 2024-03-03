@@ -77,7 +77,7 @@ class User(UserMixin):
             # Convert to list of dictionaries
             tasks_list=[]
             for task in reg:
-                tasks_list.append({"description":task[0],"is_complete":task[1]})
+                tasks_list.append({"description":task[0],"is_complete":task[1],"event":{"name":task[2],"type":task[3]}})
             print("List of tasks ",tasks_list)
             return tasks_list
         if self.utype=="participant":
@@ -406,16 +406,34 @@ def eventDetails(id):
 @app_views.route('/event/<int:id>/volunteers')
 def getVolunteers(id):
     
-    volunteers=[
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
-        ]
+    # volunteers=[
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     {"name":"name 1","email":"email","phone":92321312312,"roll_no":213,"department":"CSE","num_tasks_allotted":20,"num_tasks_completed":10},
+    #     ]
+
+    success,rows = fetch_volunteers_of_event(connection,cursor,id)
+
+    volunteers_list = []
+    for volunteer in rows:
+        user = User(volunteer[4])
+        num_tasks_allotted = user.num_allotted_tasks
+        num_tasks_completed = user.num_completed_tasks
+        volunteer_dict = {
+            "roll_no": volunteer[0],
+            "name": volunteer[1],
+            "department": volunteer[2],
+            "phone": volunteer[3],
+            "email": volunteer[4],
+            "num_tasks_allotted": num_tasks_allotted,
+            "num_tasks_completed": num_tasks_completed
+        }
+        volunteers_list.append(volunteer_dict)
     organiser={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('volunteers.html',volunteers=volunteers,eventid=id)
+    return render_template('volunteers.html',volunteers=volunteers_list,eventid=id)
 
 @app_views.route('/profile')
 def getProfile():
@@ -803,7 +821,6 @@ def updateWinners():
             return jsonify({"message": "Winners updated successfully"}), 201
         else:
             return jsonify({"error": error}), 500
-        
 
 
 # Dashboards--------------------------
@@ -905,12 +922,24 @@ def participantEvents():
 
 @app_views.route('/add_task/<int:e_id>', methods=['GET','POST'])
 def addTask(e_id):
+    
     if request.method == 'POST':
-        # Check if the username already exists
-        return redirect(url_for('app_views.getVolunteers'))
-    return redirect(url_for('app_views.getVolunteers'))
-@app_views.route('/create_event_volunteer', methods=['POST'])
 
+        if current_user.utype=="organiser":
+            roll_no = int(request.form['student_id'])
+            
+            description = request.form['desc']
+            success, error = insert_task(connection,cursor,roll_no,description,e_id)
+            if success:
+                return jsonify({"message": "Task added successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        else:
+            return jsonify({"error": "You are not a student"}), 500
+
+    # return redirect(url_for('app_views.getVolunteers'))
+        
+@app_views.route('/create_event_volunteer', methods=['POST'])
 def create_event_volunteer():
     info = request.json
     print(request.json)
