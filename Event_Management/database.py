@@ -128,6 +128,7 @@ def fetch_all_events(connection,cursor):
     try:
         cursor.execute("SELECT * FROM event;")
         rows = cursor.fetchall()
+        print(rows)
         return True,rows
     
     except Exception as e:
@@ -137,6 +138,7 @@ def fetch_event_details(connection,cursor,e_id):
     try:
         cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue FROM event where e_id = %s",(e_id,))
         rows = cursor.fetchall()
+        print(rows)
         return True,rows
     
     except Exception as e:
