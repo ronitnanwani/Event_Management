@@ -1253,17 +1253,19 @@ def delete_user():
         return jsonify({"error":str(error)}),500
 
 
-@app_views.route('/add_user/<string:utype>', methods=['POST'])
+@app_views.route('/add-user/<string:utype>', methods=['POST'])
 def add_user(utype):
     info = request.form
     if utype == "student":
+        print(info)
         email = info['email']
         password = info['password']
         name = info.get('name')
         dept = info.get('department')
-        roll_no = info.get('rollno')
+        roll_no = info.get('roll_no')
         phone_number = info.get('phone')
-        success,error = insert_student(roll_no,dept,name,phone_number,email,password)
+        success,error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+        print("Success from here ",success)
     elif utype == "participant":
         email = info['email']
         password = info['password']

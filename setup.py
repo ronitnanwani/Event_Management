@@ -24,7 +24,7 @@ def sample_data():
 
             query = "INSERT INTO organiser (o_id,email,password,name,phone_number,can_create) VALUES (%s, %s, %s, %s, %s, %s)"
             cursor.execute(query, (2, "org@gmail.com", "123456", "Suresh", "1234567890", 1))
-            cursor.execute(query, (3, "org2@gmail.com", "456789", "Ramesh", "1234567890", 0))
+            cursor.execute(query, (3, "org2@gmail.com", "456789", "Ramesh", "1234567890", 1))
 
             query = "INSERT INTO dbadmin (email,password) VALUES (%s, %s)"
             cursor.execute(query, ("admin@gmail.com","admin"))
