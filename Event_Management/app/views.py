@@ -754,7 +754,6 @@ def updateWinners():
             return jsonify({"message": "Winners updated successfully"}), 201
         else:
             return jsonify({"error": error}), 500
-        
 
 
 # Dashboards--------------------------
@@ -834,12 +833,25 @@ def participantEvents():
 
 @app_views.route('/add_task/<int:e_id>', methods=['GET','POST'])
 def addTask(e_id):
+    
     if request.method == 'POST':
-        # Check if the username already exists
-        return redirect(url_for('app_views.getVolunteers'))
-    return redirect(url_for('app_views.getVolunteers'))
-@app_views.route('/create_event_volunteer', methods=['POST'])
 
+        if current_user.utype=="organiser":
+            print(request.form)
+            roll_no = int(request.form['student_id'])
+            
+            description = request.form['desc']
+            success, error = insert_task(connection,cursor,roll_no,description,e_id)
+            if success:
+                return redirect(url_for('app_views.getVolunteers'))
+            else:
+                return jsonify({"error": error}), 500
+        else:
+            return jsonify({"error": "You are not a student"}), 500
+
+    # return redirect(url_for('app_views.getVolunteers'))
+        
+@app_views.route('/create_event_volunteer', methods=['POST'])
 def create_event_volunteer():
     info = request.json
     print(request.json)
