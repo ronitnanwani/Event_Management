@@ -482,13 +482,13 @@ def dashboard():
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
         elif current_user.utype=="participant":
-            return render_template('dashboard_student.html',user=current_user)
+            return render_template('dashboard_participant.html',user=current_user)
         elif current_user.utype=="student":
             return render_template('dashboard_student.html',user=current_user)
         elif current_user.utype=="organiser":
-            return render_template('dashboard_student.html',user=current_user)
+            return render_template('dashboard_organiser.html',user=current_user)
         elif current_user.utype=="admin":
-            return render_template('dashboard_student.html',user=current_user)
+            return render_template('dashboard_admin.html',user=current_user)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
@@ -536,18 +536,31 @@ def addTask(e_id):
         return redirect(url_for('app_views.getVolunteers'))
     return redirect(url_for('app_views.getVolunteers'))
 @app_views.route('/create_event_volunteer', methods=['POST'])
+
 def create_event_volunteer():
     info = request.json
     print(request.json)
     e_id = info.get('e_id')
-    print(info,"volunteer")
-    success, error = insert_volunteer(connection,cursor,e_id,roll_no)
+    try:
+        print(current_user.is_authenticated)
+        if not current_user.is_authenticated:
+            return redirect(url_for("app_views.loginUser"))
+        elif current_user.utype=="participant":
+            return redirect(url_for("app_views.dashboard"))
+        elif current_user.utype=="student":
+            success, error = insert_volunteer(connection,cursor,e_id,current_user.roll_no)
+            if success:
+                return jsonify({"message": "Volunteer added successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        elif current_user.utype=="organiser":
+            return redirect(url_for("app_views.dashboard"))
+        elif current_user.utype=="admin":
+            return redirect(url_for("app_views.dashboard"))
+    except Exception as e:
+            print(str(e))
+            return redirect(url_for("app_views.loginUser"))
 
-    if success:
-        return jsonify({"message": "Volunteer added successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500
-    
     
 @app_views.route('/create_task_for_volunteer', methods=['POST'])
 def create_task_for_volunteer():
