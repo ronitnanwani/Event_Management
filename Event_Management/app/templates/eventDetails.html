@@ -46,6 +46,7 @@
             <div>
                 <div class="relative">
                     <div class="absolute end-12 top-2.5 z-20 hidden sm:block">
+                        {% if user.utype=="student" or user.utype=="participant" %}
                         <button type="button" id="register_event"  class=" py-3 nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-default"
                             rel>
                             <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
@@ -53,12 +54,16 @@
                             <!--]-->
                             <!---->
                         </button>
+                        {% endif %}
+                        {% if user.utype=="student" %}
                         <button type="button" id="do_volunteer"  class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32">
                   <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 24 24" data-v-7663d7ec="">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"></path></svg><span> Volunteer</span>
                   <!--]-->
                   <!---->
                 </button>
+                                    {% endif %}
+
                     </div>
                     <div class="absolute end-0 top-2 z-20">
                         <div class="nui-dropdown z-20" data-v-84945349>

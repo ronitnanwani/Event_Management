@@ -21,6 +21,23 @@ def sample_data():
             cursor.execute(query, (2, "MAE", "Suman", "1234897890", "bye@gmail.com", "456789"))
             cursor.execute(query, (3, "ECE", "Raman", "9765409834", "hello@gmail.com", "789012"))
 
+            query = "INSERT INTO organiser (o_id,email,password,name,phone_number,can_create) VALUES (%s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (1, "org@gmail.com", "123456", "Suresh", "1234567890", 1))
+            cursor.execute(query, (2, "org2@gmail.com", "456789", "Ramesh", "1234567890", 0))
+
+            query = "INSERT INTO dbadmin (email,password) VALUES (%s, %s)"
+            cursor.execute(query, ("admin@gmail.com","admin"))
+
+            query = "INSERT INTO event (e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (1, "2021-10-10 10:00:00", "KTJ", "Technical", "This is a technical event", None, None, None, 1000, "LHC", 0))
+            cursor.execute(query, (2, "2021-10-11 10:00:00", "KTH", "Technical", "This is a technical event", None, None, None, 1000, "LBS", 0))
+            cursor.execute(query, (3, "2021-10-12 10:00:00", "KTP", "Cultural", "This is a cultural event", None, None, None, 1000, "Pro", 0))
+
+            connection.commit()
+            cursor.close()
+            connection.close()
+            print("Sample data inserted successfully")
+
     except Exception as err:
         connection.rollback()
         print(f"Error: {err}")
@@ -227,7 +244,6 @@ def create_triggers():
 
             connection.commit()
 
-            # After the participant register for event update num of participants in event 
             query = """
                 CREATE OR REPLACE FUNCTION update_num_of_participants()
                 RETURNS TRIGGER AS
