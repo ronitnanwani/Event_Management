@@ -12,13 +12,13 @@ def insert_participant(connection,cursor,name, college_name, phone_number, email
         return False, str(e)
     
 
-def insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags):
+def insert_event(connection,cursor,date_time,name,type,description,prize,venue,o_id,tags,num_p):
     try:
         cursor.execute("SELECT COALESCE(MAX(e_id), 0) + 1 FROM event")
         e_id = cursor.fetchone()[0]
 
-        cursor.execute("INSERT INTO event (e_id, date_and_time, name, type_event, description, first, second, third, prize, venue) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (e_id, date_time, name,type,description,None,None,None,prize,venue))
+        cursor.execute("INSERT INTO event (e_id, date_and_time, name, type_event, description, first, second, third, prize, venue,num_p) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
+                    (e_id, date_time, name,type,description,None,None,None,prize,venue,num_p))
         
         cursor.execute("INSERT INTO event_has_organiser (e_id, o_id) VALUES (%s, %s)", (e_id, o_id))
 
@@ -126,8 +126,9 @@ def check_organiser_login(connection,cursor,email,password):
         
 def fetch_all_events(connection,cursor):
     try:
-        cursor.execute("SELECT * FROM event;")
+        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p FROM event;")
         rows = cursor.fetchall()
+        print(rows)
         return True,rows
     
     except Exception as e:
@@ -135,8 +136,9 @@ def fetch_all_events(connection,cursor):
     
 def fetch_event_details(connection,cursor,e_id):
     try:
-        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue FROM event where e_id = %s",(e_id,))
+        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p FROM event where e_id = %s",(e_id,))
         rows = cursor.fetchall()
+        print(rows)
         return True,rows
     
     except Exception as e:
@@ -435,4 +437,30 @@ def check_user_type(connection,cursor,email):
         }
         return {"utype":"Organiser","id":organiser_data[0],"data":organiser_dict}
 
-    return {"utype":"Anonymous","id":None,"data":None}
+    cursor.execute(("SELECT email FROM db_admin WHERE email=%s"), (email,))
+    dbadmin_data = cursor.fetchone()
+    if dbadmin_data:
+        dbadmin_dict = {
+            "email": dbadmin_data[1],
+        }
+        return {"utype":"Admin","data":dbadmin_dict}
+
+    return {"utype":"Anonymous","data":None}
+
+
+def fetch_event_for_filter(connection,cursor,tags):
+    query = """
+        SELECT e.e_id, e.date_and_time, e.name, e.type_event, e.description, e.first,
+               e.second, e.third, e.prize, e.venue, e.num_p
+        FROM event e
+        JOIN event_has_tag t ON e.e_id = t.e_id
+        WHERE t.tag IN %s
+        GROUP BY e.e_id
+        HAVING COUNT(DISTINCT t.tag) = %s
+    """
+
+    # Execute the query
+    cursor.execute(query, (tuple(tags), len(tags)))
+    events_data = cursor.fetchall()
+    
+    return events_data

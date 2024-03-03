@@ -68,16 +68,41 @@ def index():
     return render_template('test.html', name='orld')
 @app_views.route('/events')
 def getEvents():
-    events=[
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
+    # events=[
+    #     {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
+    #     {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
+    #     {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
+    #     {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
+    #     {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
+    #     {"title":"Event 1","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
         
-        ]
-    return render_template('events.html', name='events',events=events)
+    #     ]
+    success,rows = fetch_all_events(connection,cursor)
+    
+    
+    events_list = []
+    for event_data in rows:
+        dt_object = datetime.fromisoformat(str(event_data[1]))
+        
+        date = dt_object.date()
+        time = dt_object.time()
+        
+        event_dict = {
+            "e_id": event_data[0],
+            "date": str(date),
+            "time":str(time),
+            "name": event_data[2],
+            "type_event": event_data[3],
+            "description": event_data[4],
+            "first": event_data[5],
+            "second": event_data[6],
+            "third": event_data[7],
+            "prize": event_data[8],
+            "venue": event_data[9],
+            "num_p": event_data[10]
+        }
+        events_list.append(event_dict)
+    return render_template('events.html', name='events',events=events_list)
 @app_views.route('/add-event', methods=['GET','POST'])
 def addEvent():
     if request.method == 'POST':
@@ -91,14 +116,14 @@ def addEvent():
         venue = info.get('venue')
         prize = info.get('prize')
         type = info.get('type')
-
-        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","))
+        num_p = 0
+        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","),num_p)
         # Check if the username already exists
         if success:
             return redirect(url_for('app_views.dashboardAdmin'))
     return render_template('addEvent.html', name='events')
 
-@app_views.route('/event/<int:id>')
+@app_views.route('/event/<int:id>',methods=['GET'])
 def eventDetails(id):
     # print("Hi ")
     success, rows = fetch_event_details(connection,cursor,id)
@@ -109,8 +134,6 @@ def eventDetails(id):
     date = dt_object.date()
     time = dt_object.time()
     
-    # print(rows)
-    # print(tags)
     tags_list=[]
     for tag in tags:
         tags_list.append(tag[0])
@@ -128,7 +151,7 @@ def eventDetails(id):
         'prize': rows[0][8],
         'venue': rows[0][9],
         'tags' : tags_list,
-        'num_p':1000
+        'num_p': rows[0][10]
     }
     
     roll_no=2130015
@@ -162,9 +185,7 @@ def eventDetails(id):
     task_list = [{'description': task[0], 'is_complete': bool(task[1])} for task in tasks]
     
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
-    print(event_dict)
-    print(tags_list)
-    print(details)
+
     organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
     return render_template('eventDetails.html', name='events',event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list)
 
@@ -435,6 +456,24 @@ def plans():
                    ]
     return render_template('plancards.html',accomodations=accomodations,food=food,facilities=facilities)
 
+@app_views.route('/update-winners', methods=['POST'])
+def updateWinners():
+    if request.method == 'POST':
+        # print(request.json)
+        # TODO : Request.form
+        info = request.json
+        e_id = info.get('e_id')
+        first = info.get('first')
+        second = info.get('second')
+        third = info.get('third')
+        success, error = update_event_results(connection,cursor,e_id,first,second,third)
+        if success:
+            return jsonify({"message": "Winners updated successfully"}), 201
+        else:
+            return jsonify({"error": error}), 500
+        
+
+
 # Dashboards--------------------------
 @app_views.route('/dashboard',methods=["POST","GET"])
 def dashboard():
@@ -535,3 +574,34 @@ def register_for_event():
         return jsonify({"message": "Registered successfully"}), 201
     else:
         return jsonify({"error": error}), 500 
+
+@app_views.route('/filter_event', methods=['POST'])
+def filter_event():
+    info = request.json
+    tags = info.get('tags')
+
+    events_data = fetch_event_for_filter(connection,cursor,tags)
+
+    events_list = []
+    for event_data in events_data:
+        dt_object = datetime.fromisoformat(str(event_data[1]))
+        
+        date = dt_object.date()
+        time = dt_object.time()
+        event_dict = {
+            "e_id": event_data[0],
+            "date": str(date),
+            "time":str(time),
+            "name": event_data[2],
+            "type_event": event_data[3],
+            "description": event_data[4],
+            "first": event_data[5],
+            "second": event_data[6],
+            "third": event_data[7],
+            "prize": event_data[8],
+            "venue": event_data[9],
+            "num_p": event_data[10]
+        }
+        events_list.append(event_dict)
+
+    return events_list
