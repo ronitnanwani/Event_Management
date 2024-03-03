@@ -10,7 +10,8 @@ class User(UserMixin):
     def __init__(self, email):
         # fetch user
         user=check_user_type(connection,cursor,email)
-        print("user",user,email)
+        
+        # print("user",user,email)
         if(user.get("utype")!="Anonymous"):
             self.authenticated=True
             data=user["data"]
@@ -28,6 +29,7 @@ class User(UserMixin):
                 self.acc_id=data.get("acc_id",None)
                 self.college_name=data.get("college_name",None)
             if user["utype"]=="Organiser":
+
                 self.o_id=data.get("o_id",None)
                 self.is_admin=data.get("can_create",None)
             self.utype=str(user["utype"]).lower()
@@ -76,6 +78,7 @@ class User(UserMixin):
             tasks_list=[]
             for task in reg:
                 tasks_list.append({"description":task[0],"is_complete":task[1]})
+            print("List of tasks ",tasks_list)
             return tasks_list
         if self.utype=="participant":
             return []
@@ -101,6 +104,7 @@ class User(UserMixin):
                 dt_object = datetime.fromisoformat(str(event[1]))
                 date = dt_object.date()
                 time = dt_object.time()
+                # print("Hello from here ")
                 event_dict = {
                     "e_id": event[0],
                     "date": str(date),
@@ -115,6 +119,9 @@ class User(UserMixin):
                     "venue": event[9],
                     "num_p": event[10]
                 }
+                success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                event_dict["organiser"]=org
+                print(event_dict["organiser"])
                 events_list.append(event_dict)
         if self.utype=="participant":
             success,reg=fetch_reg_events_of_participant(connection,cursor,self.p_id)
@@ -138,6 +145,9 @@ class User(UserMixin):
                     "venue": event[9],
                     "num_p": event[10]
                 }
+                success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                event_dict["organiser"]=org
+                print(event_dict["organiser"])
                 events_list.append(event_dict)
         if self.utype=="organiser":
             success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
@@ -161,6 +171,9 @@ class User(UserMixin):
                     "venue": event[9],
                     "num_p": event[10]
                 }
+                success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                event_dict["organiser"]=org
+                print(event_dict["organiser"])
                 events_list.append(event_dict)
 
         return events_list
@@ -262,9 +275,8 @@ def getEvents():
         events_list.append(event_dict)
     return render_template('events.html', name='events',events=events_list,user=current_user)
 @app_views.route('/add-event', methods=['GET','POST'])
-def addEvent():
+def addEvent():        
     if request.method == 'POST':
-        
         info = request.form
         name = info.get('name')
         date = info.get('date')
@@ -275,10 +287,24 @@ def addEvent():
         prize = info.get('prize')
         type = info.get('type')
         num_p = 0
-        success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,1,tags.split(","),num_p)
-        # Check if the username already exists
-        if success:
-            return redirect(url_for('app_views.dashboardAdmin'))
+        try:
+            print(current_user.is_authenticated)
+            if not current_user.is_authenticated:
+                return redirect(url_for("app_views.loginUser"))
+            elif current_user.utype=="participant":
+                return redirect(url_for("app_views.dashboard"))
+            elif current_user.utype=="student":
+                return redirect(url_for("app_views.dashboard"))
+            elif current_user.utype=="organiser":
+                success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,current_user.o_id,tags.split(","),num_p)
+                if success:
+                    return redirect(url_for('app_views.dashboard'))
+            elif current_user.utype=="admin":
+                return redirect(url_for("app_views.dashboard"))
+        except Exception as e:
+                print(str(e))
+                return redirect(url_for("app_views.loginUser"))
+    
     return render_template('addEvent.html', name='events')
 
 @app_views.route('/event/<int:id>',methods=['GET'])
@@ -431,72 +457,72 @@ def loginUser():
 
     return render_template('login.html',events=[])
 
-@app_views.route('/login/participant', methods=['POST'])
-def loginParticipant():
-    from Event_Management import load_user
-    try:
-        if request.method == 'POST':
-            email = request.form['email']
-            password = request.form['password']
-            print("cur",current_user)
-            # Check if the username and password match
-            user_dict=check_user_type(email)
-            utype=user_dict["utype"]
-            if utype!="Participant":
-                return redirect(url_for("loginUser"))
-            success, row = check_participant_login(connection,cursor,email,password)
-            if success:
-                user_dict={"name":"name","id":row[0],"utype":"participant"}
-                user = load_user(user_dict["data"]["p_id"])
-                # login_user(user)
-                # user={"user":row,"is_active":True}
-                # print(type(row),row,user)
-                login_user(user_dict["data"])
-                return redirect(url_for("app_views.dashboardParticipant"))
+# @app_views.route('/login/participant', methods=['POST'])
+# def loginParticipant():
+#     from Event_Management import load_user
+#     try:
+#         if request.method == 'POST':
+#             email = request.form['email']
+#             password = request.form['password']
+#             print("cur",current_user)
+#             # Check if the username and password match
+#             user_dict=check_user_type(email)
+#             utype=user_dict["utype"]
+#             if utype!="Participant":
+#                 return redirect(url_for("loginUser"))
+#             success, row = check_participant_login(connection,cursor,email,password)
+#             if success:
+#                 user_dict={"name":"name","id":row[0],"utype":"participant"}
+#                 user = load_user(user_dict["data"]["p_id"])
+#                 # login_user(user)
+#                 # user={"user":row,"is_active":True}
+#                 # print(type(row),row,user)
+#                 login_user(user_dict["data"])
+#                 return redirect(url_for("app_views.dashboardParticipant"))
 
-            else:
-                # Authentication failed, render the login form with an error message
-                return render_template('login.html', error='Invalid username or password')
-    except Exception as e:
-            print(str(e))
-            return render_template('login.html', error=str(e))
+#             else:
+#                 # Authentication failed, render the login form with an error message
+#                 return render_template('login.html', error='Invalid username or password')
+#     except Exception as e:
+#             print(str(e))
+#             return render_template('login.html', error=str(e))
 
          
-@app_views.route('/login/student', methods=['POST'])
-def loginStudent():
-    if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
+# @app_views.route('/login/student', methods=['POST'])
+# def loginStudent():
+#     if request.method == 'POST':
+#         username = request.form['email']
+#         password = request.form['password']
         
-        # Check if the username and password match
-        if True:
-            return jsonify({'success':True,'user':{},'utype':'Participant'})
+#         # Check if the username and password match
+#         if True:
+#             return jsonify({'success':True,'user':{},'utype':'Participant'})
 
-        success, row = check_student_login(connection,cursor,username,password)
-        if success:
-            # Authentication successful, redirect to a protected page
-            return redirect(url_for('app_views.dashboardStudent'))
-        else:
-            # Authentication failed, render the login form with an error message
-            return render_template('login.html', error='Invalid username or password')
+#         success, row = check_student_login(connection,cursor,username,password)
+#         if success:
+#             # Authentication successful, redirect to a protected page
+#             return redirect(url_for('app_views.dashboardStudent'))
+#         else:
+#             # Authentication failed, render the login form with an error message
+#             return render_template('login.html', error='Invalid username or password')
     
-@app_views.route('/login/organiser', methods=['POST'])
-def loginOrganiser():
-    if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
+# @app_views.route('/login/organiser', methods=['POST'])
+# def loginOrganiser():
+#     if request.method == 'POST':
+#         username = request.form['email']
+#         password = request.form['password']
 
-        print(request.form)
+#         print(request.form)
 
-        success, row = check_organiser_login(connection,cursor,username,password)
+#         success, row = check_organiser_login(connection,cursor,username,password)
         
-        # Check if the username and password match
-        if success:
-            # Authentication successful, redirect to a protected page
-            return redirect(url_for('app_views.dashboardOrganiser'))
-        else:
-            # Authentication failed, render the login form with an error message
-            return render_template('login.html', error='Invalid username or password')
+#         # Check if the username and password match
+#         if success:
+#             # Authentication successful, redirect to a protected page
+#             return redirect(url_for('app_views.dashboardOrganiser'))
+#         else:
+#             # Authentication failed, render the login form with an error message
+#             return render_template('login.html', error='Invalid username or password')
     
 @app_views.route('/register/organiser', methods=['POST'])
 def registerOrganiser():
@@ -544,7 +570,7 @@ def registerStudent():
             # if utype!="Anonymous":
             #         return redirect(url_for("app_views.dashboard"))
 
-            print(request.form)
+            print("data from form: ",request.form)
             info = request.form
             name = info.get('name')
             email = info.get('email')
@@ -594,8 +620,90 @@ def registerParticipant():
             return redirect(url_for('app_views.loginUser'))
     
     # If GET request, render the registration form
-    return render_template('signup.html', error=error)   
+    return render_template('signup.html', error=error)
 
+
+@app_views.route('/add_accomodation', methods=['POST'])
+def addAccomodation():
+    if request.method == 'POST':
+
+        info = request.form
+        print(info)
+
+        name = info.get('name')
+        price = info.get('price')
+        days = info.get('days')
+        desc = info.get('desc')
+        price = int(price)
+        days = int(days)
+
+        print(name,price,days,desc)
+        success, error = insert_accomodation(connection,cursor,price,days,name,desc)
+        if success:
+            return jsonify({"message": "Accomodation added successfully"}), 201
+        else:
+            return jsonify({"error": error}), 500
+        
+
+@app_views.route('/subcribe_accomodation', methods=['POST'])
+def subscribeAccomodation():
+    if request.method == 'POST':
+        print(request.form)
+        info = request.form
+
+        if current_user.utype=="participant":
+            p_id = current_user.p_id
+            acc_id = info.get('acco-1')
+
+
+            success, error = subscribe_accomodation(connection,cursor,p_id,acc_id)
+            if success:
+                return jsonify({"message": "Accomodation subscribed successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        else:
+            return jsonify({"error": "You are not a participant"}), 500       
+
+@app_views.route('/subcribe_food', methods=['POST'])
+def subscribeFood():
+    if request.method == 'POST':
+        info = request.form
+        # print(info)
+        print(current_user.utype)
+        if current_user.utype=="participant":
+            p_id = current_user.p_id
+            food_id = info.get('food-1')
+
+            print(p_id,food_id)
+            success, error = subscribe_food(connection,cursor,p_id,food_id)
+            if success:
+                return jsonify({"message": "Food subscribed successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500
+        else:
+            return jsonify({"error": "You are not a participant"}), 500
+ 
+@app_views.route('/add_food', methods=['POST'])
+def addFood():
+    if request.method == 'POST':
+        info = request.form
+        print(info)
+        name = info.get('name')
+        days = info.get('days')
+        price = info.get('price')
+        desc = info.get('desc')
+        type = info.get('table-1-main')
+        if type == "on":
+            type = "Veg"
+        else:
+            type = "Non-Veg"
+        price = int(price)
+        days = int(days)
+        success, error = insert_food(connection,cursor,type,price,days,name,desc)
+        if success:
+            return jsonify({"message": "Food added successfully"}), 201
+        else:
+            return jsonify({"error": error}), 500
  
 @app_views.route('/add-organiser')
 def AddOrganiser():
@@ -610,24 +718,43 @@ def facilities():
 @app_views.route('/plans')
 def plans():
     profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    accomodations=[
-        {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-                   ]
-    food=[
-        {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-        {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
-                   ]
+    # accomodations=[
+    #     {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #                ]
+    # food=[
+    #     {"title":"Basic","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Premium","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Standard","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #     {"title":"Economy","price":10,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
+    #                ]
     facilities=[
         {"title":"Bus Service","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
         {"title":"Toto Booking","price":20,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
         {"title":"Campus Tour","price":40,"desc":"dsjchdsjfhdsss adsa dasd sad asd as sad sad "},
                    ]
-    return render_template('plancards.html',accomodations=accomodations,food=food,facilities=facilities)
+
+    success,accomodations = fetch_all_acc_plans(connection,cursor)
+    success,food = fetch_all_food_plans(connection,cursor)
+
+
+    # Convert to list of dictionaries
+    accomodations_list=[]
+    for accomodation in accomodations:
+        accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4],"days":accomodation[2],"id":accomodation[0]})
+
+    print(accomodations_list)
+
+    food_list=[]
+    for f in food:
+        food_list.append({"title":f[6],"price":f[5],"desc":f[3],"days":f[2],"id":f[0]})
+
+    print(food_list)
+    
+
+    return render_template('plancards.html',accomodations=accomodations_list,food=food_list,facilities=facilities)
 
 @app_views.route('/update-winners', methods=['POST'])
 def updateWinners():
@@ -650,18 +777,46 @@ def updateWinners():
 # Dashboards--------------------------
 @app_views.route('/dashboard',methods=["POST","GET"])
 def dashboard():
+    cursor.execute("""
+        SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p
+        FROM event
+        ORDER BY date_and_time DESC
+        LIMIT 5
+    """)
+    
+    events_data = cursor.fetchall()
+
+    events_list = []
+    for event_data in events_data:
+        event_dict = {
+            "e_id": event_data[0],
+            "date_and_time": str(event_data[1]),
+            "name": event_data[2],
+            "type_event": event_data[3],
+            "description": event_data[4],
+            "first": event_data[5],
+            "second": event_data[6],
+            "third": event_data[7],
+            "prize": event_data[8],
+            "venue": event_data[9],
+            "num_p": event_data[10]
+        }
+        events_list.append(event_dict)
+    
+    print("List of events ",events_list)
     try:
         print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
         elif current_user.utype=="participant":
-            return render_template('dashboard_participant.html',user=current_user)
+            return render_template('dashboard_participant.html',user=current_user,trending_events=events_list)
         elif current_user.utype=="student":
-            return render_template('dashboard_student.html',user=current_user)
+            # print("from here ",current_user.tasks)
+            return render_template('dashboard_student.html',user=current_user,trending_events=events_list)
         elif current_user.utype=="organiser":
-            return render_template('dashboard_organiser.html',user=current_user)
+            return render_template('dashboard_organiser.html',user=current_user,trending_events=events_list)
         elif current_user.utype=="admin":
-            return render_template('dashboard_admin.html',user=current_user)
+            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
@@ -689,17 +844,9 @@ def dashboardAdmin():
 
 @app_views.route('/dashboard/events')
 def participantEvents():
-    profile={"name":"Smarak K.","phone":9323232323,"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    events=[
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        
-        ]
-    return render_template('schedule.html',events=events)
+    # profile={"name":"Smarak K.","phone":9323232323,"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
+
+    return render_template('schedule.html',events=current_user.events_registered)
 
 
 @app_views.route('/add_task/<int:e_id>', methods=['GET','POST'])
@@ -751,15 +898,33 @@ def create_task_for_volunteer():
 def register_for_event():
     info = request.json
     e_id = info.get('e_id')
-    participant_id = info.get('id')
-    participant_type = info.get('type')
-
-    success,error=register_participant(connection,cursor,e_id, participant_id, participant_type)
-
-    if success:
-        return jsonify({"message": "Registered successfully"}), 201
-    else:
-        return jsonify({"error": error}), 500 
+    try:
+        print(current_user.is_authenticated)
+        if not current_user.is_authenticated:
+            return redirect(url_for("app_views.loginUser"))
+        elif current_user.utype=="participant":
+            participant_id = current_user.p_id
+            participant_type="Participant"
+            success,error=register_participant(connection,cursor,e_id, participant_id, participant_type)
+            if success:
+                return jsonify({"message": "Registered successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500 
+        elif current_user.utype=="student":
+            participant_id = current_user.roll_no
+            participant_type="Student"
+            success,error=register_participant(connection,cursor,e_id, participant_id, participant_type)
+            if success:
+                return jsonify({"message": "Registered successfully"}), 201
+            else:
+                return jsonify({"error": error}), 500 
+        elif current_user.utype=="organiser":
+            return redirect(url_for("app_views.dashboard"))
+        elif current_user.utype=="admin":
+            return redirect(url_for("app_views.dashboard"))
+    except Exception as e:
+            print(str(e))
+            return redirect(url_for("app_views.loginUser"))
 
 @app_views.route('/filter_event', methods=['POST'])
 def filter_event():

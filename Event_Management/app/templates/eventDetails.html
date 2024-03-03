@@ -199,13 +199,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="w-full shrink-0 sm:w-72">
-                                                    {% if event.type=="competition" %}
+                                                    {% if event.type=="Competition" %}
                                                     <img src="{{ url_for('static', filename='img/competition.jpg') }}" alt="Cultural Event" class="rounded-lg">
-                                                    {% elif event.type=="concert" %}
+                                                    {% elif event.type=="Concert" %}
                                                     <img src="{{ url_for('static', filename='img/concert.jpg') }}" alt="Cultural Event" class="rounded-lg">
-                                                    {% elif event.type=="workshop" %}
+                                                    {% elif event.type=="Workshop" %}
                                                     <img src="{{ url_for('static', filename='img/workshop.jpg') }}" alt="Cultural Event" class="rounded-lg">
-                                                    {% elif event.type=="talkshow" %}
+                                                    {% elif event.type=="Talkshow" %}
                                                     <img src="{{ url_for('static', filename='img/talk-show.jpg') }}" alt="Cultural Event" class="rounded-lg">
                                                     {% else %}
                                                     <img src="{{ url_for('static', filename='img/comp.jpg') }}" alt="Cultural Event" class="rounded-lg">
