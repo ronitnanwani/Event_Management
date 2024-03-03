@@ -225,8 +225,17 @@ def EditProfile():
 
 @app_views.route('/register')
 def registerUser():
-    profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('signup.html',events=[])
+    try:
+        # pass
+        # if current_user.is_authenticated:
+        return render_template('signup.html')   
+        #     return redirect(url_for("app_views.dashboard"))
+    except Exception as e:
+            print(str(e))
+            return render_template('signup.html',error=str(e))   
+        
+
+     
 
 
 @app_views.route('/login',methods=["POST","GET"])
@@ -369,33 +378,39 @@ def registerOrganiser():
     
 @app_views.route('/register/student', methods=['POST'])
 def registerStudent():
-    if request.method == 'POST':
-        username = request.form['email']
-        password = request.form['password']
-        
-        # Check if the username already exists
-        user_exist=False
-        if user_exist:
-            return render_template('signup.html', error='User already exists')
-        
-        # If username doesn't exist, add the user to the database
+    try:
+            
+        if request.method == 'POST':
+            from Event_Management import load_user
 
-        print(request.form)
-        info = request.form
-        name = info.get('name')
-        email = info.get('email')
-        dept = info.get('department')
-        roll_no = info.get('rollno')
-        phone_number = info.get('phone')
-        password = info.get('password')
+            email = request.form['email']
+            password = request.form['password']
+            # Check if the username already exists
+            user_dict=check_user_type(connection,cursor,email)
+            utype=user_dict["utype"]
 
-        success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+            if utype!="Anonymous":
+                    return redirect(url_for("app_views.dashboard"))
 
-        # Registration successful, redirect to login page
-        if success:
-            return redirect(url_for('app_views.loginUser'))
+            print(request.form)
+            info = request.form
+            name = info.get('name')
+            email = info.get('email')
+            dept = info.get('department')
+            roll_no = info.get('rollno')
+            phone_number = info.get('phone')
+            password = info.get('password')
+
+            success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+            print(success,error,"in register")
+            # Registration successful, redirect to login page
+            if success:
+                return redirect(url_for('app_views.loginUser'))
+    except Exception as e:
+        print(str(e))
+        return render_template('signup.html', error=str(e))   
+           
         
-    
     # If GET request, render the registration form
     return render_template('signup.html', error=None)   
 
@@ -421,8 +436,9 @@ def registerParticipant():
         
         success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, password)
         # Registration successful, redirect to login page
-        print(success,error)
+        print(success,error,"signup")
         if success:
+            
             return redirect(url_for('app_views.loginUser'))
     
     # If GET request, render the registration form
