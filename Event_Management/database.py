@@ -123,6 +123,18 @@ def check_organiser_login(connection,cursor,email,password):
             return False, None
     except Exception as e:
         return False, str(e)
+
+def check_admin_login(connection,cursor,email,password):
+    print("here in adminlogin")
+    try:
+        cursor.execute("SELECT * FROM dbadmin WHERE email = %s AND password = %s", (email, password))
+        row = cursor.fetchone()
+        if row:
+            return True, row
+        else:
+            return False, None
+    except Exception as e:
+        return False, str(e)
         
 def fetch_all_events(connection,cursor):
     try:
@@ -570,8 +582,10 @@ def check_user_type(connection,cursor,email):
         dbadmin_data = cursor.fetchone()
         if dbadmin_data:
             dbadmin_dict = {
-                "email": dbadmin_data[1],
+                "email": dbadmin_data[0],
             }
+            print(dbadmin_dict,"in check user")
+            
             return {"utype":"Admin","data":dbadmin_dict}
 
         return {"utype":"Anonymous","data":None}
