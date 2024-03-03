@@ -655,6 +655,6 @@ def get_participants_of_event(connection,cursor,e_id):
         
         participants = cursor.fetchall()
         
-        participant_details.append([{"email": participant[0], "name": participant[1]} for participant in participants])
+        participant_details+=[{"email": participant[0], "name": participant[1]} for participant in participants]
         
         return participant_details

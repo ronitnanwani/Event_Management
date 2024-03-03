@@ -443,7 +443,7 @@ def eventDetails(id):
         task_list=[]
         count_allotted=0
         count_completed=0
-
+    print("participants",all_participants)
     organiser={"name":org_detail[1],"role":"Events Head","email":org_detail[0],"phone":org_detail[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
     return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list,accomodations=accomodations_list,participants=all_participants)
 
