@@ -10,26 +10,30 @@ class User(UserMixin):
     def __init__(self, email):
         # fetch user
         user=check_user_type(connection,cursor,email)
-        
+        self.name=""
         # print("user",user,email)
         if(user.get("utype")!="Anonymous"):
             self.authenticated=True
             data=user["data"]
             self.id = data.get("email",None)
-            self.name=data.get("name",None)
             self.department=data.get("dept",None)
             self.phone_number=data.get("phone_number",None)
             self.email=data.get("email",None)
             if user["utype"]=="Student":
                 self.roll_no=data.get("roll_no",None)
                 self.college_name="IITKGP"
+                self.name=data.get("name",None)
+
             if user["utype"]=="Participant":
                 self.p_id=data.get("p_id",None)
                 self.food_id=data.get("food_id",None)
                 self.acc_id=data.get("acc_id",None)
                 self.college_name=data.get("college_name",None)
+                self.name=data.get("name",None)
+
             if user["utype"]=="Organiser":
 
+                self.name=data.get("name",None)
                 self.o_id=data.get("o_id",None)
                 self.is_admin=data.get("can_create",None)
             self.utype=str(user["utype"]).lower()
@@ -93,9 +97,11 @@ class User(UserMixin):
             return 0
         if self.utype=="organiser":
             return 0
+    
         
     @property
     def events_registered(self):
+        events_list=[]
         if self.utype=="student":
             success,reg=fetch_reg_events_of_student(connection,cursor,self.roll_no)
             # Convert to list of dictionaries
@@ -210,7 +216,8 @@ class User(UserMixin):
             return []
         if self.utype=="organiser":
             return []
-        
+        else:
+            return []
     @property
     def num_events_organised(self):
         if self.utype=="student":
@@ -220,6 +227,7 @@ class User(UserMixin):
         if self.utype=="organiser":
             success,reg=fetch_events_organised_by_organiser(connection,cursor,self.o_id)
             return len(reg)
+        return 0
         
     @property
     def events_organised(self):
@@ -251,7 +259,7 @@ class User(UserMixin):
                 }
                 events_list.append(event_dict)
             return events_list
- 
+        return 0
         
     def __str__(self):
         return self.name+"_"+self.utype
@@ -523,6 +531,7 @@ def loginUser():
             # Check if the username and password match
             user_dict=check_user_type(connection,cursor,email)
             utype=user_dict["utype"]
+            print(user_dict)
             if utype=="Anonymous":
                 return redirect(url_for("app_views.registerUser"))
             elif utype=="Participant":
@@ -531,8 +540,8 @@ def loginUser():
                 success, row = check_student_login(connection,cursor,email,password)          
             elif utype=="Organiser":
                 success, row = check_organiser_login(connection,cursor,email,password)
-            # elif utype=="Admin":
-            #     success, row = check_admin_login(connection,cursor,email,password)
+            elif utype=="Admin":
+                success, row = check_admin_login(connection,cursor,email,password)
             
                 
             if success:
@@ -919,6 +928,7 @@ def dashboard():
     
     print("List of events ",events_list)
     try:
+        
         print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
@@ -934,6 +944,7 @@ def dashboard():
             
             return render_template('dashboard_organiser.html',user=current_user,total_reg=total_reg,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="admin":
+            print("admin")
             return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list)
     except Exception as e:
             print(str(e))
