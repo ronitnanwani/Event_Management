@@ -131,7 +131,7 @@
       <div data-tab-content="" class="p-5">
         <div class="block opacity-100" id="accomodation" role="tabpanel">
           <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
-             <form action="/add_accomodation" method="POST" id="acco-form" class="mx-auto max-w-7xl px-4">
+             <form action="/subcribe_accomodation" method="POST" id="acco-form" class="mx-auto max-w-7xl px-4">
                         <div>
                             <div class="pt-8 text-center">
                                 <p class="nui-heading nui-heading-3xl nui-weight-medium nui-lead-normal mb-2" tag="h2">
@@ -152,7 +152,7 @@
                                               {% for acco in accomodations %}
                                               <div class="group/nui-radio-headless relative">
                                                     <div class="relative">
-                                                      <input id="ninja-input-10858" name="acco-{{acco.id}}" checked="" type="radio" value="free" name="radio_custom" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
+                                                      <input id="ninja-input-10858" name="acco-{{acco.id}}" checked="" type="radio" value="{{acco.id}}" name="radio_custom" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
                                                         <!--[-->
                                                         <div class="nui-card nui-card-curved nui-card-white peer-checked:!border-primary-500 relative border-2 p-8 opacity-60 grayscale peer-checked:opacity-100 peer-checked:grayscale-0 peer-checked:[&amp;_.child]:!opacity-100">
                                                             <!--[-->
@@ -200,7 +200,7 @@
         </div>
         <div class="hidden opacity-0" id="food" role="tabpanel">
           <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
-            <form action="" method="POST" class="mx-auto max-w-7xl px-4">
+            <form action="/subcribe_food" method="POST" class="mx-auto max-w-7xl px-4">
                         <div>
                             <div class="pt-8 text-center">
                                 <p class="nui-heading nui-heading-3xl nui-weight-medium nui-lead-normal mb-2" tag="h2">
@@ -220,7 +220,7 @@
                                                 {% for plan in food %}
                                               <div class="group/nui-radio-headless relative">
                                                     <div class="relative">
-                                                      <input id="ninja-input-10858" checked="" type="radio" value="free" name="radio_custom" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
+                                                      <input id="ninja-input-10858" name="food-{{plan.id}}" checked="" type="radio" value="{{plan.id}}" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
                                                         <!--[-->
                                                         <div class="nui-card nui-card-curved nui-card-white peer-checked:!border-primary-500 relative border-2 p-8 opacity-60 grayscale peer-checked:opacity-100 peer-checked:grayscale-0 peer-checked:[&amp;_.child]:!opacity-100">
                                                             <!--[-->
@@ -268,7 +268,7 @@
         </div>
         <div class="hidden opacity-0" id="others" role="tabpanel">
           <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
-            <form action="" method="POST" class="mx-auto max-w-7xl px-4">
+            <form action="/subscribe_facility" method="POST" class="mx-auto max-w-7xl px-4">
                         <div>
                             <div class="pt-8 text-center">
                                 <p class="nui-heading nui-heading-3xl nui-weight-medium nui-lead-normal mb-2" tag="h2">
@@ -288,7 +288,7 @@
                                                 {% for item in facilities %}
                                               <div class="group/nui-radio-headless relative">
                                                     <div class="relative">
-                                                      <input id="ninja-input-10858" checked="" type="checkbox" value="free" name="facility" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
+                                                      <input id="ninja-input-10858" checked="" type="checkbox" value="{{item.id}}" name="facility-{{item.id}}" class="peer absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0">
                                                         <!--[-->
                                                         <div class="nui-card nui-card-curved nui-card-white peer-checked:!border-primary-500 relative border-2 p-8 opacity-60 grayscale peer-checked:opacity-100 peer-checked:grayscale-0 peer-checked:[&amp;_.child]:!opacity-100">
                                                             <!--[-->

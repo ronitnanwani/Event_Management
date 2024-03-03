@@ -283,7 +283,7 @@ def fetch_completed_tasks_of_student(connection,cursor,roll_no):
 def fetch_alloted_tasks_of_student(connection,cursor,roll_no):
     try:
         cursor.execute("""
-            SELECT task_description, is_completed
+            SELECT task_description, is_complete
             FROM tasks
             WHERE roll_no = %s
         """, (roll_no,))
@@ -450,54 +450,60 @@ def check_duplicate_username_organiser(connection,cursor,email):
         return False,str(e)        
 
 def check_user_type(connection,cursor,email):
+    try:
+        cursor.execute(("SELECT roll_no,dept,name,phone_number,email FROM student WHERE email=%s"), (email,))
+        student_data = cursor.fetchone()
+        # print("Student data:",student_data)
+        if student_data:
+            student_dict = {
+                "roll_no": student_data[0],
+                "dept": student_data[1],
+                "name": student_data[2],
+                "phone_number": student_data[3],
+                "email": student_data[4]
+            }
+            print("Return dict:" ,{"utype":"Student","id":student_data[0],"data":student_dict})
+            return {"utype":"Student","id":student_data[0],"data":student_dict}
 
-    cursor.execute(("SELECT roll_no,dept,name,phone_number,email FROM student WHERE email=%s"), (email,))
-    student_data = cursor.fetchone()
-    if student_data:
-        student_dict = {
-            "roll_no": student_data[0],
-            "dept": student_data[1],
-            "name": student_data[2],
-            "phone_number": student_data[3],
-            "email": student_data[4]
-        }
-        return {"utype":"Student","id":student_data[0],"data":student_dict}
+        cursor.execute(("SELECT p_id,name,college_name,phone_number,email,acc_id,food_id FROM participant WHERE email=%s"), (email,))
+        participant_data = cursor.fetchone()
+        if participant_data:
+            participant_dict = {
+                "p_id": participant_data[0],
+                "name": participant_data[1],
+                "college_name": participant_data[2],
+                "phone_number": participant_data[3],
+                "email": participant_data[4],
+                "acc_id": participant_data[5],
+                "food_id": participant_data[6]
+            }
+            return {"utype":"Participant","id":participant_data[0],"data":participant_dict}
 
-    cursor.execute(("SELECT p_id,name,college_name,phone_number,email,acc_id,food_id FROM participant WHERE email=%s"), (email,))
-    participant_data = cursor.fetchone()
-    if participant_data:
-        participant_dict = {
-            "p_id": participant_data[0],
-            "name": participant_data[1],
-            "college_name": participant_data[2],
-            "phone_number": participant_data[3],
-            "email": participant_data[4],
-            "acc_id": participant_data[5],
-            "food_id": participant_data[6]
-        }
-        return {"utype":"Participant","id":participant_data[0],"data":participant_dict}
+        cursor.execute(("SELECT o_id,email,name,phone_number,can_create FROM organiser WHERE email=%s"), (email,))
+        organiser_data = cursor.fetchone()
+        if organiser_data:
+            organiser_dict = {
+                "o_id": organiser_data[0],
+                "email": organiser_data[1],
+                "name": organiser_data[2],
+                "phone_number": organiser_data[3],
+                "can_create": organiser_data[4]
+            }
+            return {"utype":"Organiser","id":organiser_data[0],"data":organiser_dict}
 
-    cursor.execute(("SELECT o_id,email,name,phone_number,can_create FROM organiser WHERE email=%s"), (email,))
-    organiser_data = cursor.fetchone()
-    if organiser_data:
-        organiser_dict = {
-            "o_id": organiser_data[0],
-            "email": organiser_data[1],
-            "name": organiser_data[2],
-            "phone_number": organiser_data[3],
-            "can_create": organiser_data[4]
-        }
-        return {"utype":"Organiser","id":organiser_data[0],"data":organiser_dict}
+        cursor.execute(("SELECT email FROM dbadmin WHERE email=%s"), (email,))
+        dbadmin_data = cursor.fetchone()
+        if dbadmin_data:
+            dbadmin_dict = {
+                "email": dbadmin_data[1],
+            }
+            return {"utype":"Admin","data":dbadmin_dict}
 
-    cursor.execute(("SELECT email FROM dbadmin WHERE email=%s"), (email,))
-    dbadmin_data = cursor.fetchone()
-    if dbadmin_data:
-        dbadmin_dict = {
-            "email": dbadmin_data[1],
-        }
-        return {"utype":"Admin","data":dbadmin_dict}
-
-    return {"utype":"Anonymous","data":None}
+        return {"utype":"Anonymous","data":None}
+    except Exception as e:
+        print(str(e))
+        return {"utype":"Anonymous","success":False}
+        
 
 
 def fetch_event_for_filter(connection,cursor,tags):
