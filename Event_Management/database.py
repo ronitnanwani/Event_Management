@@ -126,7 +126,7 @@ def check_organiser_login(connection,cursor,email,password):
         
 def fetch_all_events(connection,cursor):
     try:
-        cursor.execute("SELECT * FROM event;")
+        cursor.execute("SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p FROM event;")
         rows = cursor.fetchall()
         return True,rows
     
