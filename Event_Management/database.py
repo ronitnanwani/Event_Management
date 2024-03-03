@@ -610,7 +610,7 @@ def get_participants_of_event(connection,cursor,e_id):
         cursor.execute("""
             SELECT p.email, p.name
             FROM participant p
-            JOIN event_has_participant ep ON p.p_id = ep.id AND ep.type="Participant"
+            JOIN event_has_participant ep ON p.p_id = ep.id AND ep.type = 'Participant'
             WHERE ep.e_id = %s
         """, (e_id,))
         
@@ -621,7 +621,7 @@ def get_participants_of_event(connection,cursor,e_id):
         cursor.execute("""
             SELECT p.email, p.name
             FROM student p
-            JOIN event_has_participant ep ON p.roll_no = ep.id AND ep.type="Student"
+            JOIN event_has_participant ep ON p.roll_no = ep.id AND ep.type='Student'
             WHERE ep.e_id = %s
         """, (e_id,))
         

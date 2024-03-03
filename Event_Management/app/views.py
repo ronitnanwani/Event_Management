@@ -321,9 +321,9 @@ def eventDetails(id):
     for accomodation in accomodations:
         accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4],"days":accomodation[2],"id":accomodation[0]})
     
-    all_participants = get_participants_of_event(id)
+    all_participants = get_participants_of_event(connection,cursor,id)
     
-
+    print(all_participants)
     dt_object = datetime.fromisoformat(str(rows[0][1]))
     
     date = dt_object.date()
@@ -1043,3 +1043,6 @@ def filter_event():
 
     return events_list
 
+@app_views.route('/delete_user', methods=['POST'])
+def delete_user():
+    pass
