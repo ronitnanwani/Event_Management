@@ -210,6 +210,47 @@ class User(UserMixin):
             return []
         if self.utype=="organiser":
             return []
+        
+    @property
+    def num_events_organsied(self):
+        if self.utype=="student":
+            return 0
+        if self.utype=="participant":
+            return 0
+        if self.utype=="organiser":
+            success,reg=fetch_events_organised_by_organiser(connection,cursor,self.o_id)
+            return len(reg)
+        
+    @property
+    def events_organised(self):
+        if self.utype=="student":
+            return []
+        if self.utype=="participant":
+            return []
+        if self.utype=="organiser":
+            success,reg=fetch_events_organised_by_organiser(connection,cursor,self.o_id)
+            # Convert to list of dictionaries
+            events_list=[]
+            for event in reg:
+                dt_object = datetime.fromisoformat(str(event[1]))
+                date = dt_object.date()
+                time = dt_object.time()
+                event_dict = {
+                    "e_id": event[0],
+                    "date": str(date),
+                    "time":str(time),
+                    "name": event[2],
+                    "type_event": event[3],
+                    "description": event[4],
+                    "first": event[5],
+                    "second": event[6],
+                    "third": event[7],
+                    "prize": event[8],
+                    "venue": event[9],
+                    "num_p": event[10]
+                }
+                events_list.append(event_dict)
+            return events_list
  
         
     def __str__(self):
@@ -320,6 +361,9 @@ def eventDetails(id):
     accomodations_list=[]
     for accomodation in accomodations:
         accomodations_list.append({"title":accomodation[3],"price":accomodation[1],"desc":accomodation[4],"days":accomodation[2],"id":accomodation[0]})
+    
+    all_participants = get_participants_of_event(id)
+    
 
     dt_object = datetime.fromisoformat(str(rows[0][1]))
     
@@ -401,7 +445,7 @@ def eventDetails(id):
         count_completed=0
 
     organiser={"name":org_detail[1],"role":"Events Head","email":org_detail[0],"phone":org_detail[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
-    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list,accomodations=accomodations_list)
+    return render_template('eventDetails.html', name='events',user=current_user,event=event_dict,organiser=organiser,num_tasks_allotted=count_allotted,num_tasks_completed=count_completed,tasks=task_list,accomodations=accomodations_list,participants=all_participants)
 
 @app_views.route('/event/<int:id>/volunteers')
 def getVolunteers(id):
@@ -1008,6 +1052,15 @@ def register_for_event():
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
+    
+@app_views.route('/do_task/<int:task_id>', methods=['POST'])
+def do_task(task_id):
+    info = request.form
+    success, error = complete_task(connection,cursor,task_id)
+    if success:
+        return jsonify({"message": "Task completed successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
 
 @app_views.route('/filter_event', methods=['POST'])
 def filter_event():
@@ -1039,3 +1092,4 @@ def filter_event():
         events_list.append(event_dict)
 
     return events_list
+
