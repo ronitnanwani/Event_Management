@@ -717,24 +717,29 @@
             </div>
             <div class="mb-2 space-y-6">
               {% for task in user.tasks %}
+              {% if task.is_complete==0 %}
               <div class="flex items-center gap-3">
                 <div
+                 id="task-{{task.id}}"
                   data-v-3c428bac=""
-                  class="nui-focus block focus-within:outline-current is-checked"
+                  class="nui-focus block focus-within:outline-current {% if task.is_complete %}is-checked {% endif %}"
                 >
                   <input
                     data-v-3c428bac=""
-                    id="ninja-input-65"
+                    name="task-{{task.id}}"
                     type="checkbox"
-                    class="peer cursor-pointer disabled:cursor-not-allowed"
+                    class="taskDone peer cursor-pointer disabled:cursor-not-allowed"
                     true-value="true"
                     false-value="false"
-                    value="Option 0"
+                    data-task="{{task.id}}"
+                    value="{{task.id}}"
+                    {% if task.is_complete %}checked {% endif %}
+                  
                   /><label
                     data-v-3c428bac=""
                     class="peer-disabled:opacity-75 text-success-500"
                     for="ninja-input-65"
-                    ><div data-v-3c428bac="" class="is-opaque"></div>
+                    ><div data-v-3c428bac="" class="is-opaque_"></div>
                     <svg
                       data-v-3c428bac=""
                       aria-hidden="true"
@@ -767,6 +772,7 @@
                   </p>
                 </div>
               </div>
+              {% endif %}
               {% endfor %}
             </div>
           </div>
@@ -903,5 +909,34 @@
       <!--]--><!--]-->
     </main>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+           $.ajaxSetup({
+  contentType: "application/json; charset=utf-8"
+});
+
+  $(".taskDone").click(function(){
+    console.log("task done")
+ 
+    console.log($(this).data("task"))
+    var task_id=$(this).data("task");
+    /*var event_desc=$("#task-desc-"+event_id).text();
+    console.log(event_desc)
+*/
+    $.post("/do_task/"+task_id, JSON.stringify({description:""}), function(response){
+      console.log("POST request successful");
+      console.log(response); // Response from the server
+         $("#task-"+task_id).removeClass("is-unchecked");
+         $("#task-"+task_id).addClass("is-checked");
+    })
+    .fail(function(xhr, status, error) {
+      console.error("POST request failed");
+      console.error(error); // Error message
+    });
+  });
+});
+</script>
 </div>
 {% endblock %}

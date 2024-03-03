@@ -156,7 +156,7 @@ def fetch_all_organisers_of_event(connection,cursor,id):
     try:
         cursor.execute("SELECT email,name,phone_number FROM event_has_organiser NATURAL JOIN organiser where e_id=%s",(id,))
         rows=cursor.fetchall()
-        return True,rows[0]
+        return True,rows
     except Exception as e:
         return False,str(e)
     
@@ -283,7 +283,7 @@ def fetch_completed_tasks_of_student(connection,cursor,roll_no):
 def fetch_alloted_tasks_of_student(connection,cursor,roll_no):
     try:
         cursor.execute("""
-            SELECT t.task_description, t.is_complete, e.name, e.type_event
+            SELECT t.task_description, t.is_complete,t.task_id, e.name, e.type_event
             FROM tasks t
             JOIN event e ON t.e_id = e.e_id
             WHERE t.roll_no = %s
