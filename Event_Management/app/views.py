@@ -364,7 +364,7 @@ def eventDetails(id):
     
     all_participants = get_participants_of_event(connection,cursor,id)
     
-
+    print(all_participants)
     dt_object = datetime.fromisoformat(str(rows[0][1]))
     
     date = dt_object.date()
@@ -1093,3 +1093,13 @@ def filter_event():
 
     return events_list
 
+@app_views.route('/delete_user', methods=['POST'])
+def delete_user():
+    info = request.json
+    utype = info.get('utype')
+    id = info.get('id')
+    success, error = delete_from_db(connection,cursor,utype,id)
+    if success:
+        return jsonify({"message": "id deleted successfully"}), 201
+    else:
+        return jsonify({"error": error}), 500
