@@ -129,7 +129,7 @@
                 class="relative inline-flex size-9 items-center justify-center rounded-full"
               >
                 <img
-                  src="/img/avatars/2.svg"
+                  src="{{ url_for('static', filename='img/avatar.png') }}"
                   class="max-w-full rounded-full object-cover shadow-sm dark:border-transparent"
                   alt
                 />
@@ -269,7 +269,7 @@
                     </div>
                     <!--]-->
                   </div>
-              
+
                   <div class="col-span-12">
                     <!--[-->
                     <!--[-->
@@ -286,7 +286,7 @@
                             <div>
                               <input
                                 id="ninja-input-10946"
-                                type="text"
+                                type="date"
                                 name="date"
                                 class="nui-input !h-11 !ps-11"
                               />
@@ -335,8 +335,9 @@
                             <div>
                               <input
                                 id="ninja-input-10947"
-                                type="text"
+                                type="time"
                                 name="time"
+                                step="10"
                                 class="nui-input !h-11 !ps-11"
                               />
                               <!---->
@@ -394,7 +395,6 @@
                         id="headlessui-combobox-label-19536"
                         data-headlessui-state
                         class="nui-autocomplete-label"
-
                         ><!--[-->Tags<!--]--></label
                       >
                       <div class="nui-autocomplete-multiple">
@@ -423,10 +423,14 @@
                         <!---->
                         <!---->
                       </div>
-                      <input type="text" id="tags" name="tags" class="hidden" value=""/> 
-                      <div id="tag-container" class="py-3  flex flex-wrap">
-                        
-                      </div>
+                      <input
+                        type="text"
+                        id="tags"
+                        name="tags"
+                        class="hidden"
+                        value=""
+                      />
+                      <div id="tag-container" class="py-3 flex flex-wrap"></div>
                       <!---->
                       <div
                         class="w-full"
@@ -444,7 +448,7 @@
                     <!--]-->
                     <!--]-->
                   </div>
-             
+
                   <div class="col-span-12 sm:col-span-12">
                     <!--[-->
                     <div
@@ -475,42 +479,10 @@
                         <!---->
                       </div>
                     </div>
-                    
+
                     <!--]-->
                   </div>
-                  <div class="col-span-12 sm:col-span-6">
-                    <!--[-->
-                    <div
-                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
-                    >
-                      <label for="ninja-input-10950" class="nui-input-label"
-                        ><!--[-->Prize Pool<!--]--></label
-                      >
-                      <div class="nui-input-outer">
-                        <div>
-                          <input
-                            id="ninja-input-10950"
-                            type="text"
-                            name="prize"
-                            class="nui-input !h-11 !ps-11"
-                            placeholder="Enter Prize Pool..."
-                            value
-                          />
-                          <!---->
-                          <!---->
-                          <div class="!h-11 !w-11 nui-input-icon">
-                            <!--[--><i class="fas fa-money-bill"></i>
-                            <!--]-->
-                          </div>
-                          <!--[-->
-                          <!--]-->
-                        </div>
-                        <!---->
-                      </div>
-                    </div>
-                    
-                    <!--]-->
-                  </div>
+
                   <div class="col-span-12 sm:col-span-6">
                     <!--[-->
                     <div
@@ -522,13 +494,14 @@
                       <div class="nui-input-outer">
                         <div>
                           <input
-                            id="ninja-input-10950"
+                            id="etype"
                             type="text"
                             name="type"
                             list="eventCategories"
                             class="nui-input !h-11 !ps-11"
                             placeholder="Pick a category..."
                             value
+                            
                           />
                           <!---->
                           <!---->
@@ -564,12 +537,44 @@
                       </div>
                     </div>
                     <datalist id="eventCategories">
-                      <option value="Chrome"></option>
-                      <option value="Firefox"></option>
-                      <option value="Opera"></option>
-                      <option value="Safari"></option>
-                      <option value="Microsoft Edge"></option>
+                      <option value="Competition">Competition</option>
+                      <option value="Concert">Concert</option>
+                      <option value="Talkshow">Talkshow</option>
+                      <option value="Workshop">Workshop</option>
                     </datalist>
+                    <!--]-->
+                  </div>
+                  <div class="col-span-12 sm:col-span-6">
+                    <!--[-->
+                    <div
+                      class="nui-input-wrapper nui-input-default nui-input-md nui-input-curved nui-has-icon"
+                    >
+                      <label for="prize" class="nui-input-label"
+                        ><!--[-->Prize Pool<!--]--></label
+                      >
+                      <div class="nui-input-outer">
+                        <div>
+                          <input
+                            id="prize"
+                            type="text"
+                            name="prize"
+                            class="nui-input !h-11 !ps-11"
+                            placeholder="Enter Prize Pool..."
+                            value
+                          />
+                          <!---->
+                          <!---->
+                          <div class="!h-11 !w-11 nui-input-icon">
+                            <!--[--><i class="fas fa-money-bill"></i>
+                            <!--]-->
+                          </div>
+                          <!--[-->
+                          <!--]-->
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+
                     <!--]-->
                   </div>
                 </div>
@@ -746,44 +751,51 @@
   </div>
 </div>
 <script>
-  const tagContainer = document.getElementById('tag-container');
-  const tagList = document.getElementById('tags');
-  const tagInput = document.getElementById('tag-input');
-
-  tagInput.addEventListener('keydown', function(event) {
-    
-    if (event.key === 'Enter' && tagInput.value.trim() !== '') {
+  const tagContainer = document.getElementById("tag-container");
+  const tagList = document.getElementById("tags");
+  const tagInput = document.getElementById("tag-input");
+  const etype = document.getElementById("etype");
+  const prizeField = document.getElementById("prize");
+  etype.addEventListener("change",function(event)
+  {
+    console.log(event.target.value);
+    if(event.target.value!=="Competition")
+    prizeField.disabled=true;
+  })
+  tagInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && tagInput.value.trim() !== "") {
       event.preventDefault(); // Prevent form submission
-      const tag = document.createElement('span');
-      tag.className = 'tag m-1 text-muted-500 dark:text-muted-400 bg-muted-200 dark:bg-muted-700/40 inline-flex h-6 items-center justify-center rounded-full px-3 font-sans text-xs font-medium';
-      tag.innerHTML = tagInput.value.trim() + '<span class="ps-2 close"><i class=\" fas fa-close\"></i></span>';
+      const tag = document.createElement("span");
+      tag.className =
+        "tag m-1 text-muted-500 dark:text-muted-400 bg-muted-200 dark:bg-muted-700/40 inline-flex h-6 items-center justify-center rounded-full px-3 font-sans text-xs font-medium";
+      tag.innerHTML =
+        tagInput.value.trim() +
+        '<span class="ps-2 close"><i class=" fas fa-close"></i></span>';
       tagContainer.appendChild(tag);
-      tagInput.value = '';
-      if(tagList.value!=="")
-      tagList.value+=","
-      tagList.value=tagList.value+tagInput.value.trim();
 
-          console.log(tagList.value);
+      if (tagList.value !== "") tagList.value += ",";
+      tagList.value = tagList.value + tagInput.value.trim();
+      console.log(tagList.value)
+      tagInput.value = "";
 
     }
   });
 
-  tagContainer.addEventListener('click', function(event) {
-    console.log("click",event.target)
+  tagContainer.addEventListener("click", function (event) {
+    console.log("click", event.target);
 
-    if (event.target.classList.contains('close')) {
+    if (event.target.classList.contains("close")) {
       event.target.parentNode.remove();
-      var substr=event.target.parentNode.innerText;
+      var substr = event.target.parentNode.innerText;
     }
-    if (event.target.classList.contains('fa-close')) {
+    if (event.target.classList.contains("fa-close")) {
       event.target.parentNode.parentNode.remove();
-      
-      var substr=event.target.parentNode.parentNode.innerText;
+
+      var substr = event.target.parentNode.parentNode.innerText;
     }
     console.log(tagList.value);
-   var tmp=tagList.value;
-   tagList.value=tmp.replace(substr, "");
+    var tmp = tagList.value;
+    tagList.value = tmp.replace(substr, "");
   });
-
 </script>
 {% endblock %}

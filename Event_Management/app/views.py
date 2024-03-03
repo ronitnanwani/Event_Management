@@ -320,7 +320,15 @@ def getEvents():
         events_list.append(event_dict)
     return render_template('events.html', name='events',events=events_list,user=current_user)
 @app_views.route('/add-event', methods=['GET','POST'])
-def addEvent():        
+def addEvent(): 
+    if not current_user.is_authenticated:
+        return redirect(url_for("app_views.loginUser"))
+    elif current_user.utype=="participant":
+        return redirect(url_for("app_views.dashboard"))
+    elif current_user.utype=="student":
+        return redirect(url_for("app_views.dashboard"))  
+    elif current_user.utype=="admin":
+            return redirect(url_for("app_views.dashboard"))     
     if request.method == 'POST':
         info = request.form
         name = info.get('name')
@@ -334,18 +342,12 @@ def addEvent():
         num_p = 0
         try:
             print(current_user.is_authenticated)
-            if not current_user.is_authenticated:
-                return redirect(url_for("app_views.loginUser"))
-            elif current_user.utype=="participant":
-                return redirect(url_for("app_views.dashboard"))
-            elif current_user.utype=="student":
-                return redirect(url_for("app_views.dashboard"))
-            elif current_user.utype=="organiser":
+            if current_user.utype=="organiser":
                 success, error = insert_event(connection,cursor,date+" "+time,name,type,description,prize,venue,current_user.o_id,tags.split(","),num_p)
+                print(success,error)
                 if success:
                     return redirect(url_for('app_views.dashboard'))
-            elif current_user.utype=="admin":
-                return redirect(url_for("app_views.dashboard"))
+            
         except Exception as e:
                 print(str(e))
                 return redirect(url_for("app_views.loginUser"))
