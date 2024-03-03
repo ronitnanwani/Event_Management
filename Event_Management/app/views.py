@@ -104,6 +104,7 @@ class User(UserMixin):
                 dt_object = datetime.fromisoformat(str(event[1]))
                 date = dt_object.date()
                 time = dt_object.time()
+                # print("Hello from here ")
                 event_dict = {
                     "e_id": event[0],
                     "date": str(date),
@@ -118,6 +119,9 @@ class User(UserMixin):
                     "venue": event[9],
                     "num_p": event[10]
                 }
+                success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                event_dict["organiser"]=org
+                print(event_dict["organiser"])
                 events_list.append(event_dict)
         if self.utype=="participant":
             success,reg=fetch_reg_events_of_participant(connection,cursor,self.p_id)
@@ -141,6 +145,9 @@ class User(UserMixin):
                     "venue": event[9],
                     "num_p": event[10]
                 }
+                success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                event_dict["organiser"]=org
+                print(event_dict["organiser"])
                 events_list.append(event_dict)
         if self.utype=="organiser":
             success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
@@ -164,6 +171,9 @@ class User(UserMixin):
                     "venue": event[9],
                     "num_p": event[10]
                 }
+                success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                event_dict["organiser"]=org
+                print(event_dict["organiser"])
                 events_list.append(event_dict)
 
         return events_list
@@ -649,19 +659,46 @@ def updateWinners():
 # Dashboards--------------------------
 @app_views.route('/dashboard',methods=["POST","GET"])
 def dashboard():
+    cursor.execute("""
+        SELECT e_id,date_and_time,name,type_event,description,first,second,third,prize,venue,num_p
+        FROM event
+        ORDER BY date_and_time DESC
+        LIMIT 5
+    """)
+    
+    events_data = cursor.fetchall()
+
+    events_list = []
+    for event_data in events_data:
+        event_dict = {
+            "e_id": event_data[0],
+            "date_and_time": str(event_data[1]),
+            "name": event_data[2],
+            "type_event": event_data[3],
+            "description": event_data[4],
+            "first": event_data[5],
+            "second": event_data[6],
+            "third": event_data[7],
+            "prize": event_data[8],
+            "venue": event_data[9],
+            "num_p": event_data[10]
+        }
+        events_list.append(event_dict)
+    
+    print("List of events ",events_list)
     try:
         print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
         elif current_user.utype=="participant":
-            return render_template('dashboard_participant.html',user=current_user)
+            return render_template('dashboard_participant.html',user=current_user,trending_events=events_list)
         elif current_user.utype=="student":
-            print("from here ",current_user.tasks)
-            return render_template('dashboard_student.html',user=current_user)
+            # print("from here ",current_user.tasks)
+            return render_template('dashboard_student.html',user=current_user,trending_events=events_list)
         elif current_user.utype=="organiser":
-            return render_template('dashboard_organiser.html',user=current_user)
+            return render_template('dashboard_organiser.html',user=current_user,trending_events=events_list)
         elif current_user.utype=="admin":
-            return render_template('dashboard_admin.html',user=current_user)
+            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))
@@ -689,17 +726,9 @@ def dashboardAdmin():
 
 @app_views.route('/dashboard/events')
 def participantEvents():
-    profile={"name":"Smarak K.","phone":9323232323,"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    events=[
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        {"title":"Event 1","organiser":profile,"venue":"Kalidas Audi","num_p":200,"desc":"this is the event description.this is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event descriptionthis is the event description","tags":["hello","tags1","tag2"]},
-        
-        ]
-    return render_template('schedule.html',events=events)
+    # profile={"name":"Smarak K.","phone":9323232323,"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
+
+    return render_template('schedule.html',events=current_user.events_registered)
 
 
 @app_views.route('/add_task/<int:e_id>', methods=['GET','POST'])

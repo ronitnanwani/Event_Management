@@ -521,3 +521,17 @@ def fetch_event_for_filter(connection,cursor,tags):
     events_data = cursor.fetchall()
     
     return events_data
+
+
+def fetch_organiser_of_event(connection,cursor,e_id):
+        cursor.execute("""
+            SELECT o.name
+            FROM event e
+            JOIN event_has_organiser eo ON e.e_id = eo.e_id
+            JOIN organiser o ON eo.o_id = o.o_id
+            WHERE e.e_id = %s
+            LIMIT 1
+        """, (e_id,))
+        
+        organiser_name = cursor.fetchone()[0] if cursor.rowcount > 0 else None
+        return True,organiser_name
