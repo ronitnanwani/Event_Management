@@ -717,9 +717,10 @@
             </div>
             <div class="mb-2 space-y-6">
               {% for task in user.tasks %}
-              {% if not task.is_complete %}
-              <div class="flex items-center gap-3" id="task-{{task.id}}">
+              {% if task.is_complete==0 %}
+              <div class="flex items-center gap-3">
                 <div
+                 id="task-{{task.id}}"
                   data-v-3c428bac=""
                   class="nui-focus block focus-within:outline-current {% if task.is_complete %}is-checked {% endif %}"
                 >
@@ -927,7 +928,8 @@
     $.post("/do_task/"+task_id, JSON.stringify({description:""}), function(response){
       console.log("POST request successful");
       console.log(response); // Response from the server
-        /* $("#task-"+task_id).remove();*/
+         $("#task-"+task_id).removeClass("is-unchecked");
+         $("#task-"+task_id).addClass("is-checked");
     })
     .fail(function(xhr, status, error) {
       console.error("POST request failed");
