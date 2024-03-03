@@ -120,8 +120,9 @@ class User(UserMixin):
                     "num_p": event[10]
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                event_dict["organiser"]=org
-                print(event_dict["organiser"])
+                # success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                print("Hehe ",org[0],org[1])
+                event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
         if self.utype=="participant":
             success,reg=fetch_reg_events_of_participant(connection,cursor,self.p_id)
@@ -146,8 +147,9 @@ class User(UserMixin):
                     "num_p": event[10]
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                event_dict["organiser"]=org
-                print(event_dict["organiser"])
+                # success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                print("Hehe ",org[0],org[1])
+                event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
         if self.utype=="organiser":
             success,reg=fetch_reg_events_of_organiser(connection,cursor,self.o_id)
@@ -172,10 +174,10 @@ class User(UserMixin):
                     "num_p": event[10]
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                event_dict["organiser"]=org
-                print(event_dict["organiser"])
+                # success,org = fetch_organiser_of_event(connection,cursor,event[0])
+                print("Hehe ",org[0],org[1])
+                event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
-
         return events_list
     @property
     def events_volunteered(self):
@@ -236,10 +238,26 @@ def getEvents():
     events_list = []
     for event_data in rows:
         dt_object = datetime.fromisoformat(str(event_data[1]))
-        
+        success2,tags = fetch_all_tags_of_event(connection,cursor,event_data[0])
         date = dt_object.date()
         time = dt_object.time()
-        
+        tags_list=[]
+        for tag in tags:
+            tags_list.append(tag[0])
+        print(tags_list,"tags")
+        is_registered=False
+        is_volunteered=False
+        if(current_user.is_authenticated):
+            for item in current_user.events_registered:
+                print(item)
+                if(item["e_id"]==event_data[0]):
+                    is_registered=True
+                    break
+            for item in current_user.events_volunteered:
+                if(item["e_id"]==event_data[0]):
+                    is_volunteered=True
+                    break
+            
         event_dict = {
             "e_id": event_data[0],
             "date": str(date),
@@ -252,10 +270,14 @@ def getEvents():
             "third": event_data[7],
             "prize": event_data[8],
             "venue": event_data[9],
-            "num_p": event_data[10]
+            "num_p": event_data[10],
+            "tags":tags_list,
+            "is_registered":is_registered,
+            "is_volunteered":is_volunteered,
         }
+        
         events_list.append(event_dict)
-    return render_template('events.html', name='events',events=events_list)
+    return render_template('events.html', name='events',events=events_list,user=current_user)
 @app_views.route('/add-event', methods=['GET','POST'])
 def addEvent():        
     if request.method == 'POST':
@@ -303,7 +325,18 @@ def eventDetails(id):
     tags_list=[]
     for tag in tags:
         tags_list.append(tag[0])
-    
+    is_registered=False
+    is_volunteered=False
+    if(current_user.is_authenticated):
+        for item in current_user.events_registered:
+            if(item["e_id"]==rows[0][0]):
+                is_registered=True
+                break
+        for item in current_user.events_volunteered:
+            if(item["e_id"]==rows[0][0]):
+                is_volunteered=True
+                break
+        
     event_dict = {
         'id': rows[0][0],
         'time': str(time),
@@ -317,39 +350,44 @@ def eventDetails(id):
         'prize': rows[0][8],
         'venue': rows[0][9],
         'tags' : tags_list,
-        'num_p': rows[0][10]
+        'num_p': rows[0][10],
+        "is_registered":is_registered,
+        "is_volunteered":is_volunteered,
     }
-    
-    roll_no=2130015
-    
-    count_allotted_query = """
-        SELECT COUNT(*) FROM tasks
-        WHERE roll_no = %s;
-    """
+    if current_user.utype=="student":
+        roll_no=current_user.roll_no
+        
+        count_allotted_query = """
+            SELECT COUNT(*) FROM tasks
+            WHERE roll_no = %s;
+        """
 
-    count_completed_query = """
-        SELECT COUNT(*) FROM tasks
-        WHERE roll_no = %s AND is_complete = 1;
-    """
+        count_completed_query = """
+            SELECT COUNT(*) FROM tasks
+            WHERE roll_no = %s AND is_complete = 1;
+        """
 
-    cursor.execute(count_allotted_query, (roll_no,))
-    count_allotted = cursor.fetchone()[0]  
+        cursor.execute(count_allotted_query, (roll_no,))
+        count_allotted = cursor.fetchone()[0]  
 
-    cursor.execute(count_completed_query, (roll_no,))
-    count_completed = cursor.fetchone()[0]
-    
-    query = """
-        SELECT task_description, is_complete
-        FROM tasks
-        WHERE roll_no = %s AND e_id = %s;
-    """
+        cursor.execute(count_completed_query, (roll_no,))
+        count_completed = cursor.fetchone()[0]
+        
+        query = """
+            SELECT task_description, is_complete
+            FROM tasks
+            WHERE roll_no = %s AND e_id = %s;
+        """
 
-    cursor.execute(query, (roll_no, id))
-    tasks = cursor.fetchall()
+        cursor.execute(query, (roll_no, id))
+        tasks = cursor.fetchall()
 
 
-    task_list = [{'description': task[0], 'is_complete': bool(task[1])} for task in tasks]
-    
+        task_list = [{'description': task[0], 'is_complete': bool(task[1])} for task in tasks]
+    else:
+        task_list=[]
+        count_allotted=0
+        count_completed=0
     success3,details = fetch_all_organisers_of_event(connection,cursor,id)
 
     organiser={"name":details[1],"role":"Events Head","email":details[0],"phone":details[2],"bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}    
@@ -767,7 +805,7 @@ def dashboard():
     """)
     
     events_data = cursor.fetchall()
-
+    
     events_list = []
     for event_data in events_data:
         event_dict = {
@@ -785,20 +823,42 @@ def dashboard():
         }
         events_list.append(event_dict)
     
+    cursor.execute("""
+        SELECT time_t, description
+        FROM notifications
+        ORDER BY time_t DESC
+        LIMIT 5
+    """)
+    
+    # Fetch all rows from the result set
+    notifications = cursor.fetchall()
+    
+    
+    
+    notifications_list = []
+    for notification_data in notifications:
+        notification_dict = {
+            "timestamp": str(notification_data[0]),
+            "description": notification_data[1]
+        }
+        notifications_list.append(notification_dict)
+    
+
+    
     print("List of events ",events_list)
     try:
         print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("app_views.loginUser"))
         elif current_user.utype=="participant":
-            return render_template('dashboard_participant.html',user=current_user,trending_events=events_list)
+            return render_template('dashboard_participant.html',user=current_user,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="student":
             # print("from here ",current_user.tasks)
-            return render_template('dashboard_student.html',user=current_user,trending_events=events_list)
+            return render_template('dashboard_student.html',user=current_user,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="organiser":
-            return render_template('dashboard_organiser.html',user=current_user,trending_events=events_list)
+            return render_template('dashboard_organiser.html',user=current_user,trending_events=events_list,notifications=notifications_list)
         elif current_user.utype=="admin":
-            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list)
+            return render_template('dashboard_admin.html',user=current_user,trending_events=events_list,notifications=notifications_list)
     except Exception as e:
             print(str(e))
             return redirect(url_for("app_views.loginUser"))

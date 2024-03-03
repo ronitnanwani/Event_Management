@@ -47,22 +47,51 @@
                 <div class="relative">
                     <div class="absolute end-12 top-2.5 z-20 hidden sm:block">
                         {% if user.utype=="student" or user.utype=="participant" %}
-                        <button type="button" id="register_event"  class=" py-3 nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-default"
-                            rel>
+                        {% if event.is_registered %}
+                                <button type="button" id="register_event"  class=" py-3 nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-default"
+                            rel disabled>
+                            <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+                                class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 256 256" data-v-7663d7ec><g fill="currentColor"><path d="M216 56v64h-56V56ZM40 208a8 8 0 0 0 8 8h40a8 8 0 0 0 8-8v-88H40Z" opacity=".2"/><path d="M216 48H40a8 8 0 0 0-8 8v152a16 16 0 0 0 16 16h40a16 16 0 0 0 16-16v-48h48v16a16 16 0 0 0 16 16h40a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8m-8 64h-40V64h40ZM88 64v48H48V64Zm0 144H48v-80h40Zm16-64V64h48v80Zm64 32v-48h40v48Z"/></g></svg><span>Registered</span>
+                            <!--]-->
+                            <!---->
+                        </button>
+                            {% elif event.is_volunteered and event.type=="Competition" %}
+                                <button type="button" id="register_event"  class=" py-3 nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-default"
+                            rel disabled>
+                            <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+                                class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 256 256" data-v-7663d7ec><g fill="currentColor"><path d="M216 56v64h-56V56ZM40 208a8 8 0 0 0 8 8h40a8 8 0 0 0 8-8v-88H40Z" opacity=".2"/><path d="M216 48H40a8 8 0 0 0-8 8v152a16 16 0 0 0 16 16h40a16 16 0 0 0 16-16v-48h48v16a16 16 0 0 0 16 16h40a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8m-8 64h-40V64h40ZM88 64v48H48V64Zm0 144H48v-80h40Zm16-64V64h48v80Zm64 32v-48h40v48Z"/></g></svg><span>Ineligible</span>
+                            <!--]-->
+                            <!---->
+                        </button>
+                            {% elif user.utype!="admin" and user.utype!="organiser" %}
+                             <button type="button" id="register_event"  class=" py-3 nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-default"
+                            rel >
                             <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
                                 class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 256 256" data-v-7663d7ec><g fill="currentColor"><path d="M216 56v64h-56V56ZM40 208a8 8 0 0 0 8 8h40a8 8 0 0 0 8-8v-88H40Z" opacity=".2"/><path d="M216 48H40a8 8 0 0 0-8 8v152a16 16 0 0 0 16 16h40a16 16 0 0 0 16-16v-48h48v16a16 16 0 0 0 16 16h40a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8m-8 64h-40V64h40ZM88 64v48H48V64Zm0 144H48v-80h40Zm16-64V64h48v80Zm64 32v-48h40v48Z"/></g></svg><span>Register</span>
                             <!--]-->
                             <!---->
                         </button>
+                            {% endif %}
+                    
                         {% endif %}
-                        {% if user.utype=="student" %}
+                        
+                        {% if user.utype=="student" %} 
+                        {% if event.is_volunteered %}
                         <button type="button" id="do_volunteer"  class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32">
                   <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 24 24" data-v-7663d7ec="">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"></path></svg><span> Volunteer</span>
                   <!--]-->
                   <!---->
                 </button>
-                                    {% endif %}
+                {% else %}
+                <button type="button" id="do_volunteer"  class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32" disabled>
+                  <!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="icon size-4" style="" width="1em" height="1em" viewBox="0 0 24 24" data-v-7663d7ec="">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"></path></svg><span> Volunteered</span>
+                  <!--]-->
+                  <!---->
+                </button>
+                
+                            {% endif %}
 
                     </div>
                     <div class="absolute end-0 top-2 z-20">
@@ -139,7 +168,7 @@
                                                         <!--[-->{{event.desc}}
                                                         <!--]-->
                                                     </p>
-                                                    <div class="flex items-center justify-between">
+                                                    <div class="flex flex-wrap gap-8 items-center justify-between">
                                                         <div class="flex items-center gap-2">
                                                            
                                                             <div>
@@ -319,8 +348,45 @@
                         </div>
                         <div class="hidden opacity-0" id="tasks" role="tabpanel">
                         <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-blue-gray-500">
-                            The reading of all good books is like a conversation with the finest
-                            minds of past centuries.
+                        <div class="col-span-12">
+   <div class="nui-card nui-card-rounded nui-card-white p-6">
+      <div class="mb-10 flex items-center justify-between">
+         <h3 class="nui-heading nui-heading-md nui-weight-semibold nui-lead-tight text-muted-800 dark:text-white"><span>Pending Tasks</span></h3>
+      </div>
+      <div class="divide-muted-200 dark:divide-muted-700 space-y-6 divide-y">
+        {% for task in current_user.tasks %}
+         <div class="flex flex-col gap-4 sm:flex-row" id="task-{{task.id}}">
+            <div class="nui-avatar nui-avatar-lg nui-avatar-full" data-nui-tooltip="Anna Vrinkof">
+               <div class="nui-avatar-inner">
+                   {% if task.event.type=="competition" %}
+                    <img src="{{ url_for('static', filename='img/competition.jpg') }}" alt="Cultural Event" class="rounded-lg">
+                    {% elif task.event.type=="concert" %}
+                    <img src="{{ url_for('static', filename='img/concert.jpg') }}" alt="Cultural Event" class="rounded-lg">
+                    {% elif task.event.type=="workshop" %}
+                    <img src="{{ url_for('static', filename='img/workshop.jpg') }}" alt="Cultural Event" class="rounded-lg">
+                    {% elif task.event.type=="talkshow" %}
+                    <img src="{{ url_for('static', filename='img/talk-show.jpg') }}" alt="Cultural Event" class="rounded-lg">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/comp.jpg') }}" alt="Cultural Event" class="rounded-lg">
+                    {% endif %}
+               </div>
+               <!----><!---->
+            </div>
+            <div class="max-w-md">
+               <p id="task-desc-{{task.id}}" class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-500 dark:text-muted-400 mb-1"><span>{{task.description}}</span></p>
+            </div>
+            <div class="w-full sm:ms-auto sm:w-auto">
+               <button type="button" rel="" target="" data-task={{task.id}} class="taskDone nui-button nui-button-medium nui-button-rounded nui-button-solid nui-button-primary w-full sm:w-auto">
+                  <span>Done</span><!---->
+               </button>
+            </div>
+         </div>
+         {% endfor %}
+        
+      </div>
+   </div>
+</div>
+                        
                         </p>
                         </div>
                         
@@ -471,13 +537,11 @@
 });
   $("#register_event").click(function(){
 
-    var user=localStorage.getItem('user');
-    var type=localStorage.getItem('utype');
-    var pid=(type==="Student"?user.roll_no:user.pid);
-    
-    $.post("/register_for_event", JSON.stringify({id: pid, e_id: {{event.id}},type:type}), function(response){
+    $.post("/register_for_event", JSON.stringify({ e_id: {{event.id}}}), function(response){
       console.log("POST request successful");
       console.log(response); // Response from the server
+    $("#register_event").text("Registered");
+    $("#register_event").prop("disabled", true);
     })
     .fail(function(xhr, status, error) {
       console.error("POST request failed");
@@ -492,6 +556,26 @@
     $.post("/create_event_volunteer", JSON.stringify({id: pid, e_id: {{event.id}}}), function(response){
       console.log("POST request successful");
       console.log(response); // Response from the server
+          $("#do_volunteer").text("Volunteered");
+    $("#do_volunteer").prop("disabled", true);
+    })
+    .fail(function(xhr, status, error) {
+      console.error("POST request failed");
+      console.error(error); // Error message
+    });
+  });
+  $(".taskDone").click(function(){
+    console.log("task done")
+ 
+    console.log($(this).data("task"))
+    var task_id=$(this).data("task");
+    /*var event_desc=$("#task-desc-"+event_id).text();
+    console.log(event_desc)
+*/
+    $.post("/do_task/"+task_id, JSON.stringify({description:""}), function(response){
+      console.log("POST request successful");
+      console.log(response); // Response from the server
+         $("#task-"+task_id).remove();
     })
     .fail(function(xhr, status, error) {
       console.error("POST request failed");
