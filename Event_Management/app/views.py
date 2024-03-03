@@ -652,9 +652,7 @@ def registerOrganiser():
         email = info.get('email')
         password = info.get('password')
         name = info.get('name')
-        # TODO : Add phone number to the form
-        # phone_number = 9876543210
-        phone_number = info.get('phone_number')
+        phone_number = info.get('phone')
         can_create = 1
         success, error = insert_organiser(connection,cursor,email,password,name,phone_number,can_create)
 
@@ -766,7 +764,8 @@ def subscribeAccomodation():
 
         if current_user.utype=="participant":
             p_id = current_user.p_id
-            acc_id = info.get('acco-1')
+            print("Acco information ",info)
+            acc_id = next(iter(info.values())) 
 
             success, error = subscribe_accomodation(connection,cursor,p_id,acc_id)
             if success:
@@ -780,11 +779,12 @@ def subscribeAccomodation():
 def subscribeFood():
     if request.method == 'POST':
         info = request.form
+        print(info)
         # print(info)
         print(current_user.utype)
         if current_user.utype=="participant":
             p_id = current_user.p_id
-            food_id = info.get('food-1')
+            food_id = next(iter(info.values()))              
 
             print(p_id,food_id)
             success, error = subscribe_food(connection,cursor,p_id,food_id)
@@ -1234,8 +1234,40 @@ def delete_user():
     info = request.json
     utype = info.get('utype')
     id = info.get('id')
+    print(utype)
+    print(id)
     success, error = delete_from_db(connection,cursor,utype,id)
     if success:
-        return redirect(url_for('app_views.dashboard'))
+        return jsonify({"message":"Success"}) ,201
     else:
-        return redirect(url_for('app_views.dashboard'))
+        return jsonify({"error":str(error)}),500
+
+
+@app_views.route('/add_user/<string:utype>', methods=['POST'])
+def add_user(utype):
+    info = request.form
+    if utype == "student":
+        email = info['email']
+        password = info['password']
+        name = info.get('name')
+        dept = info.get('department')
+        roll_no = info.get('rollno')
+        phone_number = info.get('phone')
+        success,error = insert_student(roll_no,dept,name,phone_number,email,password)
+    elif utype == "participant":
+        email = info['email']
+        password = info['password']
+        name = info.get('name')
+        college_name = info.get('college_name')
+        phone_number = info.get('phone')
+        success,error = insert_participant(connection,cursor,name,college_name,phone_number,email,password)
+    elif utype == "organiser":
+        info = request.form
+        email = info.get('email')
+        password = info.get('password')
+        name = info.get('name')
+        phone_number = info.get('phone')
+        can_create = 1
+        success, error = insert_organiser(connection,cursor,email,password,name,phone_number,can_create)
+    
+    return redirect(url_for('app_views.dashboard'))

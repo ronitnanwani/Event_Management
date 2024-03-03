@@ -591,7 +591,7 @@
                                       class="font-alt whitespace-nowrap text-sm text-muted-800 dark:text-white p-4"
                                     >
                                       <span class="font-semibold"
-                                        >phone</span
+                                        >{{student.phone}}</span
                                       >
                                     </td>
                                     
@@ -781,11 +781,14 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+  console.log("sdsd")
     $(document).ready(function(){
+      console.log("here")
            $.ajaxSetup({
   contentType: "application/json; charset=utf-8"
 });
-  $(".deleteOrganiser").click(function(){
+  $("button.deleteOrganiser").click(function(){
+    console.log("this org")
     var id=$(this).data("organiser")
     $.post("/delete_user", JSON.stringify({ id:id,utype:"organiser" }), function(response){
       console.log("POST request successful");
@@ -822,6 +825,6 @@
     });
   });
 });
-
+</script>
 
 {% endblock %}
