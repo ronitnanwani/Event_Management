@@ -660,7 +660,7 @@ $(".tag-filter").on("change",function(){
   var num=0;
   checked_types=[]
   $(".tag-filter").each(function(){
-    if($(this).prop("checked"))checked_types.push($(this).val())
+    if($(this).prop("checked"))checked_types.push($(this).val().toLowerCase())
   })
   if(checked_types.length==0)
   {
