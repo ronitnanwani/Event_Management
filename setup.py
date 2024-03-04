@@ -4,11 +4,10 @@ from argparse import ArgumentParser
 def establish_connection():
     #establishing the connection with the database and returning the connection object
     connection = psycopg2.connect(
-        user = "postgres",
-        password = "pass@1234",
-        host = "localhost",
-        database = "event_management",
-        port = "5435"
+        user = "21CS30043",
+        password = "21CS30043",
+        host = "10.5.18.71",
+        database = "21CS30043"
         )
     return connection
 

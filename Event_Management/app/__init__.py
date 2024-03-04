@@ -6,10 +6,10 @@ from Event_Management.database import *
 
 try:
     connection = psycopg2.connect(
-        user = "postgres",
-        password = "pass@1234",
-        host = "localhost",
-        database = "event_management"
+        user = "21CS30043",
+        password = "21CS30043",
+        host = "10.5.18.71",
+        database = "21CS30043"
         )
     cursor = connection.cursor()
 except Exception as err:
