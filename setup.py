@@ -8,7 +8,7 @@ def establish_connection():
         password = "pass@1234",
         host = "localhost",
         database = "event_management",
-        port = "5432"
+        port = "5435"
         )
     return connection
 
@@ -321,7 +321,7 @@ def main():
                     college_name varchar(50),
                     phone_number char(10),
                     email varchar(255),
-                    password varchar(50),
+                    password varchar(255),
                     acc_id int,
                     food_id int,
                     foreign key (acc_id) references accomodation(acc_id) on delete set null,
@@ -338,7 +338,7 @@ def main():
                     name varchar(50),
                     phone_number char(10),
                     email varchar(255),
-                    password varchar(50)
+                    password varchar(255)
                 );
             """
             
@@ -388,7 +388,7 @@ def main():
                 create table organiser(
                     o_id int primary key,
                     email varchar(255),
-                    password varchar(50),
+                    password varchar(255),
                     name varchar(50),
                     phone_number char(10),
                     can_create int
@@ -412,7 +412,7 @@ def main():
             query = """
                 create table dbadmin(
                     email varchar(255) primary key,
-                    password varchar(50)
+                    password varchar(255)
                 );
             """
             
