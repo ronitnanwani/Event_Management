@@ -24,7 +24,7 @@ def sample_data():
 
             query = "INSERT INTO organiser (o_id,email,password,name,phone_number,can_create) VALUES (%s, %s, %s, %s, %s, %s)"
             cursor.execute(query, (2, "org@gmail.com", "123456", "Suresh", "1234567890", 1))
-            cursor.execute(query, (3, "org2@gmail.com", "456789", "Ramesh", "1234567890", 1))
+            cursor.execute(query, (3, "org2@gmail.com", "456789", "Ramesh", "1234567890", 0))
 
             query = "INSERT INTO dbadmin (email,password) VALUES (%s, %s)"
             cursor.execute(query, ("admin@gmail.com","admin"))
@@ -33,6 +33,10 @@ def sample_data():
             cursor.execute(query, (6, "2021-10-10 10:00:00", "KTJ", "Technical", "This is a technical event", None, None, None, 1000, "LHC", 0))
             cursor.execute(query, (7, "2021-10-11 10:00:00", "KTH", "Technical", "This is a technical event", None, None, None, 1000, "LBS", 0))
             cursor.execute(query, (8, "2021-10-12 10:00:00", "KTP", "Cultural", "This is a cultural event", None, None, None, 1000, "Pro", 0))
+
+            query = "INSERT INTO participant (p_id,name,college_name,phone_number,email,password,acc_id,food_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (1, "Ram", "IITK", "1234567890", "parti@gmail.com", "123456",None ,None ))
+            cursor.execute(query, (2, "Shyam", "IITM", "123987890", "dk@gmail.com", "456789",None ,None ))
 
             connection.commit()
             cursor.close()
