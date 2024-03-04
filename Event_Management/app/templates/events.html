@@ -7,11 +7,11 @@
     <div class="mx-auto w-full max-w-7xl">
       <!--[-->
       <div class="relative z-[1] mb-5 flex h-16 items-center gap-2">
-        <button type="button" class="flex size-10 items-center justify-center -ms-3">
+       <a href="/"> <button type="button" class="flex size-10 items-center justify-center -ms-3">
           <div class="scale-90 relative size-5">
             <span class="-rotate-45 rtl:rotate-45 max-w-[75%] top-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"></span><span class="opacity-0 translate-x-4 rtl:-translate-x-4 bg-primary-500 absolute top-1/2 block h-0.5 w-full max-w-[50%] transition-all duration-300"></span><span class="rotate-45 rtl:-rotate-45 max-w-[75%] bottom-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"></span>
           </div>
-        </button>
+        </button></a>
         <h1 class="nui-heading nui-heading-2xl nui-weight-light nui-lead-normal text-muted-800 hidden md:block dark:text-white">
           <!--[-->
           <!--[-->Events<!--]-->
@@ -95,7 +95,7 @@
                   <!---->
                   <div class="nui-input-outer">
                     <div>
-                      <input id="ninja-input-10588" type="text" class="nui-input" placeholder="Event keywords" value="">
+                      <input id="ekeywords" type="text" class="nui-input" placeholder="Event keywords" value="">
                       <!---->
                       <!---->
                       <div class="nui-input-icon">
@@ -142,14 +142,14 @@
                 <div class="nui-select-wrapper nui-select-default nui-select-md nui-select-curved nui-has-icon">
                   <!---->
                   <div class="nui-select-outer">
-                    <select id="ninja-input-10590" hide-label="" class="nui-select">
+                    <select id="type-select" hide-label="" class="nui-select">
                       <!----><!--[-->
                       <option value="">Select a type</option>
                       <option value="all">All</option>
-                      <option value="arts">Fine Arts</option>
-                      <option value="music">Music</option>
-                      <option value="photography">Photography</option>
-                      <option value="culinary">Culinary</option>
+                      <option value="concert">Concert</option>
+                      <option value="competition">Competitions</option>
+                      <option value="workshop">Workshops</option>
+                      <option value="talkshow">Talk Shows</option>
                       <!--]-->
                     </select>
                     <!---->
@@ -221,7 +221,7 @@
                   <div class="relative">
                     <div class="mb-6">
                       <h3 class="nui-heading nui-heading-md nui-weight-light nui-lead-tight text-muted-800 mb-2 dark:text-white">
-                        <!--[--><span>Event Mode</span>
+                        <!--[--><span>Event Type</span>
                         <!--]-->
                       </h3>
                     </div>
@@ -229,7 +229,7 @@
                       <div class="flex items-center justify-between">
                         <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
                           <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10593" value="job-types-1" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
+                            <input id="concert-type" value="concert" true-value="true" false-value="false" class=" etype nui-checkbox-input" type="checkbox">
                             <div class="nui-checkbox-inner"></div>
                             <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
                               <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
@@ -239,18 +239,25 @@
                             </svg>
                           </div>
                           <div class="nui-checkbox-label-wrapper">
-                            <label for="ninja-input-10593" class="nui-checkbox-label-text"><!--[-->Concert<!--]--></label>
+                            <label for="type-concert" class=" nui-checkbox-label-text"><!--[-->Concert<!--]--></label>
                             <!---->
                           </div>
                         </div>
                         <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          67
+                          {% set count = [] %}
+                          {% for item in events %}
+                              {% if item.type_event =="Concert" %}
+                                    {% set __ = count.append(1) %} 
+                              {% endif %}
+                          {% endfor %}
+                          
+                          {{count|length}}
                           <!--]--></span>
                       </div>
                       <div class="flex items-center justify-between">
                         <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
                           <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10594" value="job-types-2" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
+                            <input id="competition-type" value="competition" true-value="true" false-value="false" class="etype nui-checkbox-input" type="checkbox">
                             <div class="nui-checkbox-inner"></div>
                             <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
                               <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
@@ -265,13 +272,20 @@
                           </div>
                         </div>
                         <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          31
+                          {% set count = [] %}
+                          {% for item in events %}
+                              {% if item.type_event =="Competition" %}
+                                    {% set __ = count.append(1) %} 
+                              {% endif %}
+                          {% endfor %}
+                          
+                          {{count|length}}
                           <!--]--></span>
                       </div>
                       <div class="flex items-center justify-between">
                         <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
                           <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10595" value="job-types-3" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
+                            <input id="workshop-type" value="workshop" true-value="true" false-value="false" class="etype nui-checkbox-input" type="checkbox">
                             <div class="nui-checkbox-inner"></div>
                             <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
                               <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
@@ -286,13 +300,20 @@
                           </div>
                         </div>
                         <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          49
+                          {% set count = [] %}
+                          {% for item in events %}
+                              {% if item.type_event =="Workshop" %}
+                                    {% set __ = count.append(1) %} 
+                              {% endif %}
+                          {% endfor %}
+                          
+                          {{count|length}}
                           <!--]--></span>
                       </div>
                       <div class="flex items-center justify-between">
                         <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
                           <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10596" value="job-types-4" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
+                            <input id="talkshow-type" value="talkshow" true-value="true" false-value="false" class="etype nui-checkbox-input" type="checkbox">
                             <div class="nui-checkbox-inner"></div>
                             <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
                               <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
@@ -307,7 +328,14 @@
                           </div>
                         </div>
                         <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          17
+                          {% set count = [] %}
+                          {% for item in events %}
+                              {% if item.type_event =="Talkshow" %}
+                                    {% set __ = count.append(1) %} 
+                              {% endif %}
+                          {% endfor %}
+                          
+                          {{count|length}}
                           <!--]--></span>
                       </div>
                     </div>
@@ -315,15 +343,25 @@
                   <div class="relative">
                     <div class="mb-6">
                       <h3 class="nui-heading nui-heading-md nui-weight-light nui-lead-tight text-muted-800 mb-2 dark:text-white">
-                        <!--[--><span>Event Domain</span>
+                        <!--[--><span>Event Tags</span>
                         <!--]-->
                       </h3>
                     </div>
                     <div class="flex flex-col gap-4 ps-2">
+                      {% set tagslist = [] %}
+                          {% for item in events %}
+                            {%for tag in item.tags %}
+                            {% if tag not in tagslist %}
+                                {% set __ = tagslist.append(tag) %}
+                            {% endif %} 
+                              {% endfor %}
+                          {% endfor %}
+                          
+                      {% for item in tagslist %}
                       <div class="flex items-center justify-between">
                         <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
                           <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10597" value="seniority-level-1" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
+                            <input id="check-{{item}}" value="{{item}}" true-value="true" false-value="false" class="tag-filter nui-checkbox-input" type="checkbox">
                             <div class="nui-checkbox-inner"></div>
                             <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
                               <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
@@ -333,98 +371,13 @@
                             </svg>
                           </div>
                           <div class="nui-checkbox-label-wrapper">
-                            <label for="ninja-input-10597" class="nui-checkbox-label-text"><!--[-->Fine Arts<!--]--></label>
+                            <label for="ninja-input-10597" class="nui-checkbox-label-text"><!--[-->{{item}}<!--]--></label>
                             <!---->
                           </div>
                         </div>
-                        <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          56
-                          <!--]--></span>
+                       
                       </div>
-                      <div class="flex items-center justify-between">
-                        <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
-                          <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10598" value="seniority-level-2" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
-                            <div class="nui-checkbox-inner"></div>
-                            <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
-                              <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
-                            </svg>
-                            <svg aria-hidden="true" viewBox="0 0 24 24" class="nui-icon-indeterminate">
-                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M2 12h20"></path>
-                            </svg>
-                          </div>
-                          <div class="nui-checkbox-label-wrapper">
-                            <label for="ninja-input-10598" class="nui-checkbox-label-text"><!--[-->Western Dance<!--]--></label>
-                            <!---->
-                          </div>
-                        </div>
-                        <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          84
-                          <!--]--></span>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
-                          <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10599" value="seniority-level-3" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
-                            <div class="nui-checkbox-inner"></div>
-                            <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
-                              <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
-                            </svg>
-                            <svg aria-hidden="true" viewBox="0 0 24 24" class="nui-icon-indeterminate">
-                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M2 12h20"></path>
-                            </svg>
-                          </div>
-                          <div class="nui-checkbox-label-wrapper">
-                            <label for="ninja-input-10599" class="nui-checkbox-label-text"><!--[-->Western Music<!--]--></label>
-                            <!---->
-                          </div>
-                        </div>
-                        <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          31
-                          <!--]--></span>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
-                          <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10600" value="seniority-level-4" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
-                            <div class="nui-checkbox-inner"></div>
-                            <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
-                              <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
-                            </svg>
-                            <svg aria-hidden="true" viewBox="0 0 24 24" class="nui-icon-indeterminate">
-                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M2 12h20"></path>
-                            </svg>
-                          </div>
-                          <div class="nui-checkbox-label-wrapper">
-                            <label for="ninja-input-10600" class="nui-checkbox-label-text"><!--[-->Eastern Music<!--]--></label>
-                            <!---->
-                          </div>
-                        </div>
-                        <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          59
-                          <!--]--></span>
-                      </div>
-                      <div class="flex items-center justify-between">
-                        <div class="nui-checkbox nui-checkbox-rounded nui-checkbox-primary">
-                          <div class="nui-checkbox-outer">
-                            <input id="ninja-input-10601" value="seniority-level-5" true-value="true" false-value="false" class="nui-checkbox-input" type="checkbox">
-                            <div class="nui-checkbox-inner"></div>
-                            <svg aria-hidden="true" viewBox="0 0 17 12" class="nui-icon-check">
-                              <path fill="currentColor" d="M16.576.414a1.386 1.386 0 0 1 0 1.996l-9.404 9.176A1.461 1.461 0 0 1 6.149 12c-.37 0-.74-.139-1.023-.414L.424 6.998a1.386 1.386 0 0 1 0-1.996 1.47 1.47 0 0 1 2.046 0l3.68 3.59L14.53.414a1.47 1.47 0 0 1 2.046 0z"></path>
-                            </svg>
-                            <svg aria-hidden="true" viewBox="0 0 24 24" class="nui-icon-indeterminate">
-                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M2 12h20"></path>
-                            </svg>
-                          </div>
-                          <div class="nui-checkbox-label-wrapper">
-                            <label for="ninja-input-10601" class="nui-checkbox-label-text"><!--[-->Foreign Carnival<!--]--></label>
-                            <!---->
-                          </div>
-                        </div>
-                        <span class="nui-tag nui-tag-sm nui-tag-full nui-tag-solid nui-tag-default text-xs"><!--[-->
-                          11
-                          <!--]--></span>
-                      </div>
+                      {% endfor %}
                     </div>
                   </div>
                   
@@ -432,8 +385,9 @@
               </div>
             </div>
             <div class="ptablet:col-span-8 ltablet:col-span-8 col-span-12 lg:col-span-9">
+              <div class="w-full flex justify-between">
               <div class="mb-6 mt-12 sm:mt-0">
-                <h3 class="nui-heading nui-heading-lg nui-weight-light nui-lead-tight text-muted-800 dark:text-white">
+                <h3 id="num_events" class="nui-heading nui-heading-lg nui-weight-light nui-lead-tight text-muted-800 dark:text-white">
                   <!--[--><span>Showing 46 Events</span>
                   <!--]-->
                 </h3>
@@ -444,14 +398,23 @@
                   <!--]-->
                 </p>
               </div>
+              {% if user.utype=="organiser" %}
+              <a href="/add-event"><button type="button" id="vol_list"  class=" py-3 nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-default"
+                            rel >
+                            <!--[--><span>Add Event</span>
+                            <!--]-->
+                            <!---->
+                        </button></a>
+                        {% endif %}
+                      </div>
               <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <!--[-->
                 {% for event in events %}
-                <div class="relative">
+                <div data-name="{{event.name}}" data-tags="{{ event.tags|join(', ') }}" data-type="{{event.type_event}}" class="event-card relative">
                   <div class="h-full nui-card nui-card-curved nui-card-white p-6">
                     <!--[-->
                     <div class="h-full flex w-full flex-col gap-4 sm:flex-row">
-                      <div data-nui-tooltip="{{event.title}}">
+                      <div data-nui-tooltip="{{event.name}}">
                         {% if event.type=="competition" %}
                         <img src="{{ url_for('static', filename='img/competition.jpg') }}" alt="Cultural Event" class="w-2/3 rounded-lg">
                         {% elif event.type=="concert" %}
@@ -609,6 +572,130 @@
            $.ajaxSetup({
   contentType: "application/json; charset=utf-8"
 });
+$("#ekeywords").on("input",function(){
+  var val=$(this).val().toLowerCase();
+  console.log(val);
+  var num=0;
+  $(".event-card").each(function() {
+        var dataName = $(this).data("name").toLowerCase();
+        var dataTags = $(this).data("tags").toLowerCase();
+        var dataType = $(this).data("type").toLowerCase();
+        if (val==""|| dataName.includes(val) || dataTags.includes(val) || dataType.includes(val)) {
+            $(this).css("display", "block");
+            num+=1;
+        }
+        else  $(this).css("display", "none");
+
+        $("#num_events").text("Showing "+num+" events")
+
+      });
+      
+    })
+    $("#type-select").on("input",function(){
+  var val=$("#type-select").val()
+
+  var num=0;
+  $(".event-card").each(function() {
+         var dataType = $(this).data("type").toLowerCase();
+         if (val=="all" || dataType.includes(val)) {
+             $(this).css("display", "block");
+             num+=1;
+         }
+         else  $(this).css("display", "none");
+ 
+         $("#num_events").text("Showing "+num+" events")
+ 
+     });
+})
+
+
+$(".etype").on("change",function(){
+  var val=$(this).val().toLowerCase();
+  console.log(val);
+ 
+  var num=0;
+  checked_types=[]
+  $(".etype").each(function(){
+    if($(this).prop("checked"))checked_types.push($(this).val())
+  })
+  if(checked_types.length==0)
+  {
+  $(".event-card").each(function() {
+          
+          var dataType = $(this).data("type").toLowerCase();
+          if (true) {
+              $(this).css("display", "block");
+              num+=1;
+          }
+          else  $(this).css("display", "none");
+  
+          $("#num_events").text("Showing "+num+" events")
+  
+      });
+    }
+    else{
+
+    $(".event-card").each(function() {
+          
+          var dataType = $(this).data("type").toLowerCase();
+          console.log(dataType)
+          if (checked_types.includes(dataType)) {
+              $(this).css("display", "block");
+              num+=1;
+          }
+          else  $(this).css("display", "none");
+  
+          $("#num_events").text("Showing "+num+" events")
+  
+      });
+  
+}
+
+})
+
+$(".tag-filter").on("change",function(){
+  var val=$(this).val().toLowerCase();
+  console.log(val);
+ 
+  var num=0;
+  checked_types=[]
+  $(".tag-filter").each(function(){
+    if($(this).prop("checked"))checked_types.push($(this).val().toLowerCase())
+  })
+  if(checked_types.length==0)
+  {
+  $(".event-card").each(function() {
+          
+          var dataType = $(this).data("type").toLowerCase();
+          if (true) {
+            $(this).css("display", "block");
+            num+=1;
+          }
+          else  $(this).css("display", "none");
+  
+          $("#num_events").text("Showing "+num+" events")
+  
+      });
+    }
+    else{
+
+    $(".event-card").each(function() {
+          
+          var dataType = $(this).data("type").toLowerCase();
+          console.log(dataType)
+          if (checked_types.includes(dataType)) {
+              $(this).css("display", "block");
+              num+=1;
+          }
+          else  $(this).css("display", "none");
+  
+          $("#num_events").text("Showing "+num+" events")
+  
+      });
+  
+}
+
+})
 $(".register_event").click(function(){
   {
     console.log(event.target.dataset)

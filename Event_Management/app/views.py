@@ -132,7 +132,8 @@ class User(UserMixin):
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
                 # success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                print("Hehe ",org[0],org[1])
+                if len(org)==0:
+                    org=["",""]
                 event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
         if self.utype=="participant":
@@ -159,7 +160,9 @@ class User(UserMixin):
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
                 # success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                print("Hehe ",org[0],org[1])
+                # print("Hehe ",org[0],org[1])
+                if(org is None):
+                    org=["No Organiser",""]
                 event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
         if self.utype=="organiser":
@@ -186,7 +189,9 @@ class User(UserMixin):
                 }
                 success,org = fetch_organiser_of_event(connection,cursor,event[0])
                 # success,org = fetch_organiser_of_event(connection,cursor,event[0])
-                print("Hehe ",org[0],org[1])
+                # print("Hehe ",org[0],org[1])
+                if org is None:
+                    org=["No Organiser",""]
                 event_dict["organiser"]={"name":org[0],"phone":org[1]}
                 events_list.append(event_dict)
         return events_list
@@ -366,7 +371,7 @@ def addEvent():
                 print(str(e))
                 return redirect(url_for("app_views.loginUser"))
     
-    return render_template('addEvent.html', name='events')
+    return render_template('addEvent.html',user=current_user, name='events')
 
 @app_views.route('/event/<int:id>',methods=['GET'])
 def eventDetails(id):
@@ -406,7 +411,10 @@ def eventDetails(id):
         if(item[0]==current_user.email):
             is_organiser=True
             break
-    org_detail=details[0]
+    if(len(details)!=0):
+        org_detail=details[0]
+    else:
+        org_detail=["","No Organiser",""]
     event_dict = {
         'id': rows[0][0],
         'time': str(time),
@@ -490,17 +498,42 @@ def getVolunteers(id):
             "phone": volunteer[3],
             "email": volunteer[4],
             "num_tasks_allotted": num_tasks_allotted,
-            "num_tasks_completed": num_tasks_completed
+            "num_tasks_completed": num_tasks_completed,
+            "tasks":user.tasks
         }
         volunteers_list.append(volunteer_dict)
     organiser={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('volunteers.html',volunteers=volunteers_list,eventid=id)
+    return render_template('volunteers.html',user=current_user,volunteers=volunteers_list,eventid=id)
 
 @app_views.route('/profile')
 def getProfile():
     if not current_user.is_authenticated:
         return redirect(url_for("app_views.loginUser"))
-    return render_template('profile.html',user=current_user)
+    acco=False
+    food=False
+    if(current_user.acc_id is not None):
+        print(current_user.acc_id,type(current_user.acc_id))
+        cursor.execute("""
+            SELECT acc_id,price,days,name,description
+            FROM accomodation a
+            where a.acc_id = %s
+        """, (current_user.acc_id,))
+        acc = cursor.fetchone()
+        # acc=acc[0]
+        print(acc,type(acc))
+        acco={"acc_id":acc[0],"price":acc[1],"days":acc[2],"name":acc[3],"description":acc[4]}
+    if(current_user.food_id is not None):
+        cursor.execute("""
+            SELECT food_id,price,days,name,description
+            FROM food a
+            where a.food_id = %s
+        """, (current_user.food_id,))
+
+        food = cursor.fetchone()
+        # food=food[0]
+        print(food,type(food))
+        food={"food_id":food[0],"price":food[1],"days":food[2],"name":food[3],"description":food[4]}
+    return render_template('profile.html',user=current_user,acco=acco,food=food)
 # @app_views.route('/profile/organiser/<int:oid>')
 # def getOrganiser(oid):
 #     if not current_user.is_authenticated:
@@ -841,7 +874,7 @@ def facilities():
     
     print(food_list)
     # profile={"name":"Smarak K.","bio":"asdhfgdsajnsadmnasd dsajd as dadas das"}
-    return render_template('logistics_admin.html',events=[],accomodation=accomodation_list,food=food_list)
+    return render_template('logistics_admin.html',user=current_user,events=[],accomodation=accomodation_list,food=food_list)
 
 @app_views.route('/plans')
 def plans():
