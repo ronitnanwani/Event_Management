@@ -3,7 +3,7 @@
 <div class="bg-muted-100 dark:bg-muted-900 relative min-h-screen w-full overflow-x-hidden px-4 transition-all duration-300 xl:px-10 xl:max-w-[calc(100%_-_300px)] xl:ms-[215px]">
     <div class="mx-auto w-full max-w-7xl">
         <!--[-->
-        <div class="relative z-[1] mb-5 flex h-16 items-center gap-2"><button type="button" class="flex size-10 items-center justify-center -ms-3"><div class="scale-90 relative size-5"><span class="-rotate-45 rtl:rotate-45 max-w-[75%] top-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"></span><span class="opacity-0 translate-x-4 rtl:-translate-x-4 bg-primary-500 absolute top-1/2 block h-0.5 w-full max-w-[50%] transition-all duration-300"></span><span class="rotate-45 rtl:-rotate-45 max-w-[75%] bottom-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"></span></div></button>
+        <div class="relative z-[1] mb-5 flex h-16 items-center gap-2"><a href="/"><button type="button" class="flex size-10 items-center justify-center -ms-3"><div class="scale-90 relative size-5"><span class="-rotate-45 rtl:rotate-45 max-w-[75%] top-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"></span><span class="opacity-0 translate-x-4 rtl:-translate-x-4 bg-primary-500 absolute top-1/2 block h-0.5 w-full max-w-[50%] transition-all duration-300"></span><span class="rotate-45 rtl:-rotate-45 max-w-[75%] bottom-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"></span></div></button></a>
             <h1
                 class="nui-heading nui-heading-2xl nui-weight-light nui-lead-normal text-muted-800 hidden md:block dark:text-white">
                 <!--[-->
@@ -75,6 +75,15 @@
                     
                         {% endif %}
                         
+                        <a href="/event/{{event.id}}/volunteers" ><button type="button" id="vol_list" nui-tooltip="Not Organiser of this event" class=" py-3 nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-default"
+                            rel {% if not event.is_organiser %}disabled{% endif %}>
+                            <!--[--><span>View Volunteers</span>
+                            <!--]-->
+                            <!---->
+                        </button>
+                    </a>
+
+
                         {% if user.utype=="student" %} 
                         {% if not event.is_volunteered and event.type!="competition"    %}
                         <button type="button" id="do_volunteer"  class="nui-button nui-button-medium nui-button-curved nui-button-solid nui-button-primary w-full sm:w-32">
@@ -185,11 +194,13 @@
                                                                     <!--[-->{{organiser.name}}
                                                                     <!--]-->
                                                                 </p>
+                                                                {% if organiser.email!="" %}
                                                                 <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400">
                                                                     <!--[-->
                                                                     {{organiser.role}}
                                                                     <!--]-->
                                                                 </p>
+                                                                {% endif %}
                                                             </div>
                                                         </div>
                                                         <div class="contacts">
@@ -519,7 +530,7 @@
                                                     <!--[-->
                                                 {% for acco in accomodations %}
 
-                                                    <div class="flex items-center gap-2 py-2">
+                                                    <div class="flex items-center gap-2 py-2" style="margin-top:0">
 
                                                         <div class="nui-avatar nui-avatar-xs nui-avatar-full bg-muted-100 dark:bg-muted-700" data-nui-tooltip="Sketch">
                                                             <div class="nui-avatar-inner">

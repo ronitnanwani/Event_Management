@@ -5,7 +5,7 @@
   <div class="mx-auto w-full max-w-7xl">
     <!--[-->
     <div class="relative z-[1] mb-5 flex h-16 items-center gap-2">
-      <button
+      <a href="/"><button
         type="button"
         class="flex size-10 items-center justify-center -ms-3"
       >
@@ -20,7 +20,7 @@
             class="rotate-45 rtl:-rotate-45 max-w-[75%] bottom-1 bg-primary-500 absolute block h-0.5 w-full transition-all duration-300"
           ></span>
         </div>
-      </button>
+      </button></a>
       <h1
         class="nui-heading nui-heading-2xl nui-weight-light nui-lead-normal text-muted-800 hidden md:block dark:text-white"
       >
@@ -245,6 +245,7 @@
                 <div
                   class="divide-muted-200 dark:divide-muted-800 flex items-center justify-center divide-x"
                 >
+                {% if user.utype=="student" %}
                   <div class="text-muted-400 flex h-8 items-center gap-1 px-4">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -275,6 +276,7 @@
                       <!--]-->
                     </p>
                   </div>
+                  {% endif %}
                   <div
                     class="text-muted-400 hidden h-8 items-center gap-1 px-4 sm:flex"
                   >
@@ -402,8 +404,12 @@
                           class="nui-paragraph nui-paragraph-sm nui-weight-normal nui-lead-normal text-muted-500 dark:text-muted-400"
                         >
                           <!--[-->
+                          {% if user.utype=="participant" or user.utype=="student" %}
                           <p>College Name: {{user.college_name}}</p>
+                          {% endif %}
+                          {% if user.utype=="student" %}
                           <p>Department: {{user.department}}</p>
+                          {% endif %}
                           <!--]-->
                         </p>
                       </div>
@@ -420,13 +426,19 @@
                       </div>
                       <div class="grid gap-x-4 gap-y-8 sm:grid-cols-2">
                         <!--[-->
-                        {% for event in events %}
+                        {% for event in user.events_registered %}
                         <div class="flex w-full items-center gap-2">
-                          <img
-                            src="/img/logos/brands/github.svg"
-                            alt="{{event.name}}"
-                            class="border-muted-200 dark:border-muted-600 dark:bg-muted-700 max-w-[50px] rounded-full border bg-white"
-                          />
+                           {% if event.type=="Competition" %}
+                                <img src="{{ url_for('static', filename='img/competition.jpg') }}" alt="Cultural Event" class="w-20 rounded-lg">
+                                {% elif event.type=="Concert" %}
+                                <img src="{{ url_for('static', filename='img/concert.jpg') }}" alt="Cultural Event" class="w-20 rounded-lg">
+                                {% elif event.type=="Workshop" %}
+                                <img src="{{ url_for('static', filename='img/workshop.jpg') }}" alt="Cultural Event" class="w-20 rounded-lg">
+                                {% elif event.type=="Talkshow" %}
+                                <img src="{{ url_for('static', filename='img/talk-show.jpg') }}" alt="Cultural Event" class="w-20 rounded-lg">
+                                {% else %}
+                                <img src="{{ url_for('static', filename='img/comp.jpg') }}" alt="Cultural Event" class="w-20 rounded-lg">
+                                {% endif %}
                           <div>
                             <p
                               class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
@@ -452,7 +464,8 @@
                         <!--]-->
                       </div>
                     </div>
-
+                    
+                    {% if user.utype=="student" %}
                     <div class="py-8">
                       <div class="mb-8 flex items-center gap-2">
                         <h4
@@ -463,7 +476,7 @@
                       </div>
                       <div class="space-y-8">
                         <!--[-->
-                        {% for event in volunteered %}
+                        {% for event in user.events_volunteered %}
                         <div class="flex w-full items-center gap-2">
                           <div>
                             <p
@@ -477,7 +490,7 @@
                               class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400"
                             >
                               <!--[--><span
-                                >{{event.completed_tasks}}/{{event.allotted_tasks}}</span
+                                >{{user.num_tasks_completed}}/{{event.num_tasks_allotted}}</span
                               >
                               <!--]-->
                             </p>
@@ -487,6 +500,7 @@
                         <!--]-->
                       </div>
                     </div>
+                    {% endif %}
 
                     <!--]-->
                   </div>
@@ -514,33 +528,7 @@
                     </div>
                  
                   </div>-->
-                  <div class="nui-card nui-card-rounded nui-card-white p-8">
-                    <!--[-->
-                    <div class="mb-8 flex items-center gap-2">
-                      <h4
-                        class="text-muted-400 font-sans text-xs font-semibold uppercase"
-                      >
-                        Details
-                      </h4>
-                    </div>
-                    <div class="space-y-6">
-                      <!--[-->
-                      <div class="flex w-full items-center gap-2">
-                        <div>
-                          <p
-                            class="nui-heading nui-heading-sm nui-weight-medium nui-lead-normal"
-                            tag="h3"
-                          >
-                            Department: {{user.department}}
-                            <!--]-->
-                          </p>
-                        </div>
-                      </div>
-
-                      <!--]-->
-                    </div>
-                    <!--]-->
-                  </div>
+                
                   <div class="nui-card nui-card-rounded nui-card-white p-8">
                     <!--[-->
                     <div class="mb-8 flex items-center gap-2">
@@ -551,6 +539,58 @@
                       </h4>
                     </div>
                     
+                    {% if acco %}
+                    <div class="flex items-center gap-2 py-2">
+
+                        <div class="nui-avatar nui-avatar-xs nui-avatar-full bg-muted-100 dark:bg-muted-700" data-nui-tooltip="Sketch">
+                            <div class="nui-avatar-inner">
+                                <!--[--><img src="{{ url_for('static', filename='img/home.jpg') }}" class="nui-avatar-full nui-avatar-img">
+                                <!---->
+                                <!---->
+                                <!--]-->
+                            </div>
+                            <!---->
+                            <!---->
+                        </div>
+                        <div>
+                            <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-none line-clamp-1"
+                                tag="h5">
+                                {{acco.name}}
+                    
+                            </p>
+                            <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400">
+                                ${{acco.price}}
+                              
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if food %}
+                    <div class="flex items-center gap-2 py-2" style="margin-top:0">
+
+                        <div class="nui-avatar nui-avatar-xs nui-avatar-full bg-muted-100 dark:bg-muted-700" data-nui-tooltip="Sketch">
+                            <div class="nui-avatar-inner">
+                                <!--[--><img src="{{ url_for('static', filename='img/food.jpg') }}" class="nui-avatar-full nui-avatar-img">
+                                <!---->
+                                <!---->
+                                <!--]-->
+                            </div>
+                            <!---->
+                            <!---->
+                        </div>
+                        <div>
+                            <p class="nui-heading nui-heading-sm nui-weight-medium nui-lead-none line-clamp-1"
+                                tag="h5">
+                                {{food.name}}
+                    
+                            </p>
+                            <p class="nui-paragraph nui-paragraph-xs nui-weight-normal nui-lead-normal text-muted-400">
+                                ${{food.price}}
+                              
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
                     <!--]-->
                   </div>
                 </div>
