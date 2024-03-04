@@ -4,6 +4,7 @@ from flask import jsonify
 from Event_Management.database import *
 from datetime import datetime
 from flask_login import login_user,UserMixin, logout_user, login_required,current_user
+from hashlib import sha256
 app_views = Blueprint('app_views', __name__)
 # User class
 class User(UserMixin):
@@ -573,6 +574,7 @@ def loginUser():
         if request.method == 'POST':
             email = request.form['email']
             password = request.form['password']
+            hashed_password = sha256(password.encode()).hexdigest()
             ftype = request.form['ftype']
             print("cur",current_user)
             # Check if the username and password match
@@ -585,11 +587,11 @@ def loginUser():
             if utype=="Anonymous":
                 return redirect(url_for("app_views.registerUser"))
             elif utype=="Participant":
-                success, row = check_participant_login(connection,cursor,email,password)       
+                success, row = check_participant_login(connection,cursor,email,hashed_password)       
             elif utype=="Student":
-                success, row = check_student_login(connection,cursor,email,password)          
+                success, row = check_student_login(connection,cursor,email,hashed_password)          
             elif utype=="Organiser":
-                success, row = check_organiser_login(connection,cursor,email,password)
+                success, row = check_organiser_login(connection,cursor,email,hashed_password)
             elif utype=="Admin":
                 success, row = check_admin_login(connection,cursor,email,password)
             
@@ -694,10 +696,11 @@ def registerOrganiser():
         info = request.form
         email = info.get('email')
         password = info.get('password')
+        hashed_password = sha256(password.encode()).hexdigest()
         name = info.get('name')
         phone_number = info.get('phone')
         can_create = 1
-        success, error = insert_organiser(connection,cursor,email,password,name,phone_number,can_create)
+        success, error = insert_organiser(connection,cursor,email,hashed_password,name,phone_number,can_create)
 
         if success:
         # Registration successful, redirect to login page
@@ -732,8 +735,9 @@ def registerStudent():
             roll_no = info.get('rollno')
             phone_number = info.get('phone')
             password = info.get('password')
+            hashed_password = sha256(password.encode()).hexdigest()
 
-            success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,password)
+            success, error = insert_student(connection,cursor,roll_no,dept,name,phone_number,email,hashed_password)
             print(success,error,"in register")
             # Registration successful, redirect to login page
             if success:
@@ -765,8 +769,9 @@ def registerParticipant():
         phone_number = info.get('phone')
         email = info.get('email')
         password = info.get('password')
+        hashed_password = sha256(password.encode()).hexdigest()
         
-        success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, password)
+        success, error = insert_participant(connection,cursor,name, college_name, phone_number, email, hashed_password)
         # Registration successful, redirect to login page
         print(success,error,"signup")
         if success:
