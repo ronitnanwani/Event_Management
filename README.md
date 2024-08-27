@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Brief introduction or description of your application.
+Brief introduction or description  of your application.
 
 ## Installation
 
